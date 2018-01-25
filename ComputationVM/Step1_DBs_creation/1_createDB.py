@@ -30,7 +30,7 @@ import datetime
 
 db1 = MySQLdb.connect(host="localhost",user="",passwd="")
 cursor = db1.cursor()
-sql = 'CREATE DATABASE MergedData'
+sql = 'CREATE DATABASE IF NOT EXISTS MergedData'
 cursor.execute(sql)
 
 
@@ -195,17 +195,174 @@ for x in range(1,month):
 #| IXPs_launch_date        |
 #+-------------------------+
 
-sql = 'CREATE DATABASE RIRs'
+sql = 'CREATE DATABASE IF NOT EXISTS RIRs'
 cursor.execute(sql)
 
 
+sql3  = '''CREATE TABLE IF NOT EXISTS RIRs.ASNs_AFRINIC(
+    ASN VARCHAR(50) NOT NULL,
+    CC VARCHAR(50) NULL,
+    date VARCHAR(50) NULL,
+    Status VARCHAR(50) NULL,
+    PRIMARY KEY (ASN));'''
 
+cursor.execute(sql3)
 
+sql3  = '''CREATE TABLE IF NOT EXISTS RIRs.ASNs_APNIC(
+    ASN VARCHAR(50) NOT NULL,
+    CC VARCHAR(50) NULL,
+    date VARCHAR(50) NULL,
+    Status VARCHAR(50) NULL,
+    PRIMARY KEY (ASN));'''
 
+cursor.execute(sql3)
 
+sql3  = '''CREATE TABLE IF NOT EXISTS RIRs.ASNs_ARIN(
+    ASN VARCHAR(50) NOT NULL,
+    CC VARCHAR(50) NULL,
+    date VARCHAR(50) NULL,
+    Status VARCHAR(50) NULL,
+    PRIMARY KEY (ASN));'''
 
+cursor.execute(sql3)
 
+sql3  = '''CREATE TABLE IF NOT EXISTS RIRs.ASNs_LACNIC(
+    ASN VARCHAR(50) NOT NULL,
+    CC VARCHAR(50) NULL,
+    date VARCHAR(50) NULL,
+    Status VARCHAR(50) NULL,
+    PRIMARY KEY (ASN));'''
 
+cursor.execute(sql3)
+
+sql3  = '''CREATE TABLE IF NOT EXISTS RIRs.ASNs_RIPE(
+    ASN VARCHAR(50) NOT NULL,
+    CC VARCHAR(50) NULL,
+    date VARCHAR(50) NULL,
+    Status VARCHAR(50) NULL,
+    PRIMARY KEY (ASN));'''
+
+cursor.execute(sql3)
+
+sql3  = '''CREATE TABLE IF NOT EXISTS RIRs.IPv4_ressources_AFRINIC (
+    Al_id INT NOT NULL AUTO_INCREMENT,
+    NetIPaddress VARCHAR(50) NOT NULL,
+    Numb_IPadd VARCHAR(50) NOT NULL,
+    NetBits VARCHAR(50) NOT NULL,
+    CC VARCHAR(50) NULL,
+    Status VARCHAR(50) NULL,
+    date VARCHAR(50) NULL,
+    PRIMARY KEY (Al_id));'''
+
+cursor.execute(sql3)
+
+sql3  = '''CREATE TABLE IF NOT EXISTS RIRs.IPv4_ressources_APNIC (
+    Al_id INT NOT NULL AUTO_INCREMENT,
+    NetIPaddress VARCHAR(50) NOT NULL,
+    Numb_IPadd VARCHAR(50) NOT NULL,
+    NetBits VARCHAR(50) NOT NULL,
+    CC VARCHAR(50) NULL,
+    Status VARCHAR(50) NULL,
+    date VARCHAR(50) NULL,
+    PRIMARY KEY (Al_id));'''
+
+cursor.execute(sql3)
+
+sql3  = '''CREATE TABLE IF NOT EXISTS RIRs.IPv4_ressources_LACNIC (
+    Al_id INT NOT NULL AUTO_INCREMENT,
+    NetIPaddress VARCHAR(50) NOT NULL,
+    Numb_IPadd VARCHAR(50) NOT NULL,
+    NetBits VARCHAR(50) NOT NULL,
+    CC VARCHAR(50) NULL,
+    Status VARCHAR(50) NULL,
+    date VARCHAR(50) NULL,
+    PRIMARY KEY (Al_id));'''
+
+cursor.execute(sql3)
+
+sql3  = '''CREATE TABLE IF NOT EXISTS RIRs.IPv4_ressources_ARIN (
+    Al_id INT NOT NULL AUTO_INCREMENT,
+    NetIPaddress VARCHAR(50) NOT NULL,
+    Numb_IPadd VARCHAR(50) NOT NULL,
+    NetBits VARCHAR(50) NOT NULL,
+    CC VARCHAR(50) NULL,
+    Status VARCHAR(50) NULL,
+    date VARCHAR(50) NULL,
+    PRIMARY KEY (Al_id));'''
+
+cursor.execute(sql3)
+
+sql3  = '''CREATE TABLE IF NOT EXISTS RIRs.IPv4_ressources_RIPE (
+    Al_id INT NOT NULL AUTO_INCREMENT,
+    NetIPaddress VARCHAR(50) NOT NULL,
+    Numb_IPadd VARCHAR(50) NOT NULL,
+    NetBits VARCHAR(50) NOT NULL,
+    CC VARCHAR(50) NULL,
+    Status VARCHAR(50) NULL,
+    date VARCHAR(50) NULL,
+    PRIMARY KEY (Al_id));'''
+
+cursor.execute(sql3)
+
+sql3  = '''CREATE TABLE IF NOT EXISTS RIRs.IPv6_ressources_AFRINIC (
+    Al_id INT NOT NULL AUTO_INCREMENT,
+    NetIPaddress VARCHAR(50) NOT NULL,
+    Numb_IPadd VARCHAR(50) NOT NULL,
+    NetBits VARCHAR(50) NOT NULL,
+    CC VARCHAR(50) NULL,
+    Status VARCHAR(50) NULL,
+    date VARCHAR(50) NULL,
+    PRIMARY KEY (Al_id));'''
+
+cursor.execute(sql3)
+
+sql3  = '''CREATE TABLE IF NOT EXISTS RIRs.IPv6_ressources_APNIC (
+    Al_id INT NOT NULL AUTO_INCREMENT,
+    NetIPaddress VARCHAR(50) NOT NULL,
+    Numb_IPadd VARCHAR(50) NOT NULL,
+    NetBits VARCHAR(50) NOT NULL,
+    CC VARCHAR(50) NULL,
+    Status VARCHAR(50) NULL,
+    date VARCHAR(50) NULL,
+    PRIMARY KEY (Al_id));'''
+
+cursor.execute(sql3)
+
+sql3  = '''CREATE TABLE IF NOT EXISTS RIRs.IPv6_ressources_LACNIC (
+    Al_id INT NOT NULL AUTO_INCREMENT,
+    NetIPaddress VARCHAR(50) NOT NULL,
+    Numb_IPadd VARCHAR(50) NOT NULL,
+    NetBits VARCHAR(50) NOT NULL,
+    CC VARCHAR(50) NULL,
+    Status VARCHAR(50) NULL,
+    date VARCHAR(50) NULL,
+    PRIMARY KEY (Al_id));'''
+
+cursor.execute(sql3)
+
+sql3  = '''CREATE TABLE IF NOT EXISTS RIRs.IPv6_ressources_ARIN (
+    Al_id INT NOT NULL AUTO_INCREMENT,
+    NetIPaddress VARCHAR(50) NOT NULL,
+    Numb_IPadd VARCHAR(50) NOT NULL,
+    NetBits VARCHAR(50) NOT NULL,
+    CC VARCHAR(50) NULL,
+    Status VARCHAR(50) NULL,
+    date VARCHAR(50) NULL,
+    PRIMARY KEY (Al_id));'''
+
+cursor.execute(sql3)
+
+sql3  = '''CREATE TABLE IF NOT EXISTS RIRs.IPv6_ressources_RIPE (
+    Al_id INT NOT NULL AUTO_INCREMENT,
+    NetIPaddress VARCHAR(50) NOT NULL,
+    Numb_IPadd VARCHAR(50) NOT NULL,
+    NetBits VARCHAR(50) NOT NULL,
+    CC VARCHAR(50) NULL,
+    Status VARCHAR(50) NULL,
+    date VARCHAR(50) NULL,
+    PRIMARY KEY (Al_id));'''
+
+cursor.execute(sql3)
 
 
 
@@ -217,7 +374,7 @@ cursor.execute(sql)
 #| register                |
 #+-------------------------+
 
-sql = 'CREATE DATABASE user_register'
+sql = 'CREATE DATABASE IF NOT EXISTS user_register'
 cursor.execute(sql)
 
 sql = 'use user_register'
