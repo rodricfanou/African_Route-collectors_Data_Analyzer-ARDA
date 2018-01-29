@@ -162,7 +162,7 @@ for folder in folders:
                       
                         if value1 not in Check_list: 
 
-                            # To execute only once:
+                            # ASNs details insertion:
                             sql_commandb = """ INSERT INTO ASNs_APNIC (ASN, CC, date, Status) VALUES (%s,%s,%s,%s);"""
                             cur.execute(sql_commandb, (ASNf, CCf, Datef, Statusf))
                             print 'insertion of', ASNf, 'with as CC ', CCf
