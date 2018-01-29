@@ -41,7 +41,7 @@ print 'Download all the folders of allocation'
     
 command = """ wget -H -r --level=2 -k -p """ + website
 print '\n\n command =', command
-if os.path.isdir('ftp.afrinic.net/'):
+if os.path.isdir('ftp.apnic.net/'):
     print 'The folder ftp.afrinic.net/ already exists'
 else:
     os.system(command)
