@@ -168,7 +168,7 @@ for folder in folders:
                         	pass
             
             
-	    with open ('record_files_parsed_by_1_fill_historical_ARIN_v3_ASNsonly.txt', 'a') as fg:
+	    with open ('record_files_parsed_by_4_fill_historical_ARIN_v3_ASNsonly.txt', 'a') as fg:
                 fg.write('%s; %s\n ' %(filei, k_insertion))
 
 
