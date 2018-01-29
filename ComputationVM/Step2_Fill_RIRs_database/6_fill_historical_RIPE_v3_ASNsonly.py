@@ -76,7 +76,6 @@ command = """ rm -f """ + folder_download + "*/*.md5.gz"
 os.system(command)
 
 
-
 ## Which are the folders after download:
 folders = get_immediate_subdirectories(folder_download)
 
