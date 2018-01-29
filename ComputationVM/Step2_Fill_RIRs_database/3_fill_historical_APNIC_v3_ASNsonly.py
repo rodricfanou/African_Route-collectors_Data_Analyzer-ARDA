@@ -13,13 +13,13 @@ def puissance ( x, n) :
 		i = i + 1
 	return res
 
-sys.path.append('../Heart/2_libraries/')
-import DB_configuration
-
 ## Which folders in a given directory dir?
 def get_immediate_subdirectories(dir):
     return [name for name in os.listdir(dir)
             if os.path.isdir(os.path.join(dir, name))]
+
+sys.path.append('../Heart/2_libraries/')
+import DB_configuration
 
 
 ## Connect to MySQL DB RIRs
