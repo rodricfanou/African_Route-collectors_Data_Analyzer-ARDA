@@ -41,8 +41,10 @@ print 'Download all the folders of allocation'
     
 command = """ wget -H -r --level=2 -k -p """ + website
 print '\n\n command =', command
-os.system(command)
-
+if os.path.isdir('ftp.afrinic.net/'):
+    print 'The folder ftp.afrinic.net/ already exists'
+else:
+    os.system(command)
 
 ## decompress
 command = """gunzip -r """ + folder_download + "*/*.gz"
@@ -110,7 +112,6 @@ for folder in folders:
             list_of_files.append(elmt)
     print '\n\n\n', 'Allocations ', folder, '\n'
     print list_of_files
-
 
 
     ## Build a check list
