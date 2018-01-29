@@ -161,6 +161,7 @@ for folder in folders:
 			    value1 = ASNf+ '_' + CCf + '_' + Datef + '_' + Statusf
                             
 			    if value1 not in Check_list:
+                        #ASNs details insertions
 				sql_commandb = """ INSERT INTO ASNs_RIPE (ASN, CC, date, Status) VALUES (%s,%s,%s,%s);"""
                                 cur.execute(sql_commandb, (ASNf, CCf, Datef, Statusf))
 				db.commit()  
