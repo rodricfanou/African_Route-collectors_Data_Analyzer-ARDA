@@ -158,7 +158,7 @@ for folder in folders:
                                 		print 'insertion of', line[3].strip(),'with a /', NetBits , 'needed in IPv4'
                 				db.commit()
 						Check_list.append(value1)
-                                    k_insertion += 1
+	                                        k_insertion += 1
 		          		else:
                                 		print 'We do not insert ', line[3].strip(),'/', NetBits, ' anymore'
                                 	print 
