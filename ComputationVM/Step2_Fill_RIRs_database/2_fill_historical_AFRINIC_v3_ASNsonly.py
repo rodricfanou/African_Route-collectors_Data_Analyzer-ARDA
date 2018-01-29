@@ -1,4 +1,5 @@
 ## Store ASNs allocated by AFRINIC to ISPs or any organization in its region
+## Alert: this script should be run frequently (at least once per trimester)
 
 import MySQLdb, collections, sys, glob, math,  ast, os, time, random
 from math import log
@@ -162,7 +163,7 @@ for folder in folders:
                                 print 'insertion of', ASNf, 'with as CC ', CCf
 				db.commit()
 				Check_list.append(value1)
-				k_insertion += 1
+                        k_insertion += 1
                             else:
                                 print 'We do not insert ', ASNf, ' anymore'
                         except:
