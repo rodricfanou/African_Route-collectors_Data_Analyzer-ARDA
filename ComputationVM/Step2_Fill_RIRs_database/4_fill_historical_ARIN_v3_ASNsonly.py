@@ -165,7 +165,7 @@ for folder in folders:
                             		print 'We do not insert ', ASNf, ' anymore'
                     
                          except:
-                        	print 'I ignore it'
+                        	pass
             
             
 	    with open ('record_files_parsed_by_1_fill_historical_ARIN_v3_ASNsonly.txt', 'a') as fg:
