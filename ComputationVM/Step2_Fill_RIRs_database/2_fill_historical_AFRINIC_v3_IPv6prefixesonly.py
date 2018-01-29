@@ -1,4 +1,6 @@
 ## Store IPv6 prefixes allocated by AFRINIC to ISPs or any organization in its region
+## Alert: this script should be run frequently (at least once per trimester)
+
 import MySQLdb, collections, sys, glob, math,  ast, os, time, random
 from math import log
 
