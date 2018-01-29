@@ -31,7 +31,7 @@ time.sleep(value * random.randint(0,3))
 
 
 ## RIR data extraction has been performed several times in the literature: see for instance the C++ code
-## https://code.google.com/p/ip-countryside/source/browse/trunk/getDBs.sh?r=4
+## https://code.google.com/p/ip-countryside/source/browse/trunk/getDBs.sh?r=4.
 
 website = "ftp://ftp.afrinic.net/pub/stats/afrinic/"
 folder_download = "ftp.afrinic.net/pub/stats/afrinic/"
@@ -40,9 +40,12 @@ print 'Download all the folders of allocation'
     
 command = """ wget -H -r --level=2 -k -p """ + website
 print '\n\n command =', command
-os.system(command)
+if os.path.isdir('ftp.afrinic.net/'):
+    print 'The folder ftp.afrinic.net/ already exists'
+else:
+    os.system(command)
 
-##decompressing
+##decompressing the folders
 command = """gunzip -r """ + folder_download + "*/*.gz"
 os.system(command)
 
