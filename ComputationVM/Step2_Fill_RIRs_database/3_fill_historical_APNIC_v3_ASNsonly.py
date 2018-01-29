@@ -42,7 +42,7 @@ print 'Download all the folders of allocation'
 command = """ wget -H -r --level=2 -k -p """ + website
 print '\n\n command =', command
 if os.path.isdir('ftp.apnic.net/'):
-    print 'The folder ftp.afrinic.net/ already exists'
+    print 'The folder ftp.apnic.net/ already exists'
 else:
     os.system(command)
 
@@ -144,7 +144,6 @@ for folder in folders:
 		   try:
 
                         print 'Entered in the IF'
-                        #print 'ASN = ',  line[3].strip()
                         ASNf = line[3].strip()
                         CCf = str(line[1].strip())
 			CCf = CCf.upper()
@@ -160,7 +159,7 @@ for folder in folders:
 			value1 = ASNf+ '_' + CCf + '_' + Datef + '_' + Statusf
                         print value1
                       
-                        if value1 not in Check_list: 
+                        if value1 not in Check_list:
                             # ASNs details insertion:
                             sql_commandb = """ INSERT INTO ASNs_APNIC (ASN, CC, date, Status) VALUES (%s,%s,%s,%s);"""
                             cur.execute(sql_commandb, (ASNf, CCf, Datef, Statusf))
