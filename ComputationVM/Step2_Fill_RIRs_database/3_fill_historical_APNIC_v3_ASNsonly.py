@@ -21,13 +21,12 @@ def get_immediate_subdirectories(dir):
 sys.path.append('../Heart/2_libraries/')
 import DB_configuration
 
-
 ## Connect to MySQL DB RIRs
 db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db ="RIRs")
 cur = db.cursor()
 print 'Connected'
 
-### Sleep a random time before starting any operation
+## Sleep a random time before starting any operation
 value = random.randint(0,10)
 time.sleep(value * random.randint(0,3))
 
@@ -176,6 +175,6 @@ for folder in folders:
 			 pass
           
 
-	    with open ('record_files_parsed_by_1_fill_historical_APNIC_v3_ASNsonly.txt', 'a') as fh:
+	    with open ('record_files_parsed_by_3_fill_historical_APNIC_v3_ASNsonly.txt', 'a') as fh:
                 fh.write('%s; %s\n ' %(filei, k_insertion))
                      
