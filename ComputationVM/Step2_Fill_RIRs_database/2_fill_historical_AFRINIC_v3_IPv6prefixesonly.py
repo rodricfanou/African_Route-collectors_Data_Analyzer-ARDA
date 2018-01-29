@@ -147,7 +147,6 @@ for folder in folders:
                     	line = line.split('|')
                         print line
 
-			#if 1:
 			try:
 			    ## Verifier si c'est un prefixe v4 ou v6:
 				if ':' in line[3].strip():
@@ -175,6 +174,6 @@ for folder in folders:
             
 
 	    with open('record_files_parsed_by_1_fill_historical_RIPE_v3_IPv6prefixesonly.txt', 'a') as fg:
-            fg.write('%s; %s\n ' %(filei, k_insertion))
+                fg.write('%s; %s\n ' %(filei, k_insertion))
 			
            
