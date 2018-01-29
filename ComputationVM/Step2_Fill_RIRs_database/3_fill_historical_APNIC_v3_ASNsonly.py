@@ -1,4 +1,4 @@
-## Store ASNs allocated by ARIN to ISPs or any organization in its region
+## Store ASNs allocated by APNIC to ISPs or any organization in its region
 ## Alert: this script should be run frequently (at least once per trimester)
 
 import MySQLdb, collections, sys, glob, math,  ast, os, time, random
