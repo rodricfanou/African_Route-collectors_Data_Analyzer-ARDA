@@ -30,7 +30,6 @@ print 'Connected'
 value = random.randint(0,10)
 time.sleep(value * random.randint(0,3))
 
-
 ## RIR data extraction has been performed several times in the literature: see for instance the C++ code
 ## https://code.google.com/p/ip-countryside/source/browse/trunk/getDBs.sh?r=4.
 
@@ -82,12 +81,12 @@ if glob.glob(folder_download + "*/*.md5.gz"):
     os.system(command)
 
 
-
 ## Which are the folders containing useful information after download:
 folders = []
 List_possible_folder_download = ['ftp.afrinic.net/pub/stats/afrinic/', 'ftp.afrinic.net/pub/stats/']
 for folder_download in List_possible_folder_download:
     folders += get_immediate_subdirectories(folder_download)
+folders += ['afrinic/']
 
 
 for folder in folders:
@@ -120,7 +119,6 @@ for folder in folders:
     #print the_whole_list_of_asc
     
     the_whole_list_of_txt = glob.glob(filename_txt1) + glob.glob(filename_txt2) + glob.glob(filename_txt2_direct)  + glob.glob(filename_txt1_direct) + filename_txt3
-    
     
     
     ## Suppressing all .md5, .asc, or .txt
