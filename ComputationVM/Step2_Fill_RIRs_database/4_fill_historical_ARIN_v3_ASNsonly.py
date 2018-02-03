@@ -13,7 +13,6 @@ def puissance ( x, n) :
 		i = i + 1
 	return res
 
-
 sys.path.append('../Heart/2_libraries/')
 import DB_configuration
 
@@ -47,7 +46,6 @@ os.system(command)
 if glob.glob(folder_download + "*/*.gz"):
     command = """gunzip -r """ + folder_download + "*/*.gz"
     os.system(command)
-
 
 if glob.glob(folder_download + "*/*.bz2"):
     command = """bzip2 -dk """ + folder_download + "*/*.bz2"
@@ -175,8 +173,7 @@ for folder in folders:
                     
                          except:
                         	pass
-            
-            
+    
 	    with open ('record_files_parsed_by_4_fill_historical_ARIN_v3_ASNsonly.txt', 'a') as fg:
                 fg.write('%s; %s\n ' %(filei, k_insertion))
 
