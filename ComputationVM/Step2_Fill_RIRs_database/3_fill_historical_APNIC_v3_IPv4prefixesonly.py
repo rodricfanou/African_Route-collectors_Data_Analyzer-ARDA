@@ -29,13 +29,13 @@ def get_immediate_subdirectories(dir):
     return [name for name in os.listdir(dir)
         if os.path.isdir(os.path.join(dir, name))]
 
-
-## RIR data extraction has been performed several times in the literature: see for instance the C++ code
-## https://code.google.com/p/ip-countryside/source/browse/trunk/getDBs.sh?r=4.
-
+### Sleep a random time before starting any operation
 value = random.randint(0,10)
 time.sleep(value * random.randint(0,3))
 
+
+## RIR data extraction has been performed several times in the literature: see for instance the C++ code
+## https://code.google.com/p/ip-countryside/source/browse/trunk/getDBs.sh?r=4.
 website = "ftp://ftp.apnic.net/pub/stats/apnic/"
 folder_download = "ftp.apnic.net/pub/stats/apnic/"
 
