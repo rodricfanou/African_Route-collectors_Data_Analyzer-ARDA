@@ -84,6 +84,7 @@ folders = []
 List_possible_folder_download = ['ftp.apnic.net/pub/stats/apnic/', 'ftp.apnic.net/pub/stats/']
 for folder_download in List_possible_folder_download:
     folders += get_immediate_subdirectories(folder_download)
+folders += ['apnic/']
 
 
 for folder in folders:
@@ -104,7 +105,6 @@ for folder in folders:
     filename_asc_direct = folder_download + '/*.asc'
     filename_txt1_direct = folder_download + '/*.txt'
     filename_txt2_direct  = folder_download + '/*.TXT'
-
 
     the_whole_list = glob.glob(filename)+ glob.glob(filename_without_txt) + glob.glob(filename_without_txt1) + glob.glob(filename_without_txt_direct) + glob.glob(filename_without_txt1_direct)
     #print the_whole_list
