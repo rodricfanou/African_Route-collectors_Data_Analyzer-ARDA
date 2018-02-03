@@ -46,36 +46,52 @@ if os.path.isdir('ftp.afrinic.net/'):
 else:
     os.system(command)
 
-##decompressing the folders
-command = """gunzip -r """ + folder_download + "*/*.gz"
-os.system(command)
 
-command = """bzip2 -dk """ + folder_download + "*/*.bz2"
-os.system(command)
-
-## removing unuseful files (mostly compressed ones)
-command = """ rm -f """ + folder_download + "*/*.bz2"
-os.system(command)
-
-command = """ rm -f """ + folder_download + "*/*.md5"
-os.system(command)
-
-command = """ rm -f """ + folder_download + "*/*.asc"
-os.system(command)
-
-command = """ rm -f """ + folder_download + "*/*.gz.bck"
-os.system(command)
-
-command = """ rm -f """ + folder_download + "*/*.asc.gz"
-os.system(command)
-
-command = """ rm -f """ + folder_download + "*/*.md5.gz"
-os.system(command)
+## decompress
+if glob.glob(folder_download + "*/*.gz"):
+    command = """gunzip -r """ + folder_download + "*/*.gz"
+    os.system(command)
 
 
+if glob.glob(folder_download + "*/*.bz2"):
+    command = """bzip2 -dk """ + folder_download + "*/*.bz2"
+    os.system(command)
+    
+    ## remove
+    command = """ rm -f """ + folder_download + "*/*.bz2"
+    os.system(command)
 
-## Which are the folders after download:
-folders = get_immediate_subdirectories(folder_download)
+
+## Remove unuseful files.
+if glob.glob(folder_download + "*/*.md5"):
+    command = """ rm -f """ + folder_download + "*/*.md5"
+    os.system(command)
+
+if glob.glob(folder_download + "*/*.asc"):
+    command = """ rm -f """ + folder_download + "*/*.asc"
+    os.system(command)
+
+if glob.glob(folder_download + "*/*.gz.bck"):
+    command = """ rm -f """ + folder_download + "*/*.gz.bck"
+    os.system(command)
+
+
+if glob.glob(folder_download + "*/*.asc.gz"):
+    command = """ rm -f """ + folder_download + "*/*.asc.gz"
+    os.system(command)
+
+if glob.glob(folder_download + "*/*.md5.gz"):
+    command = """ rm -f """ + folder_download + "*/*.md5.gz"
+    os.system(command)
+
+
+
+## Which are the folders containing useful information after download:
+folders = []
+List_possible_folder_download = ['ftp.afrinic.net/pub/stats/afrinic/', 'ftp.afrinic.net/pub/stats/']
+for folder_download in List_possible_folder_download:
+    folders += get_immediate_subdirectories(folder_download)
+
 
 for folder in folders:
     print folder
