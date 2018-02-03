@@ -174,7 +174,7 @@ for folder in folders:
                                 print 'insertion of', ASNf, 'with as CC ', CCf
 				db.commit()
 				Check_list.append(value1)
-                        k_insertion += 1
+                                k_insertion += 1
                             else:
                                 print 'We do not insert ', ASNf, ' anymore'
                         except:
