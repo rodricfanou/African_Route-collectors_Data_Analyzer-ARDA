@@ -45,14 +45,14 @@ if os.path.isdir('ftp.apnic.net/'):
 else:
     os.system(command)
 
-## decompress
+## Decompressing the folders
 command = """gunzip -r """ + folder_download + "*/*.gz"
 os.system(command)
 
 command = """bzip2 -dk """ + folder_download + "*/*.bz2"
 os.system(command)
 
-## remove
+## removing unuseful files (mostly compressed ones)
 command = """ rm -f """ + folder_download + "*/*.bz2"
 os.system(command)
 
