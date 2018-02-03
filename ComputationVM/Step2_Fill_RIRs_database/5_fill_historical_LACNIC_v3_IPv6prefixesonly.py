@@ -152,7 +152,7 @@ for folder in folders:
                     line = line.split('|')
                 
                     if line != '' and 'ipv6' in line and '*' not in line:
-		      #try:
+		      try:
 			 if ':' in line[3].strip():                    
                     		NetBits =  str(line[4].strip())
                     		CCf = line[1].strip()
@@ -172,8 +172,8 @@ for folder in folders:
                         		print 'We do not insert ', line[3].strip(),'/', NetBits, ' anymore'
             			print
 
-      		      #except:
-			 #pass
+      		      except:
+                      pass
 
 
 	    with open ('record_files_parsed_by_1_fill_historical_LACNIC_v3_IPv6prefixesonly.txt', 'a') as fg:
