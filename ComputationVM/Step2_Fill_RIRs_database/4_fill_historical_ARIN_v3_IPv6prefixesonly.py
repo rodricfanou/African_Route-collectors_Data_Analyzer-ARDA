@@ -84,6 +84,7 @@ for folder_download in List_possible_folder_download:
     folders += get_immediate_subdirectories(folder_download)
 folders += ['arin/']
 
+
 for folder in folders:
     print folder
     list_of_files = []
@@ -165,6 +166,6 @@ for folder in folders:
       		    except:
 	    		pass  
 
-	    with open ('record_files_parsed_by_1_fill_historical_ARIN_v3_IPv6prefixesonly.txt', 'a') as fg:
+	    with open ('record_files_parsed_by_4_fill_historical_ARIN_v3_IPv6prefixesonly.txt', 'a') as fg:
                     fg.write('%s; %s\n ' %(filei, k_insertion))
             
