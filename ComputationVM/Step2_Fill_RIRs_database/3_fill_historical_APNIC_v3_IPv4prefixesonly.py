@@ -2,7 +2,7 @@
 ## Alert: this script should be run frequently (at least once per trimester).
 ## The adopted frequency depends on the server's capabilities
 
-import MySQLdb, collections, sys, glob, math,  ast, os, time, random
+import MySQLdb, collections, sys, glob, math,  ast, os, time, random, glob
 from math import log
 import os.path
 
@@ -52,30 +52,41 @@ else:
 
 
 ## decompress
-command = """gunzip -r """ + folder_download + "*/*.gz"
-#os.system(command)
+if glob.glob(folder_download + "*/*.gz"):
+    command = """gunzip -r """ + folder_download + "*/*.gz"
+    os.system(command)
 
-command = """bzip2 -dk """ + folder_download + "*/*.bz2"
-#os.system(command)
 
-## remove
-command = """ rm -f """ + folder_download + "*/*.bz2"
-#os.system(command)
+if glob.glob(folder_download + "*/*.bz2"):
+    command = """bzip2 -dk """ + folder_download + "*/*.bz2"
+    os.system(command)
 
-command = """ rm -f """ + folder_download + "*/*.md5"
-#os.system(command)
+    ## remove
+    command = """ rm -f """ + folder_download + "*/*.bz2"
+    os.system(command)
 
-command = """ rm -f """ + folder_download + "*/*.asc"
-#os.system(command)
 
-command = """ rm -f """ + folder_download + "*/*.gz.bck"
-#os.system(command)
+## Remove unuseful files.
+if glob.glob(folder_download + "*/*.md5"):
+    command = """ rm -f """ + folder_download + "*/*.md5"
+    os.system(command)
 
-command = """ rm -f """ + folder_download + "*/*.asc.gz"
-#os.system(command)
+if glob.glob(folder_download + "*/*.asc"):
+    command = """ rm -f """ + folder_download + "*/*.asc"
+    os.system(command)
 
-command = """ rm -f """ + folder_download + "*/*.md5.gz"
-#os.system(command)
+if glob.glob(folder_download + "*/*.gz.bck"):
+    command = """ rm -f """ + folder_download + "*/*.gz.bck"
+    os.system(command)
+
+
+if glob.glob(folder_download + "*/*.asc.gz"):
+    command = """ rm -f """ + folder_download + "*/*.asc.gz"
+    os.system(command)
+
+if glob.glob(folder_download + "*/*.md5.gz"):
+    command = """ rm -f """ + folder_download + "*/*.md5.gz"
+    os.system(command)
 
 
 
