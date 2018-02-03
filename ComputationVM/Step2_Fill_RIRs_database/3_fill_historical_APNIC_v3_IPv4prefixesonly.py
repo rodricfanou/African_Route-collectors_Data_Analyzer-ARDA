@@ -92,7 +92,7 @@ if glob.glob(folder_download + "*/*.md5.gz"):
 ## Which are the folders containing useful information after download:
 folders = []
 List_possible_folder_download = ['ftp.apnic.net/pub/stats/apnic/', 'ftp.apnic.net/pub/stats/']
-for folder_download:
+for folder_download in List_possible_folder_download:
     folders += get_immediate_subdirectories(folder_download)
 
 for folder in folders:
