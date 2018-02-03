@@ -76,7 +76,6 @@ if glob.glob(folder_download + "*/*.gz.bck"):
     command = """ rm -f """ + folder_download + "*/*.gz.bck"
     os.system(command)
 
-
 if glob.glob(folder_download + "*/*.asc.gz"):
     command = """ rm -f """ + folder_download + "*/*.asc.gz"
     os.system(command)
@@ -92,7 +91,7 @@ folders = []
 List_possible_folder_download = ['ftp.afrinic.net/pub/stats/afrinic/', 'ftp.afrinic.net/pub/stats/']
 for folder_download in List_possible_folder_download:
     folders += get_immediate_subdirectories(folder_download)
-
+folders += ['afrinic/']
 
 for folder in folders:
     print folder
@@ -153,7 +152,6 @@ for folder in folders:
                     if line != '' and 'ipv4' in line and '*' not in line:
                     	line = line.split('|')
 			print line
-
 
 			try:
 			    ## Verifier si c'est un prefixe v4 ou v6:
