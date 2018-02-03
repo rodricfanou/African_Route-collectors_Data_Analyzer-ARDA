@@ -39,12 +39,9 @@ folder_download = "ftp.afrinic.net/pub/stats/afrinic/"
 
 print 'Download all the folders of allocation'
     
-command = """ wget -H -r --level=2 -k -p """ + website
+command = """ wget -N -H -r --level=2 -k -p """ + website
 print '\n\n command =', command
-if os.path.isdir('ftp.afrinic.net/'):
-    print 'The folder ftp.afrinic.net/ already exists'
-else:
-    os.system(command)
+os.system(command)
 
 
 ## decompress

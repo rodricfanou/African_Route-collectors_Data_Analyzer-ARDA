@@ -1,8 +1,12 @@
-## Store ASNs allocated by RIPE to ISPs or any organization in its region
+## Filling historical LACNIC ressources attributions
+## Store IPv4 prefixes allocated by LACNIC to ISPs or any organization in its region
 ## Alert: this script should be run frequently (at least once per trimester)
 
 import MySQLdb, collections, sys, glob, math,  ast, os, time, random
 from math import log
+
+sys.path.append('../../Heart/2_libraries/')
+import DB_configuration
 
 ## Compute the x at the power of n.
 def puissance ( x, n) :
@@ -13,37 +17,30 @@ def puissance ( x, n) :
 		i = i + 1
 	return res
 
-sys.path.append('../Heart/2_libraries/')
-import DB_configuration
-
-## Which folders in a given directory dir?
+## Which folders ?
 def get_immediate_subdirectories(dir):
     return [name for name in os.listdir(dir)
             if os.path.isdir(os.path.join(dir, name))]
 
-
-## Connect to MySQL DB RIRs
+## Consulting the main DB
 db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db ="RIRs")
 cur = db.cursor()
 print 'Connected'
 
-
-### Sleep a random time before starting any operation
 value = random.randint(0,10)
 time.sleep(value * random.randint(0,3))
 
 ## RIR data extraction has been performed several times in the literature: see for instance the C++ code
 ## https://code.google.com/p/ip-countryside/source/browse/trunk/getDBs.sh?r=4.
 
-website = "ftp://ftp.ripe.net/ripe/stats/"
-folder_download = "ftp.ripe.net/ripe/stats/"
+website = "ftp://ftp.lacnic.net/pub/stats/lacnic/"
+folder_download = "ftp.lacnic.net/pub/stats/"
 
 print 'Download all the folders of allocation'
     
 command = """ wget -N -H -r --level=2 -k -p """ + website
 print '\n\n command =', command
 os.system(command)
-
 
 ## decompress
 if glob.glob(folder_download + "*/*.gz"):
@@ -83,39 +80,33 @@ if glob.glob(folder_download + "*/*.md5.gz"):
 
 ## Which are the folders containing useful information after download:
 folders = []
-List_possible_folder_download = ['ftp.ripe.net/pub/stats/ripe/', 'ftp.ripe.net/pub/stats/']
+List_possible_folder_download = ['ftp.lacnic.net/pub/stats/lacnic/', 'ftp.lacnic.net/pub/stats/']
 for folder_download in List_possible_folder_download:
     folders += get_immediate_subdirectories(folder_download)
-folders += ['ripe/']
+folders += ['lacnic/']
 
 
 for folder in folders:
     print folder
     list_of_files = []
-    command2 = 'cd ' + folder_download + str(folder).strip() + ' ; gunzip *.gz'
-    print 'command2 =', command2
-    os.system(command2)
-
-
     filename = folder_download + str(folder).strip() + '/*'
     filename_md5 = folder_download + str(folder).strip() + '/*.md5'
     filename_asc = folder_download + str(folder).strip() + '/*.asc'
     filename_txt1 = folder_download + str(folder).strip() + '/*.txt'
     filename_txt2 = folder_download + str(folder).strip() + '/*.TXT'
-    filename_without_txt = folder_download + str(folder).strip() + '/delegated-ripencc-*'
-    filename_without_txt1 = folder_download + str(folder).strip() + '/legacy-ripencc-*'
+    filename_without_txt = folder_download + str(folder).strip() + '/delegated-lacnic-*'
+    filename_without_txt1 = folder_download + str(folder).strip() + '/legacy-lacnic-*'
     filename_txt3 = []
     filename_txt3.append(str(folder_download + str(folder).strip() + '/test').strip())
-    filename_without_txt_direct = folder_download + '/delegated-ripencc-*'
-    filename_without_txt1_direct = folder_download + '/legacy-ripencc-*'
+    filename_without_txt_direct = folder_download + '/delegated-lacnic-*'
+    filename_without_txt1_direct = folder_download + '/legacy-lacnic-*'
     filename_md5_direct = folder_download + '/*.md5'
     filename_asc_direct = folder_download + '/*.asc'
     filename_txt1_direct = folder_download + '/*.txt'
     filename_txt2_direct  = folder_download + '/*.TXT'
 
-
-    the_whole_list = glob.glob(filename) + glob.glob(filename_without_txt) + glob.glob(filename_without_txt1)  + glob.glob(filename_without_txt_direct) + glob.glob(filename_without_txt1_direct)
-    #print  the_whole_list
+    the_whole_list = glob.glob(filename) + glob.glob(filename_without_txt) + glob.glob(filename_without_txt1) + glob.glob(filename_without_txt_direct) + glob.glob(filename_without_txt1_direct)
+    print  the_whole_list
     
     the_whole_list_of_md5 = glob.glob(filename_md5) + glob.glob(filename_md5_direct)
     #print  the_whole_list_of_md5
@@ -123,68 +114,63 @@ for folder in folders:
     the_whole_list_of_asc = glob.glob(filename_asc) + glob.glob(filename_asc_direct)
     #print the_whole_list_of_asc
     
-    the_whole_list_of_txt = glob.glob(filename_txt1) + glob.glob(filename_txt2) + filename_txt3 + glob.glob(filename_txt2) + glob.glob(filename_txt2_direct)
+    the_whole_list_of_txt = glob.glob(filename_txt1) + glob.glob(filename_txt2) + filename_txt3 + glob.glob(filename_txt2_direct)  + glob.glob(filename_txt1_direct)
     
-    
-    ## Suppressing all .md5, .asc, or .txt
     for elmt in the_whole_list:
         if elmt not in the_whole_list_of_md5 and elmt not in the_whole_list_of_asc and elmt not in the_whole_list_of_txt :
             list_of_files.append(elmt)
     print '\n\n\n', 'Allocations ', folder, '\n'
     #print list_of_files
     
-
+    
     ### Build a check list
-    sql_command = """select * from ASNs_RIPE ;"""
+    Check_list = []
+
+    sql_command = """select * from IPv4_ressources_LACNIC"""
     cur.execute(sql_command)
     db_dump2 = cur.fetchall()
-    
-    Check_list = []
     for elmt in db_dump2:
-	value = elmt[0] + '_'+ elmt[1].upper() + '_'+ elmt[2] + '_'+ elmt[3]
-	if value not in Check_list:
-		Check_list.append(value)
+        value = elmt[1] + '_'+ elmt[2] + '_'+ elmt[3] + '_' + elmt[4].upper() + '_' + elmt[5] + '_' + elmt[6]
+        if value not in Check_list:
+                Check_list.append(value)
+    print 'len(Check_list) = ',  len(Check_list), 'len(db_dump2) = ', len(db_dump2)
 
-    print 'len(Check_list) =', len(Check_list), 'len(db_dump2) =' , len(db_dump2)
 
-   
     for filei in list_of_files :
         if os.path.exists(filei) and os.path.isfile(filei):
-	    k_insertion = 0            
+            print ' \nWe are in folder', folder , 'file', filei, 'which is the num', list_of_files.index(filei)
+
+	    k_insertion = 0
             with open (filei, 'r') as fk:
-		print 'ASNs parser: are in folder', folder , 'file', filei, 'which is the num', list_of_files.index(filei)
-                for lines in fk:
+	  
+            	for lines in fk:
                     line = lines.strip()
                     line = line.split('|')
+                
+                    if line != '' and 'ipv4' in line and '*' not in line:
+		      #try:
+			 if '.' in line[3].strip():                    
+                    		NetBits = int(32 - math.log(int(line[4].strip()), 2))
+                    		CCf = line[1].strip()
+                                CCf = CCf.upper()
+                    
+				value1 = str(line[3]) + '_' + str(line[4]) + '_' + str(NetBits) + '_' + str(CCf) + '_'+ str(line[6]) + '_' + str(line[5])
 
-                    if line != '' and 'asn' in line and '*' not in line and 'summary' not in line:
-                        try:
-                            print '\n', line
-                            print line[3].strip()
-                            ASNf = line[3].strip()
-                            CCf = line[1].strip()
-                            CCf = CCf.upper()
-                            Datef = line[5].strip()
-                            Statusf = line[6].strip()
-                            
-			    value1 = ASNf+ '_' + CCf + '_' + Datef + '_' + Statusf
-                            
-			    if value1 not in Check_list:
-                                #ASNs details insertions
-				sql_commandb = """ INSERT INTO ASNs_RIPE (ASN, CC, date, Status) VALUES (%s,%s,%s,%s);"""
-                                cur.execute(sql_commandb, (ASNf, CCf, Datef, Statusf))
-				db.commit()  
-                                print 'insertion of', ASNf, 'with as CC ', CCf
-				Check_list.append(value1)
-				k_insertion += 1
-                            else:
-                                print 'We do not insert ', ASNf, ' anymore'
-                            print
-                    	    
-                        except:
-                            pass
+                    		if value1 not in Check_list:
+                        		# IPv4 prefixes details insertion:
+                        		sql_commandb = """ INSERT INTO IPv4_ressources_LACNIC ( NetIPaddress, Numb_IPadd, NetBits, CC, Status, date) VALUES (%s,%s,%s,%s,%s,%s);"""
+                        		cur.execute(sql_commandb, ( line[3].strip(), line[4].strip(), NetBits, CCf, line[6].strip(), line[5].strip()))
+                        		print 'insertion of', line[3].strip(),'with a /', NetBits , 'needed in IPv4'
+                        		db.commit()
+					Check_list.append(value1)
+					k_insertion += 1
+                    		else:
+                        		print 'We do not insert ', line[3].strip(),'/', NetBits, ' anymore'
+            			print
 
-	    with open('record_files_parsed_by_6_fill_historical_RIPE_v3_ASNsonly.txt', 'a') as fh:
-                fh.write('%s; %s\n ' %(filei, k_insertion))
-                                    
-  
+      		      #except:
+			 #pass
+
+
+	    with open ('record_files_parsed_by_1_fill_historical_LACNIC_v3_IPv4prefixesonly.txt', 'a') as fg:
+                fg.write('%s; %s\n ' %(filei, k_insertion))

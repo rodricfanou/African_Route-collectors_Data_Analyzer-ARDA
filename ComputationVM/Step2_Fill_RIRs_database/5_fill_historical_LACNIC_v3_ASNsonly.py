@@ -13,70 +13,79 @@ def puissance ( x, n) :
 		i = i + 1
 	return res
 
-sys.path.append('../Heart/2_libraries/')
-import DB_configuration
-
 ## Which folders in a given directory dir?
 def get_immediate_subdirectories(dir):
     return [name for name in os.listdir(dir)
             if os.path.isdir(os.path.join(dir, name))]
 
+sys.path.append('../Heart/2_libraries/')
+import DB_configuration
 
 ## Connect to MySQL DB RIRs
 db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db ="RIRs")
 cur = db.cursor()
 print 'Connected'
 
+## Sleep a random time before starting any operation
+value = random.randint(0,10)
+time.sleep(value * random.randint(0,3))
 
 ## RIR data extraction has been performed several times in the literature: see for instance the C++ code
 ## https://code.google.com/p/ip-countryside/source/browse/trunk/getDBs.sh?r=4.
-
-value = random.randint(0,10)
-time.sleep(value * random.randint(0,3))
 
 website = "ftp://ftp.lacnic.net/pub/stats/lacnic/"
 folder_download = "ftp.lacnic.net/pub/stats/"
 
 print 'Download all the folders of allocation'
     
-command = """ wget -H -r --level=2 -k -p """ + website
+command = """ wget -N -H -r --level=2 -k -p """ + website
 print '\n\n command =', command
-if os.path.isdir('ftp.lacnic.net/'):
-    print 'The folder ftp.lacnic.net/ already exists'
-else:
+os.system(command)
+
+## decompress
+if glob.glob(folder_download + "*/*.gz"):
+    command = """gunzip -r """ + folder_download + "*/*.gz"
+    os.system(command)
+
+if glob.glob(folder_download + "*/*.bz2"):
+    command = """bzip2 -dk """ + folder_download + "*/*.bz2"
+    os.system(command)
+    
+    ## remove
+    command = """ rm -f """ + folder_download + "*/*.bz2"
+    os.system(command)
+
+## Remove unuseful files.
+if glob.glob(folder_download + "*/*.md5"):
+    command = """ rm -f """ + folder_download + "*/*.md5"
+    os.system(command)
+
+if glob.glob(folder_download + "*/*.asc"):
+    command = """ rm -f """ + folder_download + "*/*.asc"
+    os.system(command)
+
+if glob.glob(folder_download + "*/*.gz.bck"):
+    command = """ rm -f """ + folder_download + "*/*.gz.bck"
     os.system(command)
 
 
-## Decompressing the folders
-command = """gunzip -r """ + folder_download + "*/*.gz"
-os.system(command)
+if glob.glob(folder_download + "*/*.asc.gz"):
+    command = """ rm -f """ + folder_download + "*/*.asc.gz"
+    os.system(command)
 
-command = """bzip2 -dk """ + folder_download + "*/*.bz2"
-os.system(command)
-
-## removing unuseful files (mostly compressed ones)
-command = """ rm -f """ + folder_download + "*/*.bz2"
-os.system(command)
-
-command = """ rm -f """ + folder_download + "*/*.md5"
-os.system(command)
-
-command = """ rm -f """ + folder_download + "*/*.asc"
-os.system(command)
-
-command = """ rm -f """ + folder_download + "*/*.gz.bck"
-os.system(command)
-
-command = """ rm -f """ + folder_download + "*/*.asc.gz"
-os.system(command)
+if glob.glob(folder_download + "*/*.md5.gz"):
+    command = """ rm -f """ + folder_download + "*/*.md5.gz"
+    os.system(command)
 
 
-## Which are the folders after download:
-folders = get_immediate_subdirectories(folder_download)
 
-print 'folders ', folders
-#sys.exit()
-folders += ["lacnic/"]
+## Which are the folders containing useful information after download:
+folders = []
+List_possible_folder_download = ['ftp.lacnic.net/pub/stats/lacnic/', 'ftp.lacnic.net/pub/stats/']
+for folder_download in List_possible_folder_download:
+    folders += get_immediate_subdirectories(folder_download)
+folders += ['lacnic/']
+
 
 for folder in folders:
     print folder

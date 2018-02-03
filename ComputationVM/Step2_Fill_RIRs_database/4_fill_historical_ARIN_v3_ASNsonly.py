@@ -14,7 +14,7 @@ def puissance ( x, n) :
 	return res
 
 
-sys.path.append('../../Heart/2_libraries/')
+sys.path.append('../Heart/2_libraries/')
 import DB_configuration
 
 ## Connect to MySQL DB RIRs
@@ -39,45 +39,54 @@ folder_download = "ftp.arin.net/pub/stats/"
 
 print 'Download all the folders of allocation'
     
-command = """ wget -H -r --level=2 -k -p """ + website
+command = """ wget -N -H -r --level=2 -k -p """ + website
 print '\n\n command =', command
-if os.path.isdir('ftp.arin.net/'):
-    print 'The folder ftp.arin.net/ already exists'
-else:
+os.system(command)
+
+## decompress
+if glob.glob(folder_download + "*/*.gz"):
+    command = """gunzip -r """ + folder_download + "*/*.gz"
     os.system(command)
 
-##decompressing
-command = """gunzip -r """ + folder_download + "*/*.gz"
-os.system(command)
 
-command = """bzip2 -dk """ + folder_download + "*/*.bz2"
-os.system(command)
+if glob.glob(folder_download + "*/*.bz2"):
+    command = """bzip2 -dk """ + folder_download + "*/*.bz2"
+    os.system(command)
+    
+    ## remove
+    command = """ rm -f """ + folder_download + "*/*.bz2"
+    os.system(command)
 
-## removing unuseful files (mostly compressed ones)
-command = """ rm -f """ + folder_download + "*/*.bz2"
-os.system(command)
+## Remove unuseful files.
+if glob.glob(folder_download + "*/*.md5"):
+    command = """ rm -f """ + folder_download + "*/*.md5"
+    os.system(command)
 
-command = """ rm -f """ + folder_download + "*/*.md5"
-os.system(command)
+if glob.glob(folder_download + "*/*.asc"):
+    command = """ rm -f """ + folder_download + "*/*.asc"
+    os.system(command)
 
-command = """ rm -f """ + folder_download + "*/*.asc"
-os.system(command)
-
-command = """ rm -f """ + folder_download + "*/*.gz.bck"
-os.system(command)
-
-command = """ rm -f """ + folder_download + "*/*.asc.gz"
-os.system(command)
-
-command = """ rm -f """ + folder_download + "*/*.md5.gz"
-os.system(command)
-
-## Which are the folders after download:
-folders = get_immediate_subdirectories(folder_download)
+if glob.glob(folder_download + "*/*.gz.bck"):
+    command = """ rm -f """ + folder_download + "*/*.gz.bck"
+    os.system(command)
 
 
+if glob.glob(folder_download + "*/*.asc.gz"):
+    command = """ rm -f """ + folder_download + "*/*.asc.gz"
+    os.system(command)
 
-folders = ['arin/']
+if glob.glob(folder_download + "*/*.md5.gz"):
+    command = """ rm -f """ + folder_download + "*/*.md5.gz"
+    os.system(command)
+
+
+## Which are the folders containing useful information after download:
+folders = []
+List_possible_folder_download = ['ftp.arin.net/pub/stats/arin/', 'ftp.arin.net/pub/stats/']
+for folder_download in List_possible_folder_download:
+    folders += get_immediate_subdirectories(folder_download)
+folders += ['arin/']
+
 for folder in folders:
     print folder
     list_of_files = []
@@ -171,6 +180,3 @@ for folder in folders:
 	    with open ('record_files_parsed_by_4_fill_historical_ARIN_v3_ASNsonly.txt', 'a') as fg:
                 fg.write('%s; %s\n ' %(filei, k_insertion))
 
-
-
-      	
