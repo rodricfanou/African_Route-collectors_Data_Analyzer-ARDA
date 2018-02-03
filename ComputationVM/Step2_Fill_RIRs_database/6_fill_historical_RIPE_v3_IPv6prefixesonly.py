@@ -161,7 +161,6 @@ for folder in folders:
                     
             
                     if line != '' and 'ipv6' in line and '*' not in line:
-			if 1:
                         try:
 				if ':' in line[3].strip():
 					#afrinic|TN|ipv6|2001:970::|32|20021024|allocated
