@@ -21,12 +21,10 @@ def get_immediate_subdirectories(dir):
     return [name for name in os.listdir(dir)
             if os.path.isdir(os.path.join(dir, name))]
 
-
 ## Connect to MySQL DB RIRs
 db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db ="RIRs")
 cur = db.cursor()
 print 'Connected'
-
 
 ### Sleep a random time before starting any operation
 value = random.randint(0,10)
@@ -70,7 +68,6 @@ if glob.glob(folder_download + "*/*.asc"):
 if glob.glob(folder_download + "*/*.gz.bck"):
     command = """ rm -f """ + folder_download + "*/*.gz.bck"
     os.system(command)
-
 
 if glob.glob(folder_download + "*/*.asc.gz"):
     command = """ rm -f """ + folder_download + "*/*.asc.gz"
@@ -170,7 +167,7 @@ for folder in folders:
 			    value1 = ASNf+ '_' + CCf + '_' + Datef + '_' + Statusf
                             
 			    if value1 not in Check_list:
-                                #ASNs details insertions
+                    #ASNs details insertions:
 				sql_commandb = """ INSERT INTO ASNs_RIPE (ASN, CC, date, Status) VALUES (%s,%s,%s,%s);"""
                                 cur.execute(sql_commandb, (ASNf, CCf, Datef, Statusf))
 				db.commit()  
