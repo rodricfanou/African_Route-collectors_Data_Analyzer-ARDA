@@ -45,11 +45,7 @@ print 'Download all the folders of allocation'
     
 command = """ wget -H -r --level=2 -k -p """ + website
 print '\n\n command =', command
-if os.path.isdir('ftp.apnic.net/'):
-    print 'The folder ftp.apnic.net/ already exists'
-else:
-    os.system(command)
-
+os.system(command)
 
 ## decompress
 if glob.glob(folder_download + "*/*.gz"):
@@ -94,6 +90,8 @@ folders = []
 List_possible_folder_download = ['ftp.apnic.net/pub/stats/apnic/', 'ftp.apnic.net/pub/stats/']
 for folder_download in List_possible_folder_download:
     folders += get_immediate_subdirectories(folder_download)
+folders += ['apnic/']
+
 
 for folder in folders:
     print folder
