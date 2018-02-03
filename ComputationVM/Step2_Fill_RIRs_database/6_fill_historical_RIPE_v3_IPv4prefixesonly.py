@@ -1,4 +1,7 @@
 ## Filling historical RIPE ressources attributions
+## Store IPv4 prefixes allocated by RIPE to ISPs or any organization in its region
+## Alert: this script should be run frequently (at least once per trimester)
+
 import MySQLdb, collections, sys, glob, math,  ast, os, time, random
 from math import log
 
@@ -148,8 +151,7 @@ for folder in folders:
                     
             
                     if line != '' and 'ipv4' in line and '*' not in line:
-			if 1:
-                        #try:
+                        try:
 				if '.' in line[3].strip():
                            		NetBits = int(32 - math.log(int(line[4].strip()), 2))
                             		CCf = line[1].strip()
@@ -170,8 +172,8 @@ for folder in folders:
                                 		print 'We do not insert ', line[3].strip(),'/', NetBits, ' anymore'
 
 					print                                                                		
-                        #except:
-                        #	pass
+                        except:
+                        	pass
 		   
 	    with open ('record_files_parsed_by_1_fill_historical_RIPE_v3_IPv4prefixesonly.txt', 'a') as fg:
                 fg.write('%s; %s\n ' %(filei, k_insertion))
