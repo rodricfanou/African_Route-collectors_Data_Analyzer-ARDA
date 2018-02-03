@@ -26,7 +26,7 @@ def get_immediate_subdirectories(dir):
 db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db ="RIRs")
 cur = db.cursor()
 
-os.system("python 1_clean_RIRs_DBs.py")
+#os.system("python 1_clean_RIRs_DBs.py")
 
 ### sleep a random time before starting any operation
 value = random.randint(0,10)
@@ -45,8 +45,6 @@ command = """ wget -N -H -r --level=2 -k -p """ + website
 print '\n\n command =', command
 os.system(command)
 
-## Which are the folders after download:
-folders = get_immediate_subdirectories(folder_download)
 
 ## decompress
 if glob.glob(folder_download + "*/*.gz"):
@@ -91,6 +89,7 @@ List_possible_folder_download = ['ftp.arin.net/pub/stats/arin/', 'ftp.arin.net/p
 for folder_download in List_possible_folder_download:
     folders += get_immediate_subdirectories(folder_download)
 folders += ['arin/']
+
 
 for folder in folders:
     print folder
