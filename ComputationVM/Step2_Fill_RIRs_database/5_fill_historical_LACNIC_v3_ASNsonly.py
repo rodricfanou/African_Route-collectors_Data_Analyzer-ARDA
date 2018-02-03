@@ -78,7 +78,6 @@ if glob.glob(folder_download + "*/*.md5.gz"):
     os.system(command)
 
 
-
 ## Which are the folders containing useful information after download:
 folders = []
 List_possible_folder_download = ['ftp.lacnic.net/pub/stats/lacnic/', 'ftp.lacnic.net/pub/stats/']
