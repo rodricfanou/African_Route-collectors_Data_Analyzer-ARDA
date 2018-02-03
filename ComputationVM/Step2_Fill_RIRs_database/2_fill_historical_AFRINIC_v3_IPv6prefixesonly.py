@@ -30,7 +30,6 @@ def get_immediate_subdirectories(dir):
 ## Launch a script located in the same folder which removes duplicates
 #os.system("python clean_RIRs_DBs.py")
 
-
 ### sleep a random time before starting any operation
 value = random.randint(0,10)
 time.sleep(value * random.randint(0,3))
@@ -38,6 +37,7 @@ time.sleep(value * random.randint(0,3))
 
 ## RIR data extraction has been performed several times in the literature: see for instance the C++ code
 ## https://code.google.com/p/ip-countryside/source/browse/trunk/getDBs.sh?r=4.
+
 website = "ftp://ftp.afrinic.net/pub/stats/afrinic/"
 folder_download = "ftp.afrinic.net/pub/stats/afrinic/"
 
@@ -91,6 +91,7 @@ folders = []
 List_possible_folder_download = ['ftp.afrinic.net/pub/stats/afrinic/', 'ftp.afrinic.net/pub/stats/']
 for folder_download in List_possible_folder_download:
     folders += get_immediate_subdirectories(folder_download)
+folders += ['afrinic/']
 
 
 for folder in folders:
@@ -130,7 +131,6 @@ for folder in folders:
     print '\n\n\n', 'Allocations ', folder, '\n'
     #print list_of_files
     
-
 
     ## Build the check_list
     Check_list = []
