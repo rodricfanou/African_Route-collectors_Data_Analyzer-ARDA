@@ -6,6 +6,7 @@ import MySQLdb, collections, sys, glob, math,  ast, os, time, random
 from math import log
 import os.path
 
+## Compute the x at the power of n.
 def puissance ( x, n) :
 	res = 1
 	i = 1
@@ -13,6 +14,11 @@ def puissance ( x, n) :
 		res = res * x
 		i = i + 1
 	return res
+
+## Which folders in the directory?
+def get_immediate_subdirectories(dir):
+    return [name for name in os.listdir(dir)
+            if os.path.isdir(os.path.join(dir, name))]
 
 #os.system("python clean_RIRs_DBs.py")
 
@@ -24,10 +30,6 @@ db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user,
 cur = db.cursor()
 print 'Connected'
 
-## Which folders ?
-def get_immediate_subdirectories(dir):
-    return [name for name in os.listdir(dir)
-        if os.path.isdir(os.path.join(dir, name))]
 
 ### Sleep a random time before starting any operation
 value = random.randint(0,10)
