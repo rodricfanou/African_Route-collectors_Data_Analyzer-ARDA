@@ -57,7 +57,6 @@ if glob.glob(folder_download + "*/*.bz2"):
     command = """ rm -f """ + folder_download + "*/*.bz2"
     os.system(command)
 
-
 ## Remove unuseful files.
 if glob.glob(folder_download + "*/*.md5"):
     command = """ rm -f """ + folder_download + "*/*.md5"
