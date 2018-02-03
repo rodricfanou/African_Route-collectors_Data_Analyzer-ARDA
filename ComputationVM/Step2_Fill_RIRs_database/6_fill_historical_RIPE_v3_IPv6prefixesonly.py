@@ -5,9 +5,7 @@
 import MySQLdb, collections, sys, glob, math,  ast, os, time, random
 from math import log
 
-sys.path.append('../Heart/2_libraries/')
-import DB_configuration
-
+## Compute the x at the power of n.
 def puissance ( x, n) :
 	res = 1
 	i = 1
@@ -16,26 +14,28 @@ def puissance ( x, n) :
 		i = i + 1
 	return res
 
-
-## Which folders ?
+## Which folders in a given directory dir?
 def get_immediate_subdirectories(dir):
     return [name for name in os.listdir(dir)
             if os.path.isdir(os.path.join(dir, name))]
 
+sys.path.append('../Heart/2_libraries/')
+import DB_configuration
+
+## Connect to MySQL DB RIRs
 db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db ="RIRs")
 cur = db.cursor()
 print 'Connected'
 
 #os.system("python 1_clean_RIRs_DBs.py")
 
-
 ### Sleep a random time before starting any operation
-
 value = random.randint(0,10)
 time.sleep(value * random.randint(0,3))
 
+## RIR data extraction has been performed several times in the literature: see for instance the C++ code
+## https://code.google.com/p/ip-countryside/source/browse/trunk/getDBs.sh?r=4.
 
-## Data download
 website = "ftp://ftp.ripe.net/ripe/stats/"
 folder_download = "ftp.ripe.net/ripe/stats/"
 
@@ -43,7 +43,7 @@ print 'Download all the folders of allocation'
     
 command = """ wget -N -H -r --level=2 -k -p """ + website
 print '\n\n command =', command
-#os.system(command)
+os.system(command)
 
 
 ## decompress
@@ -162,7 +162,7 @@ for folder in folders:
             
                     if line != '' and 'ipv6' in line and '*' not in line:
 			if 1:
-                        #try:
+                        try:
 				if ':' in line[3].strip():
 					#afrinic|TN|ipv6|2001:970::|32|20021024|allocated
                            		NetBits = str(line[4].strip())
@@ -184,8 +184,8 @@ for folder in folders:
                                 		print 'We do not insert ', line[3].strip(),'/', NetBits, ' anymore'
 
 					print                                                                		
-                        #except:
-                        #	pass
+                        except:
+                        	pass
 		   
 	    with open ('record_files_parsed_by_1_fill_historical_RIPE_v3_IPv6prefixesonly.txt', 'a') as fg:
                 fg.write('%s; %s\n ' %(filei, k_insertion))
