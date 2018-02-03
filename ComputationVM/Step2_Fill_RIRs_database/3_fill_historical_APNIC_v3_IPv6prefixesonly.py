@@ -90,6 +90,7 @@ folders = []
 List_possible_folder_download = ['ftp.apnic.net/pub/stats/apnic/', 'ftp.apnic.net/pub/stats/']
 for folder_download in List_possible_folder_download:
     folders += get_immediate_subdirectories(folder_download)
+folders += ['apnic/']
 
 
 for folder in folders:
@@ -167,7 +168,7 @@ for folder in folders:
                     		print value1
 
                     		if value1 not in Check_list:
-                        		# To execute only once:
+                        		# IPv6 prefix details to add:
                         		sql_commandb = """ INSERT INTO IPv6_ressources_APNIC (NetIPaddress, NetBits, CC, Status, date) VALUES (%s,%s,%s,%s,%s);"""
                         		cur.execute(sql_commandb, ( line[3].strip(), NetBits, CCf, line[6].strip(), line[5].strip()))
                         		print 'insertion of', line[3].strip(),'with a /', NetBits , 'needed in IPv6'
@@ -184,6 +185,5 @@ for folder in folders:
 		        pass
 
 	
-
 		with open ('record_files_parsed_by_1_fill_historical_APNIC_v3_IPv6prefixesonly.txt', 'a') as fg:
 		    fg.write('%s; %s\n ' %(filei, k_insertion))
