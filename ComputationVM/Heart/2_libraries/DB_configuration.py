@@ -1,0 +1,5 @@
+host = 'Localhost'
+user = 'root'
+passwd = 'edjrosse'
+continent = 'AF'
+region = 'AFRINIC'
