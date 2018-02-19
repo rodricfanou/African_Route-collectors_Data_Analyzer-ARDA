@@ -1,5 +1,7 @@
 ## Store IPv4 prefixes allocated by AFRINIC to ISPs or any organization in its region
-## Alert: this script should be run frequently (at least once per trimester)
+## Alert: this script may be run:
+## 1 - either frequently (at least once per trimester): In this case you can comment line 189 and use the cronjob
+## 2 - or run the scripts updating the RIR data one after the other: in which case you can keep the scripts as they are.
 
 import MySQLdb, collections, sys, glob, math,  ast, os, time, random
 from math import log
@@ -180,3 +182,10 @@ for folder in folders:
             
         with open ('record_files_parsed_by_1_fill_historical_AFRINIC_v3_IPv4prefixessonly.txt', 'a') as fg:
             fg.write('%s; %s\n ' %(filei, k_insertion))
+
+
+
+## Run next script
+os.system("python 2_fill_historical_AFRINIC_v3_IPv6prefixesonly.py")
+
+
