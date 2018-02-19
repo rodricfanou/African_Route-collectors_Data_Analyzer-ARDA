@@ -28,6 +28,9 @@ db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user,
 cur = db.cursor()
 print 'Connected'
 
+## Launch a script located in the same folder which removes duplicates
+os.system("python 1_clean_RIRs_DBs.py")
+
 ### sleep a random time before starting any operation
 value = random.randint(0,10)
 time.sleep(value * random.randint(0,3))
@@ -109,7 +112,6 @@ for folder in folders:
     filename_txt1_direct = folder_download + '/*.txt'
     filename_txt2_direct  = folder_download + '/*.TXT'
 
-
     the_whole_list = glob.glob(filename) + glob.glob(filename_without_txt) + glob.glob(filename_without_txt1) + glob.glob(filename_without_txt_direct) + glob.glob(filename_without_txt1_direct)
     #print  the_whole_list
     
@@ -121,7 +123,6 @@ for folder in folders:
     
     the_whole_list_of_txt = glob.glob(filename_txt1) + glob.glob(filename_txt2) + glob.glob(filename_txt2_direct)  + glob.glob(filename_txt1_direct) + filename_txt3
     
-    
     ## Suppressing all .md5, .asc, or .txt
     for elmt in the_whole_list:
         if elmt not in the_whole_list_of_md5 and elmt not in the_whole_list_of_asc and elmt not in the_whole_list_of_txt :
@@ -129,7 +130,6 @@ for folder in folders:
     print '\n\n\n', 'Allocations ', folder, '\n'
     #print list_of_files
 
-    
     ### Build a check list
     sql_command = """select * from ASNs_AFRINIC ;"""
     cur.execute(sql_command)
