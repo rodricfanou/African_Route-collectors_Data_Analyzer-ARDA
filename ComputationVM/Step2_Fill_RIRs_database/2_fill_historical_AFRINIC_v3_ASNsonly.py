@@ -1,4 +1,5 @@
-## Date: April 21, 2017
+## ARDA Application released on Date: April 21, 2017
+## Last review: February 19, 2018
 ## Author: Roderick Fanou
 ## Store ASNs allocated by AFRINIC to ISPs or any organization in its region
 ## Alert: this script may be run:
