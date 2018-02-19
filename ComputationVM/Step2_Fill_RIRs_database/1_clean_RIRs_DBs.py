@@ -1,4 +1,7 @@
+## ARDA Application released on: April 21, 2017
+## Last review: February 19, 2018
 # This script can be used to suppress the content of/dupplicates in the tables of the database RIR if needed.
+
 import MySQLdb, collections, sys, glob, math,  ast, os, time, random
 from math import log
 from pprint import pprint
