@@ -1,6 +1,9 @@
+## ARDA Application released on Date: April 21, 2017
+## Last review: February 19, 2018
+## Author: Roderick Fanou
 ## Store IPv4 prefixes allocated by AFRINIC to ISPs or any organization in its region
 ## Alert: this script may be run:
-## 1 - either frequently (at least once per trimester): In this case you can comment line 189 and use the cronjob
+## 1 - either frequently (at least once per trimester): In this case you can comment line 191 and use the cronjob
 ## 2 - or run the scripts updating the RIR data one after the other: in which case you can keep the scripts as they are.
 
 import MySQLdb, collections, sys, glob, math,  ast, os, time, random
