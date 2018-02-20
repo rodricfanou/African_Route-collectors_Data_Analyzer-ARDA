@@ -7,7 +7,7 @@
 ## 2 - or run the scripts updating the RIR data one after the other: in which case you can keep the scripts as they are.
 
 ## The user should configure the cron this script so that it runs on start up
-## @reboot cd /path/to/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Step2_Fill_RIRs_database & python 2_fill_historical_AFRINIC_v3_ASNsonly.py
+## @reboot cd /path/to/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Step2_Fill_RIRs_database && python 2_fill_historical_AFRINIC_v3_ASNsonly.py
 
 import MySQLdb, collections, sys, glob, math,  ast, os, time, random
 from math import log
