@@ -1,3 +1,5 @@
+## ARDA Application released on: April 21, 2017
+## Last review: February 19, 2018
 # On the Computation VM (VM1)
 # Goal: Create the database MergedData destined to host the routing data collected from all selected route-collectors.
 import MySQLdb
@@ -363,7 +365,6 @@ sql3  = '''CREATE TABLE IF NOT EXISTS RIRs.IPv6_ressources_RIPE (
     PRIMARY KEY (Al_id));'''
 
 cursor.execute(sql3)
-
 
 
 ## On the Visualization VM (VM2)
