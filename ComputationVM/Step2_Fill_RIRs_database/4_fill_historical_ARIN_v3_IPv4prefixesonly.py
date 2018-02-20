@@ -1,6 +1,11 @@
+## ARDA Application released on: April 21, 2017
+## Last review: February 19, 2018
 ## Filling historical ARIN ressources attributions
 ## Store IPv4 prefixes allocated by ARIN to ISPs or any organization in its region
-## Alert: this script should be run frequently (at least once per trimester)
+## Alert: this script may be run:
+## 1 - either frequently (at least once per trimester): In this case you can comment the last line of this script and use the cron
+## 2 - or run the scripts updating the RIR data one after the other: in which case you can keep the scripts as they are.
+
 
 import MySQLdb, collections, sys, glob, math,  ast, os, time, random
 from math import log
@@ -176,3 +181,6 @@ for folder in folders:
 	    with open ('record_files_parsed_by_1_fill_historical_ARIN_v3_IPv4prefixesonly.txt', 'a') as fg:
                     fg.write('%s; %s\n ' %(filei, k_insertion))
             
+## Run next script
+os.system("python 4_fill_historical_ARIN_v3_IPv6prefixesonly.py")
+
