@@ -186,3 +186,9 @@ for folder in folders:
 
             with open ('record_files_parsed_by_1_fill_historical_APNIC_v3_IPv4prefixesonly.txt', 'a') as fg:
                 fg.write('%s; %s\n ' %(filei, k_insertion))
+
+
+## Run next script
+os.system("python 3_fill_historical_APNIC_v3_IPv6prefixesonly.py")
+
+
