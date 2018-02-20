@@ -1,6 +1,9 @@
+## ARDA Application released on: April 21, 2017
+## Last review: February 19, 2018
+## Author: Roderick Fanou
+
 import time, MySQLdb
 from datetime import datetime
-
 
 def count_number_days(date1, date2):
     
@@ -21,21 +24,7 @@ def count_number_days(date1, date2):
         
         return 'impossible'
 
-##from datetime import datetime
-##date_format = "%m/%d/%Y"
-##a = datetime.strptime('8/18/2008', date_format)
-##b = datetime.strptime('9/26/2008', date_format)
-##delta = b - a
-##print delta.days # that's it
 
-#days = count_number_days('31/01/2017', '02/02/2017')
-#print days
-
-
-## check if data Today, tomorrow can be stored.
-
-#from datetime import datetime
-#date_now = str(datetime.now())
 import time, copy
 from datetime import datetime
 import os, sys, subprocess, glob, time, MySQLdb
@@ -116,11 +105,4 @@ def Check_tables_for_insertions(database):
         cur.execute(stmt)
 
 
-
 Check_tables_for_insertions('MergedData_backup')
-
-
-
-
-
-
