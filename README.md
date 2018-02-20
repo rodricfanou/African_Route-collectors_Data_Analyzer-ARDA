@@ -8,3 +8,17 @@ A.R.D.A. is an open-source web application, which offers unique views of the cur
 3. The Regional View where we plot statistics computed based on the data from all IXPs in the region
 
 The application has been launched on April 21, 2017.
+
+Please download and install these packages:
+- automake-1.6.1 
+- bgp 
+- bgpatools-0.2
+- dateutil-master
+- install_bgpdump
+- libbgpdump-1.4.99.11 
+- libev-4.15
+- mysql++-3.2.2
+- netaddr-0.7.10
+- Ocelot-master
+- pycountry-1.20
+- python-cymru-services-master
