@@ -1,3 +1,5 @@
+## ARDA Application released on: April 21, 2017
+## Last review: February 19, 2018
 #!/bin/bash
 PASSWORD=PASS
 
