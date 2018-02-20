@@ -1,5 +1,27 @@
+#!/bin/bash
 PASSWORD=PASS
 
+## Goal: create RIRs database destined to host data collected by the RIRs
+#+-------------------------+
+#| Tables_in_RIRs          |
+#+-------------------------+
+#| ASNs_AFRINIC            |
+#| ASNs_APNIC              |
+#| ASNs_ARIN               |
+#| ASNs_LACNIC             |
+#| ASNs_RIPE               |
+#| IPv4_ressources_AFRINIC |
+#| IPv4_ressources_APNIC   |
+#| IPv4_ressources_ARIN    |
+#| IPv4_ressources_LACNIC  |
+#| IPv4_ressources_RIPE    |
+#| IPv6_ressources_AFRINIC |
+#| IPv6_ressources_APNIC   |
+#| IPv6_ressources_ARIN    |
+#| IPv6_ressources_LACNIC  |
+#| IPv6_ressources_RIPE    |
+#| IXPs_launch_date        |
+#+-------------------------+
 mysql -uroot -p$PASSWORD -Bse "CREATE DATABASE IF NOT EXISTS RIRs;"
   
   
