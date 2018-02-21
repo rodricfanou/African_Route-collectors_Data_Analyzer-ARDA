@@ -10,7 +10,7 @@
 import MySQLdb, collections, sys, glob, math,  ast, os, time, random
 from math import log
 
-sys.path.append('../../Heart/2_libraries/')
+sys.path.append('../Heart/2_libraries/')
 import DB_configuration
 
 ## Compute the x at the power of n.
