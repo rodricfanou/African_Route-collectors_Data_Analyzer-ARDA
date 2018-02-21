@@ -183,8 +183,8 @@ for folder in folders:
 			except:
                             pass
             
-        with open ('record_files_parsed_by_1_fill_historical_AFRINIC_v3_IPv4prefixessonly.txt', 'a') as fg:
-            fg.write('%s; %s\n ' %(filei, k_insertion))
+            with open ('record_files_parsed_by_1_fill_historical_AFRINIC_v3_IPv4prefixessonly.txt', 'a') as fg:
+                fg.write('%s; %s\n ' %(filei, k_insertion))
 
 
 
