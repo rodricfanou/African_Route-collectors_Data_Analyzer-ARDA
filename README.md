@@ -7,9 +7,9 @@ A.R.D.A. is an open-source web application, which offers unique views of the cur
 2. The National View where we display statistics per set of IXPs in the same country
 3. The Regional View where we plot statistics computed based on the data from all IXPs in the region
 
-The application has been launched on April 21, 2017.
+The application has been launched on April 21, 2017. It can be replicated for/extended to any Internet region for profiling the IXPs in that region and monitoring their growth: this depends on how it is configured by its administrator. 
 
-Please download and install these packages:
+As a first step to install it, please download and install these packages:
 - automake-1.6.1 
 - bgp 
 - bgpatools-0.2
