@@ -190,8 +190,8 @@ for folder in folders:
 			 pass
           
 
-	    with open ('record_files_parsed_by_3_fill_historical_APNIC_v3_ASNsonly.txt', 'a') as fh:
-                fh.write('%s; %s\n ' %(filei, k_insertion))
+    with open ('record_files_parsed_by_3_fill_historical_APNIC_v3_ASNsonly.txt', 'a') as fh:
+            fh.write('%s; %s\n ' %(filei, k_insertion))
 
 
 ## Run next script
