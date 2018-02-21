@@ -184,8 +184,8 @@ for folder in folders:
 	            except:
 		        pass
 
-            with open ('record_files_parsed_by_1_fill_historical_APNIC_v3_IPv4prefixesonly.txt', 'a') as fg:
-                fg.write('%s; %s\n ' %(filei, k_insertion))
+        with open ('record_files_parsed_by_1_fill_historical_APNIC_v3_IPv4prefixesonly.txt', 'a') as fg:
+            fg.write('%s; %s\n ' %(filei, k_insertion))
 
 
 ## Run next script
