@@ -3,7 +3,7 @@
 ## Author: Roderick Fanou
 ## Store ASNs allocated by AFRINIC to ISPs or any organization in its region
 ## Alert: this script may be run:
-## 1 - either frequently (at least once per trimester): In this case you can comment the lines 194 up to the last line (233) and use the cron
+## 1 - either frequently (at least once per trimester): In this case you can comment the lines 194 up to the last line (233) as well as the while loop on line 12 and use the cron
 ## 2 - or run the scripts updating the RIR data one after the other: in which case you can keep the scripts as they are.
 
 ## The user should configure the cron this script so that it runs on start up
