@@ -1,5 +1,5 @@
 ##############################################################################
-#__author__ = "Roderick Fanou, Victor Sanchez Aguero"
+#__author__ = "Roderick Fanou"
 #__email__ = "roderick.fanou@imdea.org"
 #__status__ = "Production"
 #__last_modifications__ =
@@ -92,7 +92,7 @@ while (i<len(data)):
     i+=1
 
 print IXP_collector
-root_folder = '/home/roderick/Heart/'
+root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 output_folder = '../../Computation_outputs/9_Number_IPv6_vs_IPv4_prefixes_lastmonth/'
 
 command = 'rm -rf ' + output_folder

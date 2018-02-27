@@ -3,7 +3,7 @@
 ## showing the IPv4 blocks allocated by AFRINIC seen at the IXP.
 
 ##############################################################################
-#__author__ = "Roderick Fanou, Victor Sanchez Aguero"
+#__author__ = "Roderick Fanou"
 #__email__ = "roderick.fanou@imdea.org"
 #__status__ = "Production"
 #__description__ = "This script generates "
@@ -53,7 +53,7 @@ continent = DB_configuration.continent
 region = DB_configuration.region
 
 
-root_folder = '/home/roderick/Heart/'
+root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 output_folder = '../../Computation_outputs/7_percentage_IP_blocks_assigned_to_country_visible_at_IXP/'
 
 command = 'rm -rf ' + output_folder

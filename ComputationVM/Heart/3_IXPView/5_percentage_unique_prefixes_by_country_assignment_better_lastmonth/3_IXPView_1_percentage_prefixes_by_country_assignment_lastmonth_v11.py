@@ -106,7 +106,7 @@ while (i<len(data)):
     i+=1
 
 print IXP_collector
-root_folder = '/home/roderick/Heart/'
+root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 #### TO ENABLE LATER
 output_folder = '../../Computation_outputs/5_percentage_prefixes_by_country_assignment_lastmonth_better/'
 ##output_folder = 'outputs/'

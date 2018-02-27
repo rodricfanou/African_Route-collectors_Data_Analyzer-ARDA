@@ -8,7 +8,7 @@
 #	multi-years splitted into years
 
 ##############################################################################
-#__author__ = "Roderick Fanou, Victor Sanchez Aguero"
+#__author__ = "Roderick Fanou"
 #__email__ = "roderick.fanou@imdea.org"
 #__status__ = "Production"
 #__description__ = "This script generates "
@@ -99,7 +99,7 @@ while (i<len(data)):
     i+=1
 
 print IXP_collector
-root_folder = '/home/roderick/Heart/'
+root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 output_folder = '../../Computation_outputs/1_Number_prefixes_visibles_at_an_IXP_multiyear_lastyear/'
 
 command = 'rm -rf ' + output_folder

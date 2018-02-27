@@ -1,5 +1,5 @@
 ##############################################################################
-#__author__ = "Roderick Fanou, Victor Sanchez Aguero"
+#__author__ = "Roderick Fanou"
 #__email__ = "roderick.fanou@imdea.org"
 #__status__ = "Production"
 #__last_modifications__ =
@@ -71,7 +71,7 @@ def build_list_ASNs_allocated_by_RIRs_till (current_year, current_month, dict_AS
 
 
 
-root_folder = '/home/roderick/Heart/'
+root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 output_folder = '../../Computation_outputs/16_comparison_behavior_lastmonth_better/'
 command = 'rm -rf ' + output_folder
 os.system(command)

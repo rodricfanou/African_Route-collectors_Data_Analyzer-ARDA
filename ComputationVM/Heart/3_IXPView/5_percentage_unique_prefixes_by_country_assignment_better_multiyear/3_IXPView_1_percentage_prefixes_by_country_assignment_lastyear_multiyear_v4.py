@@ -1,6 +1,6 @@
 
 ##############################################################################
-#__author__ = "Roderick Fanou, Victor Sanchez Aguero"
+#__author__ = "Roderick Fanou"
 #__email__ = "roderick.fanou@imdea.org"
 #__status__ = "Production"
 #__description__ = "This script generates "
@@ -107,7 +107,7 @@ while (i<len(data)):
 
 
 print IXP_collector
-root_folder = '/home/roderick/Heart/'
+root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 output_folder = '../../Computation_outputs/5_percentage_prefixes_by_country_assignment_lastyear_better/'
 
 command = 'rm -rf ' + output_folder

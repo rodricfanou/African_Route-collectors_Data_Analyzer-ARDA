@@ -2,7 +2,7 @@
 #it only for last month, and consider distinct ASNs as defined in point 2.
 
 ##############################################################################
-#__author__ = "Roderick Fanou, Victor Sanchez Aguero"
+#__author__ = "Roderick Fanou"
 #__email__ = "roderick.fanou@imdea.org"
 #__status__ = "Production"
 #__last_modifications__ =
@@ -119,7 +119,7 @@ while (i<len(data)):
 
 
 print IXP_collector
-root_folder = '/home/roderick/Heart/'
+root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 output_folder = '../../Computation_outputs/12_local_external_ASNs_multiyear/'
 
 #command = 'rm -rf ' + output_folder

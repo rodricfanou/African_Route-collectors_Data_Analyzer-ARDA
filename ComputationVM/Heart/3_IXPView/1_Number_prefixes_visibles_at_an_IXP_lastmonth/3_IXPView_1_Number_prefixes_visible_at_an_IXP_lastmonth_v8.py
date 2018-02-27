@@ -1,17 +1,17 @@
 # To Do
-# We suppress the item ASNs and Prefix growth.
 # The evolution of the prefixes is plotted as an area graph. We plot on the
 # same graph the evolution of unique bogons (including private address RFC
 # 1918) as an area graph as well.
 # On the Y axis, we have the number of unique prefixes counted as explained
 # above. In total, we plan to have 3 graphs with the following timelines on
 # the X axis:
+# last month splitted into weeks
 # last year (Now - 12 months) splitted into months
 # multi-years splitted into years
 
 
 ##############################################################################
-#__author__ = "Roderick Fanou, Victor Sanchez Aguero"
+#__author__ = "Roderick Fanou"
 #__email__ = "roderick.fanou@imdea.org"
 #__status__ = "Production"
 #__last_modifications__ =
@@ -114,7 +114,7 @@ print IXP_collector
 
 
 
-root_folder = '/home/roderick/Heart/'
+root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 output_folder = '../../Computation_outputs/1_Number_prefixes_visibles_at_an_IXP_lastmonth/'
 
 command = 'rm -rf ' + output_folder
