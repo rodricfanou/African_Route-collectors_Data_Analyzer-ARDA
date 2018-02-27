@@ -2,7 +2,7 @@
 ## Last review: February 19, 2018
 ## Store ASNs allocated by RIPE to ISPs or any organization in its region
 ## Alert: this script may be run:
-## 1 - either frequently (at least once per trimester): In this case you can comment the last line of this script and use the cron
+## 1 - either frequently (at least once per trimester): In this case you can comment the lines 194 up to the last line (233) and use the cron of script 2_fill_historical_AFRINIC_v3_ASNsonly.py
 ## 2 - or run the scripts updating the RIR data one after the other: in which case you can keep the scripts as they are.
 
 
@@ -189,5 +189,4 @@ for folder in folders:
 	    with open('record_files_parsed_by_6_fill_historical_RIPE_v3_ASNsonly.txt', 'a') as fh:
                 fh.write('%s; %s\n ' %(filei, k_insertion))
                                     
-## Run next script
-os.system("python 6_fill_historical_RIPE_v3_IPv4prefixesonly.py")
+
