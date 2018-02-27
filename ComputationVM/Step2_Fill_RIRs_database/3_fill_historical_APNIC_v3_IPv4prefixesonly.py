@@ -2,7 +2,7 @@
 ## Last review: February 19, 2018
 ## Store IPv4 prefixes allocated by RIPE to ISPs or any organization in its region
 ## Alert: this script may be run:
-## 1 - either frequently (at least once per trimester): In this case you can comment the last line of this script and use the cron; The adopted frequency depends on the server's capabilities
+## 1 - either frequently (at least once per trimester): In this case you can comment the lines 194 up to the last line (233) and use the cron of script 2_fill_historical_AFRINIC_v3_ASNsonly.py; The adopted frequency depends on the server's capabilities
 ## 2 - or run the scripts updating the RIR data one after the other: in which case you can keep the scripts as they are.
 
 
@@ -188,7 +188,5 @@ for folder in folders:
             fg.write('%s; %s\n ' %(filei, k_insertion))
 
 
-## Run next script
-os.system("python 3_fill_historical_APNIC_v3_IPv6prefixesonly.py")
 
 
