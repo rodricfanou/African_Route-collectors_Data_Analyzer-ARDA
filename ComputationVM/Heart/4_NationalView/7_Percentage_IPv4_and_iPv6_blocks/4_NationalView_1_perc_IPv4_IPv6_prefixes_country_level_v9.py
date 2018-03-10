@@ -4,7 +4,6 @@
 
 ##############################################################################
 #__author__ = "Roderick Fanou"
-#__email__ = "roderick.fanou@imdea.org"
 #__status__ = "Production"
 #__description__ = "This script generates "
 # Last changes On October 9th by Roderick Fanou
@@ -53,7 +52,7 @@ continent = DB_configuration.continent
 region = DB_configuration.region
 
 
-root_folder = '/home/roderick/Heart/'
+root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 output_folder = '../../Computation_outputs_National_View/7_percentage_IP_blocks_assigned_to_country_visible_at_IXP/'
 
 command = 'rm -rf ' + output_folder

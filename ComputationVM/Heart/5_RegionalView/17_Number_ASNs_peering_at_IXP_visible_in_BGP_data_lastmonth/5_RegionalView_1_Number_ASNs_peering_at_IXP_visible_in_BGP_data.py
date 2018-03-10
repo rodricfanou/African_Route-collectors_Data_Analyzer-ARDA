@@ -6,7 +6,6 @@ from __future__ import division
 
 ##############################################################################
 #__author__ = "Roderick Fanou"
-#__email__ = "roderick.fanou@imdea.org"
 #__status__ = "Production"
 #__description__ = "This script generates "
 #__last_modifications__ =
@@ -110,11 +109,12 @@ while (i<len(data)):
 
 
 
-root_folder = '/home/roderick/Heart/'
+root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 
 output_folder = '../../Computation_outputs_Regional_View/17_Number_ASNs_peering_at_IXP_visible_in_BGP_data_lastmonth/'
 
-IXPView_output_folder = '/var/www/html/ARP/controleurs/scripts/ARP_visual/outputs/17_Number_ASNs_peering_at_IXP_visible_in_BGP_data_lastmonth/'
+## Update the folder with the selected repository
+IXPView_output_folder = '/var/www/html/.../outputs/17_Number_ASNs_peering_at_IXP_visible_in_BGP_data_lastmonth/'
 
 
 

@@ -1,7 +1,6 @@
 
 ##############################################################################
 #__author__ = "Roderick Fanou"
-#__email__ = "roderick.fanou@imdea.org"
 #__status__ = "Production"
 #__description__ = "This script generates "
 #__last_modifications__ =
@@ -9,18 +8,12 @@
 #"2016-11-28"
 ##############################################################################
 
-
-
 finish = open ('finish_lastyear.txt', 'w')
 finish.write('started')
 finish.close()
 
-
-
 def cidrsOverlap(cidr0, cidr1):
     return cidr0 in cidr1 or cidr1 in cidr0
-
-
 
 #!/usr/bin/python
 import os, re, sys, copy, csv, os.path
@@ -125,11 +118,12 @@ print 'IXP_CC = ', IXP_CC
 print
 print 'month_ASN = ', month_prefix
 
-root_folder = '/home/roderick/Heart/'
+root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 
 output_folder = '../../Computation_outputs_National_View/3_Number_unique_prefixes_visibles_at_all_IXP_of_a_country_lastyear/'
 
-IXPView_output_folder = '/var/www/html/ARP/controleurs/scripts/ARP_visual/outputs/1_Number_prefixes_visibles_at_an_IXP_multiyear_lastyear/'
+## Update the folder with the selected repository
+IXPView_output_folder = '/var/www/html/.../outputs/1_Number_prefixes_visibles_at_an_IXP_multiyear_lastyear/'
 
 
 

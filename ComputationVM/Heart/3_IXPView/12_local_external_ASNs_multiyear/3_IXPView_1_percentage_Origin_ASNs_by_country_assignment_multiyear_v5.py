@@ -3,7 +3,6 @@
 
 ##############################################################################
 #__author__ = "Roderick Fanou"
-#__email__ = "roderick.fanou@imdea.org"
 #__status__ = "Production"
 #__last_modifications__ =
 ## local afrinic added to the classification of the Origine ASes

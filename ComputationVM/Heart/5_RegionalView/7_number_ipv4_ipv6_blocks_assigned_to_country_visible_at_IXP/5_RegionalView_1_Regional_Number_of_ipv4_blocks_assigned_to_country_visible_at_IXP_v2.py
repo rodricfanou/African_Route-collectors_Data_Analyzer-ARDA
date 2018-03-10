@@ -1,7 +1,6 @@
 
 ##############################################################################
 #__author__ = "Roderick Fanou"
-#__email__ = "roderick.fanou@imdea.org"
 #__status__ = "Production"
 #__description__ = "This script generates "
 #__last_modifications__ = by Roderick on "2016-10-25"
@@ -100,11 +99,12 @@ print
 
 #print IXP_CC
 
-root_folder = '/home/roderick/Heart/'
+root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 
 output_folder = '../../Computation_outputs_Regional_View/7_number_ipv4_ipv6_blocks_assigned_to_country_visible_at_IXP/'
 
-IXPView_output_folder = '/var/www/html/ARP/controleurs/scripts/ARP_visual/outputs/7_percentage_IP_blocks_assigned_to_country_visible_at_IXP/'
+## Update the folder with the selected repository
+IXPView_output_folder = '/var/www/html/.../outputs/7_percentage_IP_blocks_assigned_to_country_visible_at_IXP/'
 
 command = 'rm -rf ' + output_folder
 os.system(command)

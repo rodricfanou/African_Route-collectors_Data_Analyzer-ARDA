@@ -3,7 +3,6 @@
 
 ##############################################################################
 #__author__ = "Roderick Fanou"
-#__email__ = "roderick.fanou@imdea.org"
 #__status__ = "Production"
 # Last modification date = October 18, 2016
 #__Modifications__ =

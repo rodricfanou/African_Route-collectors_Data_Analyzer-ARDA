@@ -1,6 +1,5 @@
 ##############################################################################
 #__author__ = "Roderick Fanou"
-#__email__ = "roderick.fanou@imdea.org"
 #__status__ = "Production"
 #__description__ = "This script generates "
 #__last_modifications__ =
@@ -116,11 +115,12 @@ print 'IXP_CC = ', IXP_CC
 
 
 
-root_folder = '/home/roderick/Heart/'
+root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 
 output_folder = '../../Computation_outputs_National_View/9_Number_IPv4_IPv6_prefixes_lastmonth_each_country/'
 
-IXPView_output_folder = '/var/www/html/ARP/controleurs/scripts/ARP_visual/outputs/9_Number_IPv6_vs_IPv4_prefixes_lastmonth/'
+## Update the folder with the selected repository
+IXPView_output_folder = '/var/www/html/.../outputs/9_Number_IPv6_vs_IPv4_prefixes_lastmonth/'
 
 
 

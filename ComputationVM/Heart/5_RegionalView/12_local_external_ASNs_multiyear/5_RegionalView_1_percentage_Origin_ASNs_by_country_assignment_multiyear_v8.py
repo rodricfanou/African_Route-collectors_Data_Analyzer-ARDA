@@ -3,7 +3,6 @@
 
 ##############################################################################
 #__author__ = "Roderick Fanou"
-#__email__ = "roderick.fanou@imdea.org"
 #__status__ = "Production"
 #__last_modifications__ =
 ##############################################################################
@@ -106,8 +105,10 @@ while (i<len(data)):
 
 
 print IXP_collector
-root_folder = '/home/roderick/Heart/'
+root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
+
 output_folder = '../../Computation_outputs_Regional_View/12_local_external_ASNs_multiyear/'
+
 output_folder_IXP_View = '../../Computation_outputs/12_local_external_ASNs_multiyear/'
 
 command = 'rm -rf ' + output_folder
@@ -125,12 +126,6 @@ filename = output_folder
 
 #### What has AFRINIC attributed till now
 ### Query RIRs database
-
-#filename_output_ASNs_by_AFRINIC = output_folder + 'Number_ASNs_assigned_by_Afrinic.txt'
-#with open (filename_output_ASNs_by_AFRINIC, 'a') as fg:
-#    for CC in CC_ASNs_AFRINIC.keys():
-#        fg.write('%s;%s\n' %(CC, len(CC_ASNs_AFRINIC[CC])))
-
 
 ## fetch all distinct prefixes corresponding to each routecollector in each IXP list contained in the
 ## dictionnary IXP_collector
@@ -644,10 +639,7 @@ for year_current in year_ASN['Region'].keys():
     except:
         percentage_ARIN = 0.0
             
-    #try:
-    #    percentage_ARIN2 = 100*float(len(intersection5))/float(len( CC_ASNs_ARIN[cc_region]))
-    #except:
-    #   percentage_ARIN2 = 0.0
+   
             
     print 'length of intersection5:', len(intersection5)
     ori_dict['ARIN'][year_current] = intersection5
@@ -730,10 +722,7 @@ for year_current in year_ASN['Region'].keys():
     except:
         percentage_LACNIC = 0.0
             
-    #try:
-    #    percentage_LACNIC2 = 100*float(len(intersection6))/float(len(CC_ASNs_LACNIC[cc_region]))
-    #except:
-    #    percentage_LACNIC2 = 0.0
+
             
     print 'length of intersection6:', len(intersection6)
     ori_dict['LACNIC'][year_current] = intersection6

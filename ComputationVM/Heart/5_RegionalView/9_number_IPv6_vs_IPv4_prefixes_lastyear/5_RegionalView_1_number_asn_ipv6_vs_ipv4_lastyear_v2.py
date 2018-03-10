@@ -1,6 +1,5 @@
 ##############################################################################
 #__author__ = "Roderick Fanou"
-#__email__ = "roderick.fanou@imdea.org"
 #__status__ = "Production"
 #__last_modifications__ =
 ##############################################################################
@@ -73,11 +72,12 @@ while (i<len(data)):
 
 
 
-root_folder = '/home/roderick/Heart/'
+root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 
 output_folder = '../../Computation_outputs_Regional_View/9_number_asn_ipv6_vs_ipv4_lastyear/'
 
-IXPView_output_folder = '/var/www/html/ARP/controleurs/scripts/ARP_visual/outputs/9_Number_IPv6_vs_IPv4_prefixes_multiyear/'
+## Update the folder with the selected repository
+IXPView_output_folder = '/var/www/html/.../outputs/9_Number_IPv6_vs_IPv4_prefixes_multiyear/'
 
 command = 'rm -rf ' + output_folder
 os.system(command)

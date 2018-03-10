@@ -1,7 +1,6 @@
 
 ##############################################################################
 #__author__ = "Roderick Fanou"
-#__email__ = "roderick.fanou@imdea.org"
 #__status__ = "Production"
 #__description__ = "This script generates "
 #__last_modifications__ =
@@ -105,11 +104,12 @@ while (i<len(data)):
 
 print IXP_collector
 
-root_folder = '/home/roderick/Heart/'
+root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 
 output_folder = '../../Computation_outputs_Regional_View/2_Number_Origin_ASNs_in_more_than_1_IXP_in_Region_multiyear/'
 
-IXPView_output_folder =  '/var/www/html/ARP/controleurs/scripts/ARP_visual/outputs/2_Number_Origin_ASNs_visibles_at_an_IXP_multiyear_lastyear/'
+## Update the folder with the selected repository
+IXPView_output_folder =  '/var/www/html/.../outputs/2_Number_Origin_ASNs_visibles_at_an_IXP_multiyear_lastyear/'
 #/var/www/html/ARP/controleurs/scripts/ARP_visual/outputs/2_Number_Origin_ASNs_visibles_at_an_IXP_multiyear_lastyear
 
 command = 'rm -rf ' + output_folder

@@ -1,7 +1,6 @@
 
 ##############################################################################
 #__author__ = "Roderick Fanou"
-#__email__ = "roderick.fanou@imdea.org"
 #__status__ = "Production"
 #__description__ = "This script generates "
 #__last_modifications__ =
@@ -120,11 +119,12 @@ print
 
 print 'week_ASN = ', week_ASN
 
-root_folder = '/home/roderick/Heart/'
+root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 
 output_folder = '../../Computation_outputs_National_View/1_Number_ASNs_origin_in_more_than_1_IXP_per_country_lastyear/'
 
-IXPView_output_folder = '/var/www/html/ARP/controleurs/scripts/ARP_visual/outputs/2_Number_Origin_ASNs_visibles_at_an_IXP_multiyear_lastyear/'
+## Update the folder with the selected repository
+IXPView_output_folder = '/var/www/html/.../outputs/2_Number_Origin_ASNs_visibles_at_an_IXP_multiyear_lastyear/'
 
 
 command = 'rm -rf ' + output_folder
@@ -259,12 +259,6 @@ print 'week_ASN_2bytes = '
 pprint(week_ASN_2bytes)
 
 
-
-
-
-
-
-
 ### Compute the unique total number of Origin_ASNs that are 2bytes per week over the last month
 
 for ixp in IXP_collector.keys():
@@ -343,9 +337,6 @@ for CC in week_ASN:
             elif couple_timestamp in week_ASN_4bytes[CC].keys() and  couple_timestamp not in week_ASN_2bytes[CC].keys():
     
                 fg.write('%s; %s; %s; %s\n' %( couple_timestamp, len(week_ASN[CC][couple_timestamp]), '0' , len(week_ASN_4bytes[CC][couple_timestamp])))
-
-
-
 
 finish = open ('finish_lastyear.txt', 'w')
 finish.write('ended' + '; ' +  root_folder + output_folder[6:] + '; ' + now_datetime)
