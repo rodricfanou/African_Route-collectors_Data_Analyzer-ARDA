@@ -24,4 +24,4 @@ As a first step to install it, please download and install these packages:
 - python-cymru-services-master
 
 Acknowledgements:
-This work was partially supported by the Internet Society (ISOC). During ARDA's implementation, technical support have also been provided by Nishal Gobhurdhan, Dibya Khatiwada, the JINX technical team, and the Af-IX. 
+This work was partially supported by the Internet Society (ISOC). During ARDA's implementation, technical support have also been provided by Nishal Goburdhan, Dibya Khatiwada, the JINX technical team, and the Af-IX. 
