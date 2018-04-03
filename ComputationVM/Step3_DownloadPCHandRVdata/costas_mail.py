@@ -22,8 +22,8 @@ def send_mail():
         print 0
         exit(-1)
     
-    gmailUser = 'testscriptsrv@gmail.com'
-    gmailPassword = 'adminardapass'
+    gmailUser = '*****@gmail.com'
+    gmailPassword = '******'
 
     msg = MIMEText(text, 'plain', 'utf-8')
     msg['Subject'] = subject
