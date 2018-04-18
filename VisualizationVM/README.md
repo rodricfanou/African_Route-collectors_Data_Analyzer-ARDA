@@ -4,7 +4,7 @@ In this repository, you can find all the information related to the visualizatio
 
 The visualization scripts are divided into three sections:
 
-* **IXP View:** several statistics per IXP 
+* **IXP View:** statistics per IXP 
 * **National View:** statistics per set of IXPs in the same country
 * **Regional View:** statistics computed based on the data from all IXPs in the region
 
