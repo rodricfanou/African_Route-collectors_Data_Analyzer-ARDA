@@ -3,9 +3,9 @@
 In this repository, you can find all the information related to the visualization part of the African Route collector Data Analyzer (ARDA).
 
 Requirements:
-*Apache
-*MySQL
-*PHP
+* Apache
+* MySQL
+* PHP
 
 We strongly recommend you to follow a LAMP (Linux + Apache + MySQL + PHP) installation guide. Here you can find some examples:
 
