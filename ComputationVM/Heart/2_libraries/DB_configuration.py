@@ -1,5 +1,5 @@
 host = 'Localhost'
-user = ''
+user = 'root'
 passwd = ''
 continent = 'AF'
 region = 'AFRINIC'
