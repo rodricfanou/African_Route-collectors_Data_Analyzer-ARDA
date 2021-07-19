@@ -186,8 +186,8 @@ while 1:
                             except:
                                 pass
 
-            with open ('record_files_parsed_by_1_fill_historical_AFRINIC_v3_ASNsonly.txt', 'a') as fg:
-                    fg.write('%s; %s\n ' %(filei, k_insertion))
+                with open ('record_files_parsed_by_1_fill_historical_AFRINIC_v3_ASNsonly.txt', 'a') as fg:
+                        fg.write('%s; %s\n ' %(filei, k_insertion))
 
 
     ## Run next script
