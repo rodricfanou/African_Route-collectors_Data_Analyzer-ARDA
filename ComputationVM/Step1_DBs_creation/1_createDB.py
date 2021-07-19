@@ -124,7 +124,7 @@ for x in range(1,month+1):
         NextAS VARCHAR(500),
         NextHop VARCHAR(20),
         Network VARCHAR(500),
-        ASPath VARCHAR(15000),
+        ASPath TEXT,
         ASPathLength VARCHAR(100),
         Origin VARCHAR(100),
         IP_version VARCHAR(5),
