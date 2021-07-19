@@ -191,46 +191,46 @@ while 1:
 
 
     ## Run next script
-    os.system("python 2_fill_historical_AFRINIC_v3_IPv4prefixesonly.py")
+    os.system("python2.7 2_fill_historical_AFRINIC_v3_IPv4prefixesonly.py")
 
     ## Run next script
-    os.system("python 2_fill_historical_AFRINIC_v3_IPv6prefixesonly.py")
+    os.system("python2.7 2_fill_historical_AFRINIC_v3_IPv6prefixesonly.py")
 
     ## Run next script
-    os.system("python 3_fill_historical_APNIC_v3_ASNsonly.py")
+    os.system("python2.7 3_fill_historical_APNIC_v3_ASNsonly.py")
 
     ## Run next script
-    os.system("python 3_fill_historical_APNIC_v3_IPv4prefixesonly.py")
+    os.system("python2.7 3_fill_historical_APNIC_v3_IPv4prefixesonly.py")
 
     ## Run next script
-    os.system("python 3_fill_historical_APNIC_v3_IPv6prefixesonly.py")
+    os.system("python2.7 3_fill_historical_APNIC_v3_IPv6prefixesonly.py")
 
     ## Run next script
-    os.system("python 4_fill_historical_ARIN_v3_ASNsonly.py")
+    os.system("python2.7 4_fill_historical_ARIN_v3_ASNsonly.py")
 
     ## Run next script
-    os.system("python 4_fill_historical_ARIN_v3_IPv4prefixesonly.py")
+    os.system("python2.7 4_fill_historical_ARIN_v3_IPv4prefixesonly.py")
 
     ## Run next script
-    os.system("python 4_fill_historical_ARIN_v3_IPv6prefixesonly.py")
+    os.system("python2.7 4_fill_historical_ARIN_v3_IPv6prefixesonly.py")
 
     ## Run next script
-    os.system("python 5_fill_historical_LACNIC_v3_ASNsonly.py")
+    os.system("python2.7 5_fill_historical_LACNIC_v3_ASNsonly.py")
 
     ## Run next script
-    os.system("python 5_fill_historical_LACNIC_v3_IPv4prefixesonly.py")
+    os.system("python2.7 5_fill_historical_LACNIC_v3_IPv4prefixesonly.py")
 
     ## Run next script
-    os.system("python 5_fill_historical_LACNIC_v3_IPv6prefixesonly.py")
+    os.system("python2.7 5_fill_historical_LACNIC_v3_IPv6prefixesonly.py")
 
     ## Run next script
-    os.system("python 6_fill_historical_RIPE_v3_ASNsonly.py")
+    os.system("python2.7 6_fill_historical_RIPE_v3_ASNsonly.py")
 
     ## Run next script
-    os.system("python 6_fill_historical_RIPE_v3_IPv4prefixesonly.py")
+    os.system("python2.7 6_fill_historical_RIPE_v3_IPv4prefixesonly.py")
 
     ## Run next script
-    os.system("python 6_fill_historical_RIPE_v3_IPv6prefixesonly.py")
+    os.system("python2.7 6_fill_historical_RIPE_v3_IPv6prefixesonly.py")
 
 
     time.sleep(1000)
