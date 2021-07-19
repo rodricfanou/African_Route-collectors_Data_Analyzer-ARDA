@@ -28,7 +28,7 @@ def get_immediate_subdirectories(dir):
             if os.path.isdir(os.path.join(dir, name))]
 
 ## Consulting the main DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db ="RIRs")
+db = MySQLdb.connect(host="localhost",user="",passwd="",  db ="RIRs")
 cur = db.cursor()
 
 #os.system("python 1_clean_RIRs_DBs.py")

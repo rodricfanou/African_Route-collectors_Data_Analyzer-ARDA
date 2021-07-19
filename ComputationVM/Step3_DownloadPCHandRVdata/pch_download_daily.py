@@ -24,7 +24,7 @@ path = "/home/roderick/PCH_download"
 print "Start"
 
 #Select only the African RouteCollector
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd, db="MergedData")
+db = MySQLdb.connect(host="localhost",user="",passwd="", db="MergedData")
 cur = db.cursor()
 sql_command = """select RouteCollector from AllRouteCollectors where Continent = 'AF';"""
 cur.execute(sql_command)

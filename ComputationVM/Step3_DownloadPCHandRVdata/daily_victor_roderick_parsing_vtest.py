@@ -19,7 +19,7 @@ from datetime import datetime
 import DB_configuration
 import time
 
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd, db="MergedData")
+db = MySQLdb.connect(host="localhost",user="",passwd="", db="MergedData")
 cur = db.cursor()
 
 #Under this format 2011, 2012, 2013...

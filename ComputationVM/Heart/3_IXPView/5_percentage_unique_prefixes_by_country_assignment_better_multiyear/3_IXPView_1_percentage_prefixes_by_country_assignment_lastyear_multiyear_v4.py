@@ -82,7 +82,7 @@ CC_IXP = {}
 
 
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host="localhost",user="",passwd="",  db = Current_db)
 cur = db.cursor()
 print 'Connected'
 
@@ -242,7 +242,7 @@ if List_all_tables >0:
 ### Collecting data from AFRINIC database
 Current_db = 'RIRs'
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host="localhost",user="",passwd="",  db = Current_db)
 cur = db.cursor()
 print 'Connected'
 

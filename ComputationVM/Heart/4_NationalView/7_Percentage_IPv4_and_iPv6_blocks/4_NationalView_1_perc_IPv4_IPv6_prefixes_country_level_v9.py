@@ -78,7 +78,7 @@ while i < current_year:
 ## Liste route collectors
 Current_db = 'MergedData'
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host="localhost",user="",passwd="",  db = Current_db)
 cur = db.cursor()
 print 'Connected'
 
@@ -123,7 +123,7 @@ CC_prefixes_AFRINIC['v4'] = {}
 
 Current_db = 'RIRs'
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host="localhost",user="",passwd="",  db = Current_db)
 cur = db.cursor()
 
 
@@ -220,7 +220,7 @@ if List_all_tables > 0:
     ## Back to MergedData to fetch prefixes and make comparisons
     Current_db = 'MergedData'
     ## connect to the DB
-    db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+    db = MySQLdb.connect(host="localhost",user="",passwd="",  db = Current_db)
     cur = db.cursor()
     print 'Connected to the DB'
 

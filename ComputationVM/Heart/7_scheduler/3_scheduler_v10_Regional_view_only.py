@@ -22,7 +22,7 @@ def Check_tables_for_insertions(database):
     Current_db = database
     
     ## connect to the DB
-    db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+    db = MySQLdb.connect(host="localhost",user="",passwd="",  db = Current_db)
     cur = db.cursor()
     print 'Connected'
     
@@ -103,7 +103,7 @@ IXP_collector = {}
 IXP_CC = {}
 Current_db = 'MergedData_backup'
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host="localhost",user="",passwd="",  db = Current_db)
 cur = db.cursor()
 print 'Connected'
 

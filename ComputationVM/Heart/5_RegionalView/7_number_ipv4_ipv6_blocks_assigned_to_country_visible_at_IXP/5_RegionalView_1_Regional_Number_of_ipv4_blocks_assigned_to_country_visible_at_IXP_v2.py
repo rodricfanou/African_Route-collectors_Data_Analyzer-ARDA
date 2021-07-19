@@ -75,7 +75,7 @@ IXP_CC = {}
 
 Current_db = 'MergedData'
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host="localhost",user="",passwd="",  db = Current_db)
 cur = db.cursor()
 print 'Connected'
 
@@ -246,7 +246,7 @@ CC_prefixes_AFRINIC['v6'] = {}
 
 Current_db = 'RIRs'
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host="localhost",user="",passwd="",  db = Current_db)
 cur = db.cursor()
 
 Unik_List_prefixes_Afrinic_v4 =  []

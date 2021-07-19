@@ -223,7 +223,7 @@ IXP_collector = {}
 IXP_CC = {}
 Current_db = 'MergedData'
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host="localhost",user="",passwd="",  db = Current_db)
 cur = db.cursor()
 #print 'Connected'
 
@@ -265,7 +265,7 @@ log_file_instance = open(location_logfile+'/'+name_log_file, 'a')
 
 Current_db = 'RIRs'
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host="localhost",user="",passwd="",  db = Current_db)
 cur = db.cursor()
 
 
@@ -409,7 +409,7 @@ Keep_all_prefixes = copy.deepcopy(RIRs_prefixes.keys())
 ### Which ones of those prefixes appear during the period ?
 Current_db = 'MergedData'
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host="localhost",user="",passwd="",  db = Current_db)
 cur = db.cursor()
 
 

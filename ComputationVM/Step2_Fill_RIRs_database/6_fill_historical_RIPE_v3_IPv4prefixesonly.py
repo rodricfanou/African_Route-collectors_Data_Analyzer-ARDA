@@ -27,7 +27,7 @@ def get_immediate_subdirectories(dir):
     return [name for name in os.listdir(dir)
             if os.path.isdir(os.path.join(dir, name))]
 
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db ="RIRs")
+db = MySQLdb.connect(host="localhost",user="",passwd="",  db ="RIRs")
 cur = db.cursor()
 #print 'Connected'
 

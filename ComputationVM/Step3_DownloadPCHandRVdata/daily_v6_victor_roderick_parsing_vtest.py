@@ -22,7 +22,7 @@ import time
 sys.path.append('../Heart/2_libraries/')
 import bgp_rib_v6
 
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd, db="MergedData")
+db = MySQLdb.connect(host="localhost",user="",passwd="", db="MergedData")
 cur = db.cursor()
 
 #Under this format 2011, 2012, 2013...
