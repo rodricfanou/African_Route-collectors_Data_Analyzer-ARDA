@@ -30,7 +30,7 @@ def get_immediate_subdirectories(dir):
 db = MySQLdb.connect(host="localhost",user="",passwd="",  db ="RIRs")
 cur = db.cursor()
 
-#os.system("python 1_clean_RIRs_DBs.py")
+#os.system("python2.7 1_clean_RIRs_DBs.py")
 
 ### sleep a random time before starting any operation
 value = random.randint(0,10)

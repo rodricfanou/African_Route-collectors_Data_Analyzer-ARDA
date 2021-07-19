@@ -25,7 +25,7 @@ def get_immediate_subdirectories(dir):
             if os.path.isdir(os.path.join(dir, name))]
 
 
-#os.system("python 1_clean_RIRs_DBs.py")
+#os.system("python2.7 1_clean_RIRs_DBs.py")
 
 ## Consulting the main DB
 sys.path.append('../Heart/2_libraries/')

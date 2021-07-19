@@ -32,7 +32,7 @@ cur = db.cursor()
 print 'Connected'
 
 ## Launch a script located in the same folder which removes duplicates
-os.system("python 1_clean_RIRs_DBs.py")
+os.system("python2.7 1_clean_RIRs_DBs.py")
 
 ## Sleep a random time before starting any operation
 value = random.randint(0,10)

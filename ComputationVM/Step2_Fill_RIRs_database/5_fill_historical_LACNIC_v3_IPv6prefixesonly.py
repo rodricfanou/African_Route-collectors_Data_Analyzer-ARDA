@@ -13,7 +13,7 @@ from math import log
 sys.path.append('../Heart/2_libraries/')
 import DB_configuration
 
-os.system("python 1_clean_RIRs_DBs.py")
+os.system("python2.7 1_clean_RIRs_DBs.py")
 
 ## Compute the x at the power of n.
 def puissance ( x, n) :
