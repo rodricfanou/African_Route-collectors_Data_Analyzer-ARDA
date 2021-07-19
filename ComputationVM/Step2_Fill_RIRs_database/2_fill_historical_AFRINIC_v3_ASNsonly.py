@@ -152,10 +152,9 @@ while 1:
         ## Files treatment and data storage
         for filei in list_of_files :
             if os.path.exists(filei) and os.path.isfile(filei):
-            
-            k_insertion = 0
+                k_insertion = 0
                 with open (filei, 'r') as fk:
-            print 'ASNs parser: are in folder', folder , 'file', filei, 'which is the num', list_of_files.index(filei)
+                    print 'ASNs parser: are in folder', folder , 'file', filei, 'which is the num', list_of_files.index(filei)
                     for lines in fk:
                         line = lines.strip()
                         line = line.split('|')
@@ -172,15 +171,15 @@ while 1:
                                 Datef = line[5].strip()
                                 Statusf = line[6].strip()
                     
-                    value1 = ASNf+ '_' + CCf + '_' + Datef + '_' + Statusf
+                                value1 = ASNf+ '_' + CCf + '_' + Datef + '_' + Statusf
                                 print value1
 
-                    if value1 not in Check_list:
+                                if value1 not in Check_list:
                                     sql_commandb = """ INSERT INTO ASNs_AFRINIC (ASN, CC, date, Status) VALUES (%s,%s,%s,%s);"""
                                     cur.execute(sql_commandb, (ASNf, CCf, Datef, Statusf))
                                     print 'insertion of', ASNf, 'with as CC ', CCf
-                    db.commit()
-                    Check_list.append(value1)
+                                    db.commit()
+                                    Check_list.append(value1)
                                     k_insertion += 1
                                 else:
                                     print 'We do not insert ', ASNf, ' anymore'
