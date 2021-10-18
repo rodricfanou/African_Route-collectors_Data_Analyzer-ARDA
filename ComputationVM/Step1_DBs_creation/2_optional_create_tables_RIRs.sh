@@ -24,10 +24,10 @@ PASSWORD=PASS
 #| IPv6_ressources_RIPE    |
 #| IXPs_launch_date        |
 #+-------------------------+
-mysql -uroot -p$PASSWORD -Bse "CREATE DATABASE IF NOT EXISTS RIRs;"
+mysql -uroot -p $PASSWORD -Bse "CREATE DATABASE IF NOT EXISTS RIRs;"
   
   
-mysql -uroot -p$PASSWORD -D RIRs -s -e"CREATE TABLE IF NOT EXISTS RIRs.ASNs_AFRINIC(
+mysql -uroot -p $PASSWORD -D RIRs -s -e"CREATE TABLE IF NOT EXISTS RIRs.ASNs_AFRINIC(
 ASN VARCHAR(50) NOT NULL,
 CC VARCHAR(50) NULL,
 date VARCHAR(50) NULL,

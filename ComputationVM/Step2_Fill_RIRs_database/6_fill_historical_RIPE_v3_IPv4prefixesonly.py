@@ -85,7 +85,7 @@ if glob.glob(folder_download + "*/*.md5.gz"):
 
 ## Which are the folders containing useful information after download:
 folders = []
-List_possible_folder_download = ['ftp.ripe.net/pub/stats/ripe/', 'ftp.ripe.net/pub/stats/']
+List_possible_folder_download = ['ftp.ripe.net/ripe/stats/ripe/', 'ftp.ripe.net/ripe/stats/']
 for folder_download in List_possible_folder_download:
     folders += get_immediate_subdirectories(folder_download)
 folders += ['ripe/']
