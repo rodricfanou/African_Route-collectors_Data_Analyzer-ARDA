@@ -10,10 +10,10 @@ from random import choice
 from time import sleep
 from collections import Counter
 import select, socket
-import urllib2, urllib
+import urllib.request, urllib.error, urllib.parse, urllib.request, urllib.parse, urllib.error
 #import GeoIP
-import bgp_rib, ipaddr, logging
-import gzip
+import bgp_rib
+import gzip, ipaddr, logging
 from datetime import date
 from datetime import datetime
 import DB_configuration
@@ -45,7 +45,7 @@ outfile.write('The script has started at '+str(time.strftime("%d/%m/%Y %H:%M:%S"
 def parsing_data(year, month, task):
     dirs = os.listdir(str(year)+'/'+str(month))
     os.chdir(path+'/'+str(year)+'/'+str(month))
-    print dirs
+    print(dirs)
     for rc in dirs:
         if rc != 'index.html':
 
@@ -61,12 +61,12 @@ def parsing_data(year, month, task):
  
             files = os.listdir(path+'/'+str(year)+'/'+str(month)+'/'+str(rc))
             os.chdir(path+'/'+str(year)+'/'+str(month)+'/'+str(rc))
-            print 'We have in ' + rc + ':'
+            print('We have in ' + rc + ':')
             
             for file_to_process in files:
 
-                print 'Parsing new files'
-                print "Processing file: ",file_to_process
+                print('Parsing new files')
+                print("Processing file: ",file_to_process)
 
                 #Get the day
                 first = str(year)+'.'+str(month)+'.'
@@ -77,12 +77,12 @@ def parsing_data(year, month, task):
                 if (str(day) == str(current_day)): 
                     file_date = str(year)+'.'+str(month)+'.'+str(day)
                     file_date_time = file_date + ' 00:00:00'
-                    print file_date_time
+                    print(file_date_time)
                     datetime_format = datetime.strptime(file_date_time, "%Y.%m.%d %H:%M:%S")
                     time_tuple = datetime.strptime(file_date_time, "%Y.%m.%d %H:%M:%S").timetuple()
                     timestamp_format= time.mktime(time_tuple)
 
-                    print timestamp_format
+                    print(timestamp_format)
                     with gzip.open(file_to_process, 'r') as file_h:
                         bgp_entries = []
                         for entry_n, bgp_entry in enumerate(bgp_rib_v6.BGPRIB.parse_cisco_show_ip_bgp_generator(file_h)):

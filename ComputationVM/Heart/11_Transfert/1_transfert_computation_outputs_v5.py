@@ -19,15 +19,15 @@ def run_fonction(execution_directory, directory, destination, op):
     
     List_folders = next(os.walk(execution_directory))[1]
     for folder_to_move in List_folders:
-        print
-        print folder_to_move
+        print()
+        print(folder_to_move)
         
         ## find all the files *.txt
-        print execution_directory +'/'+ folder_to_move + '/*.txt'
+        print(execution_directory +'/'+ folder_to_move + '/*.txt')
         path = glob(execution_directory + '/'+ folder_to_move + '/*.txt')
         
         number_to_reach = len(path)
-        print path, number_to_reach
+        print(path, number_to_reach)
         
         i = 0
         tab_total = []
@@ -41,50 +41,50 @@ def run_fonction(execution_directory, directory, destination, op):
     
     
         if i == number_to_reach:
-            print 'We can move the results of ', execution_directory + '/'+ folder_to_move
+            print('We can move the results of ', execution_directory + '/'+ folder_to_move)
             for folder in tab_total:
                 #print 'We can move the results of ', execution_directory + '/'+ folder_to_move
                 
                 if op == 'IXPView':
-                    print 'rm ' + destination + folder[folder.find('Computation_outputs')+20:]+ '*'
+                    print('rm ' + destination + folder[folder.find('Computation_outputs')+20:]+ '*')
                     command =  'rm ' + destination + folder[folder.find('Computation_outputs')+20:]+ '*'
                     os.system (command)
-                    print 'We shall cp -r ' , folder
-                    print 'send it to ', destination +folder[folder.find('Computation_outputs')+20:]
+                    print('We shall cp -r ' , folder)
+                    print('send it to ', destination +folder[folder.find('Computation_outputs')+20:])
                     command = 'cp -r '+ folder + ' ' + destination 
                     os.system (command)
-                    print command
+                    print(command)
         
         
                 if op == 'RegView':
                     
-                    print 'rm ' + destination + folder[folder.find('Computation_outputs_Regional_View')+20:]+ '*'
+                    print('rm ' + destination + folder[folder.find('Computation_outputs_Regional_View')+20:]+ '*')
                     command =  'rm ' + destination + folder[folder.find('Computation_outputs_Regional_View')+20:]+ '*'
                     os.system (command)
 
-                    print 'We shall cp -r ' , folder
-                    print 'send it to ', destination +folder[folder.find('Computation_outputs_Regional_View')+20:]
+                    print('We shall cp -r ' , folder)
+                    print('send it to ', destination +folder[folder.find('Computation_outputs_Regional_View')+20:])
 
                     command = 'cp -r '+ folder + ' ' + destination
                     os.system (command)
-                    print command
+                    print(command)
 
 
                 if op == 'NatView':
     
-                    print 'rm ' + destination + folder[folder.find('Computation_outputs_National_View')+20:]+ '*'
+                    print('rm ' + destination + folder[folder.find('Computation_outputs_National_View')+20:]+ '*')
                     command =  'rm ' + destination + folder[folder.find('Computation_outputs_National_View')+20:]+ '*'
                     os.system (command)
                 
-                    print 'We shall cp -r ' , folder
-                    print 'send it to ', destination +folder[folder.find('Computation_outputs_National_View')+20:]
+                    print('We shall cp -r ' , folder)
+                    print('send it to ', destination +folder[folder.find('Computation_outputs_National_View')+20:])
                     
                     command = 'cp -r '+ folder + ' ' + destination
                     os.system (command)
-                    print command
+                    print(command)
     
         else:
-            print 'We can NOT move the results of ', execution_directory + '/'+ folder_to_move
+            print('We can NOT move the results of ', execution_directory + '/'+ folder_to_move)
 
     command = 'chmod -R 777 ' + destination
     os.system(command)

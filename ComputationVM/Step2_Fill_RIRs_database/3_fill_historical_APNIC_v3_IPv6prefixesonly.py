@@ -5,18 +5,19 @@
 ## 1 - either frequently (at least once per trimester): In this case you can comment the lines 194 up to the last line (233) and use the cron of script 2_fill_historical_AFRINIC_v3_ASNsonly.py
 ## 2 - or run the scripts updating the RIR data one after the other: in which case you can keep the scripts as they are.
 
-import MySQLdb, collections, sys, glob, math,  ast, os, time, random
+import MySQLdb, collections, sys, glob, math, ast, os, time, random
 from math import log
 import os.path
 
+
 ## Compute the x at the power of n.
-def puissance ( x, n) :
-	res = 1
-	i = 1
-	while i<=n:
-		res = res * x
-		i = i + 1
-	return res
+def puissance(x, n):
+    res = 1
+    i = 1
+    while i <= n:
+        res = res * x
+        i = i + 1
+    return res
 
 
 ## Which folders ?
@@ -25,20 +26,19 @@ def get_immediate_subdirectories(dir):
             if os.path.isdir(os.path.join(dir, name))]
 
 
-#os.system("python 1_clean_RIRs_DBs.py")
+# os.system("python 1_clean_RIRs_DBs.py")
 
 ## Consulting the main DB
 sys.path.append('../Heart/2_libraries/')
 import DB_configuration
 
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db ="RIRs")
+db = MySQLdb.connect(host=DB_configuration.host, user=DB_configuration.user, passwd=DB_configuration.passwd, db="RIRs")
 cur = db.cursor()
-print 'Connected'
-
+print('Connected')
 
 ## Sleep a random time before starting any operation
-value = random.randint(0,10)
-time.sleep(value * random.randint(0,3))
+value = random.randint(0, 10)
+time.sleep(value * random.randint(0, 3))
 
 ## RIR data extraction has been performed several times in the literature: see for instance the C++ code
 ## https://code.google.com/p/ip-countryside/source/browse/trunk/getDBs.sh?r=4.
@@ -46,22 +46,22 @@ time.sleep(value * random.randint(0,3))
 website = "ftp://ftp.apnic.net/pub/stats/apnic/"
 folder_download = "ftp.apnic.net/pub/stats/apnic/"
 
-print 'Download all the folders of allocation'
-    
-command = """ wget -N -H -r --level=2 -k -p """ + website
-print '\n\n command =', command
-os.system(command)
+print()
+'Download all the folders of allocation'
+
+#command = """ wget -N -H -r --level=2 -k -p """ + website
+#print(('\n\n command =', command))
+#os.system(command)
 
 ## decompress
 if glob.glob(folder_download + "*/*.gz"):
     command = """gunzip -r """ + folder_download + "*/*.gz"
     os.system(command)
 
-
 if glob.glob(folder_download + "*/*.bz2"):
     command = """bzip2 -dk """ + folder_download + "*/*.bz2"
     os.system(command)
-    
+
     ## remove
     command = """ rm -f """ + folder_download + "*/*.bz2"
     os.system(command)
@@ -79,7 +79,6 @@ if glob.glob(folder_download + "*/*.gz.bck"):
     command = """ rm -f """ + folder_download + "*/*.gz.bck"
     os.system(command)
 
-
 if glob.glob(folder_download + "*/*.asc.gz"):
     command = """ rm -f """ + folder_download + "*/*.asc.gz"
     os.system(command)
@@ -88,7 +87,6 @@ if glob.glob(folder_download + "*/*.md5.gz"):
     command = """ rm -f """ + folder_download + "*/*.md5.gz"
     os.system(command)
 
-
 ## Which are the folders containing useful information after download:
 folders = []
 List_possible_folder_download = ['ftp.apnic.net/pub/stats/apnic/', 'ftp.apnic.net/pub/stats/']
@@ -96,9 +94,8 @@ for folder_download in List_possible_folder_download:
     folders += get_immediate_subdirectories(folder_download)
 folders += ['apnic/']
 
-
 for folder in folders:
-    print folder
+    print(folder)
     list_of_files = []
     filename = folder_download + str(folder).strip() + '/*'
     filename_md5 = folder_download + str(folder).strip() + '/*.md5'
@@ -114,25 +111,26 @@ for folder in folders:
     filename_md5_direct = folder_download + '/*.md5'
     filename_asc_direct = folder_download + '/*.asc'
     filename_txt1_direct = folder_download + '/*.txt'
-    filename_txt2_direct  = folder_download + '/*.TXT'
+    filename_txt2_direct = folder_download + '/*.TXT'
 
-    the_whole_list = glob.glob(filename)+ glob.glob(filename_without_txt) + glob.glob(filename_without_txt1) + glob.glob(filename_without_txt_direct) + glob.glob(filename_without_txt1_direct)
-    #print  the_whole_list
-    
+    the_whole_list = glob.glob(filename) + glob.glob(filename_without_txt) + glob.glob(
+        filename_without_txt1) + glob.glob(filename_without_txt_direct) + glob.glob(filename_without_txt1_direct)
+    # print  the_whole_list
+
     the_whole_list_of_md5 = glob.glob(filename_md5) + glob.glob(filename_md5_direct)
-    #print  the_whole_list_of_md5
-    
+    # print  the_whole_list_of_md5
+
     the_whole_list_of_asc = glob.glob(filename_asc) + glob.glob(filename_asc_direct)
-    #print the_whole_list_of_asc
-    
-    the_whole_list_of_txt = glob.glob(filename_txt1) + glob.glob(filename_txt2) + glob.glob(filename_txt2) + glob.glob(filename_txt2_direct) + filename_txt3 
-    
+    # print the_whole_list_of_asc
+
+    the_whole_list_of_txt = glob.glob(filename_txt1) + glob.glob(filename_txt2) + glob.glob(filename_txt2) + glob.glob(
+        filename_txt2_direct) + filename_txt3
+
     for elmt in the_whole_list:
-        if elmt not in the_whole_list_of_md5 and elmt not in the_whole_list_of_asc and elmt not in the_whole_list_of_txt :
+        if elmt not in the_whole_list_of_md5 and elmt not in the_whole_list_of_asc and elmt not in the_whole_list_of_txt:
             list_of_files.append(elmt)
-    print '\n\n\n', 'Allocations ', folder, '\n'
-    print list_of_files
-    
+    print(('\n\n\n', 'Allocations ', folder, '\n'))
+    print(list_of_files)
 
     ### Build a check list
     Check_list = []
@@ -140,56 +138,54 @@ for folder in folders:
     cur.execute(sql_command)
     db_dump2 = cur.fetchall()
     for elmt in db_dump2:
-        value = elmt[1] + '_'+ elmt[3] + '_' + elmt[4].upper() + '_' + elmt[5] + '_' + elmt[6]
+        value = elmt[1] + '_' + elmt[3] + '_' + elmt[4].upper() + '_' + elmt[5] + '_' + elmt[6]
         if value not in Check_list:
-                Check_list.append(value)
-    print 'len(Check_list) = ',  len(Check_list), 'len(db_dump2) = ', len(db_dump2)
+            Check_list.append(value)
+    print(('len(Check_list) = ', len(Check_list), 'len(db_dump2) = ', len(db_dump2)))
 
-
-    for filei in list_of_files :
+    for filei in list_of_files:
         if os.path.exists(filei) and os.path.isfile(filei):
-            #print '\nASNs Checks: We are in folder', folder , 'file', filei, 'which is the num', list_of_files.index(filei)
+            # print '\nASNs Checks: We are in folder', folder , 'file', filei, 'which is the num', list_of_files.index(filei)
 
-	    k_insertion = 0
-            with open (filei, 'r') as fk:
-		
-            	for lines in fk:
+            k_insertion = 0
+            with open(filei, 'r') as fk:
+
+                for lines in fk:
                     line = lines.strip()
                     line = line.split('|')
-		    #print line, '\n'
+                    # print line, '\n'
                     try:
-                    	if line != '' and 'ipv6' in line and '*' not in line:
+                        if line != '' and 'ipv6' in line and '*' not in line:
 
-                  	   if ':' in line[3].strip():
-				print line , '\n'
-                    		#afrinic|TN|ipv6|2001:970::|32|20021024|allocated
-                   		NetBits = str(line[4].strip())
-                    		CCf = line[1].strip()
-		    		CCf = CCf.upper()
-                    		print 'CCf = ', CCf		
+                            if ':' in line[3].strip():
+                                print((line, '\n'))
+                                # afrinic|TN|ipv6|2001:970::|32|20021024|allocated
+                                NetBits = str(line[4].strip())
+                                CCf = line[1].strip()
+                                CCf = CCf.upper()
+                                print(('CCf = ', CCf))
 
-		    		value1 = str(line[3]) + '_' + str(NetBits) + '_' + str(CCf) + '_'+ str(line[6]) + '_' + str(line[5])
-                    		print value1
+                                value1 = str(line[3]) + '_' + str(NetBits) + '_' + str(CCf) + '_' + str(
+                                    line[6]) + '_' + str(line[5])
+                                print(value1)
 
-                    		if value1 not in Check_list:
-                        		# IPv6 prefix details to add:
-                        		sql_commandb = """ INSERT INTO IPv6_ressources_APNIC (NetIPaddress, NetBits, CC, Status, date) VALUES (%s,%s,%s,%s,%s);"""
-                        		cur.execute(sql_commandb, ( line[3].strip(), NetBits, CCf, line[6].strip(), line[5].strip()))
-                        		print 'insertion of', line[3].strip(),'with a /', NetBits , 'needed in IPv6'
-					db.commit()
-					k_insertion += 1 
-					Check_list.append(value1)
+                                if value1 not in Check_list:
+                                    # IPv6 prefix details to add:
+                                    sql_commandb = """ INSERT INTO IPv6_ressources_APNIC (NetIPaddress, NetBits, CC, Status, date) VALUES (%s,%s,%s,%s,%s);"""
+                                    cur.execute(sql_commandb,
+                                                (line[3].strip(), NetBits, CCf, line[6].strip(), line[5].strip()))
+                                    print(('insertion of', line[3].strip(), 'with a /', NetBits, 'needed in IPv6'))
+                                    db.commit()
+                                    k_insertion += 1
+                                    Check_list.append(value1)
 
-                    		else:
-                        		print 'We do not insert ', line[3].strip(),'/', NetBits, ' anymore'
+                                else:
+                                    print(('We do not insert ', line[3].strip(), '/', NetBits, ' anymore'))
 
-		    	print 
+                        print()
 
-	            except:
-		        pass
+                    except:
+                        pass
 
-	
-		with open ('record_files_parsed_by_1_fill_historical_APNIC_v3_IPv6prefixesonly.txt', 'a') as fg:
-		    fg.write('%s; %s\n ' %(filei, k_insertion))
-
-
+                with open('record_files_parsed_by_1_fill_historical_APNIC_v3_IPv6prefixesonly.txt', 'a') as fg:
+                    fg.write('%s; %s\n ' % (filei, k_insertion))

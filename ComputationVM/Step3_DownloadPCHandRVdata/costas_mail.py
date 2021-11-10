@@ -10,7 +10,7 @@ def send_mail():
 
     # Check input argument number
     if len(sys.argv) != 4:
-        print usage
+        print(usage)
         exit(0)
 
     # Collect the arguments
@@ -19,7 +19,7 @@ def send_mail():
     text = sys.argv[3]
 
     if not validateEmail(emailTo):
-        print 0
+        print(0)
         exit(-1)
     
     gmailUser = '****@gmail.com'
@@ -37,7 +37,7 @@ def send_mail():
     mailServer.login(gmailUser, gmailPassword)
     mailServer.sendmail(gmailUser, emailTo, msg.as_string())
     mailServer.quit()
-    print 1
+    print(1)
     exit(0)
 
 

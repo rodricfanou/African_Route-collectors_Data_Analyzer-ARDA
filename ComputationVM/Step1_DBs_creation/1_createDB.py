@@ -30,7 +30,7 @@ import datetime
 #| Data__2018_1         |
 #+----------------------+
 
-db1 = MySQLdb.connect(host="localhost",user="",passwd="")
+db1 = MySQLdb.connect(host="localhost",user="root",passwd="arda2021@UCT")
 cursor = db1.cursor()
 sql = 'CREATE DATABASE IF NOT EXISTS MergedData'
 cursor.execute(sql)
@@ -40,13 +40,13 @@ cursor.execute(sql)
 sql = 'use MergedData'
 cursor.execute(sql)
 
-sql2  = '''CREATE TABLE AllRouteCollectors(
+sql2  = '''CREATE TABLE IF NOT EXISTS AllRouteCollectors(
     ID INT AUTO_INCREMENT,
-    IXP VARCHAR(100),
-    IXPName VARCHAR(500),
-    RouteCollector VARCHAR(500),
-    TypeRC VARCHAR(5),
-    TypeRCid VARCHAR(5),
+    IXP TEXT,
+    IXPName TEXT,
+    RouteCollector TEXT,
+    TypeRC TEXT,
+    TypeRCid TEXT,
     SetupDate DATETIME,
     Continent VARCHAR(5),
     CC VARCHAR(5),
@@ -54,7 +54,7 @@ sql2  = '''CREATE TABLE AllRouteCollectors(
     City VARCHAR(100),
     Operational VARCHAR(5),
     RIR VARCHAR(10),
-    UrlToData VARCHAR(800),
+    UrlToData TEXT,
     RegistrationDate DATETIME,
     primary key (ID)
     );'''
@@ -66,12 +66,12 @@ now = datetime.datetime.now()
 
 year = int(now.year);
 
-print year
+print(year)
 
-for x in range(2003, year):
-    for y in xrange(1,13):
+for x in range(2001, year):
+    for y in range(1,13):
         
-        db1 = MySQLdb.connect(host="localhost",user="root",passwd="edjrosse")
+        db1 = MySQLdb.connect(host="localhost",user="root",passwd="arda2021@UCT")
         cursor = db1.cursor()
         sql = 'use MergedData'
         cursor.execute(sql)
@@ -88,12 +88,12 @@ for x in range(2003, year):
             Year INT(100),
             Month INT(100),
             Day INT(100),
-            RouteCollector VARCHAR(1000),
-            OriginAS VARCHAR(500),
-            NextAS VARCHAR(500),
-            NextHop VARCHAR(20),
-            Network VARCHAR(500),
-            ASPath VARCHAR(15000),
+            RouteCollector TEXT,
+            OriginAS TEXT,
+            NextAS TEXT,
+            NextHop TEXT,
+            Network TEXT,
+            ASPath TEXT,
             ASPathLength VARCHAR(100),
             Origin VARCHAR(100),
             IP_version VARCHAR(5),
@@ -103,7 +103,7 @@ for x in range(2003, year):
 
 month = int(time.strftime("%m"))+1
 year = int(year) +1;
-print month
+print(month)
 
 for x in range(1,month+1):
     
@@ -119,12 +119,12 @@ for x in range(1,month+1):
         Year INT(100),
         Month INT(100),
         Day INT(100),
-        RouteCollector VARCHAR(1000),
-        OriginAS VARCHAR(500),
-        NextAS VARCHAR(500),
+        RouteCollector TEXT,
+        OriginAS TEXT,
+        NextAS TEXT,
         NextHop VARCHAR(20),
-        Network VARCHAR(500),
-        ASPath VARCHAR(15000),
+        Network TEXT,
+        ASPath TEXT,
         ASPathLength VARCHAR(100),
         Origin VARCHAR(100),
         IP_version VARCHAR(5),
@@ -136,10 +136,10 @@ for x in range(1,month+1):
 ## Indexing the tables Data__'''+year+'''_'''+month+''' created above
 now = datetime.datetime.now()
 year = int(now.year);
-print year
+print(year)
 
 for x in range(2003, year):
-    for y in xrange(1,13):
+    for y in range(1,13):
         
         cursor = db1.cursor()
         sql = 'use MergedData'
@@ -150,14 +150,14 @@ for x in range(2003, year):
         try:
             sql2  = '''CREATE INDEX index_RouteCollector_Network ON Data__'''+year+'''_'''+month+'''(RouteCollector, Network);'''
             cursor.execute(sql2)
-            print 'I have created the index of month: '+month+' and year: '+year
+            print('I have created the index of month: '+month+' and year: '+year)
         except:
-            print 'The index of month: '+month+' and year:'+year+' is created'
+            print('The index of month: '+month+' and year:'+year+' is created')
 
 
 month = int(time.strftime("%m"))+1
 year = int(year) +1;
-print month
+print(month)
 
 for x in range(1,month):
     
@@ -166,9 +166,9 @@ for x in range(1,month):
         try:
             sql3  = '''CREATE INDEX index_RouteCollector_Network ON Data__'''+year+'''_'''+month+'''(RouteCollector, Network);'''
             cursor.execute(sql3)
-            print 'Index the month: '+month+' of the year'+year
+            print('Index the month: '+month+' of the year'+year)
         except:
-            print 'The index of month: '+month+' and year:'+year+' is created'
+            print('The index of month: '+month+' and year:'+year+' is created')
 
 
 

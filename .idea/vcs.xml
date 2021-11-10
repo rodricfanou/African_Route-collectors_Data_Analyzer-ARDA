@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/bgpdumpy" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/bgptools" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/ocelot" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/python-cymru-services" vcs="Git" />
+  </component>
+</project>

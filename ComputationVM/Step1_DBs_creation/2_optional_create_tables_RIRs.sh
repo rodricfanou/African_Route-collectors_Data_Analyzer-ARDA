@@ -1,7 +1,7 @@
 ## ARDA Application released on: April 21, 2017
 ## Last review: February 19, 2018
 #!/bin/bash
-PASSWORD=PASS
+PASSWORD=arda2021@UCT
 
 ## Goal: create RIRs database destined to host data collected by the RIRs
 #+-------------------------+

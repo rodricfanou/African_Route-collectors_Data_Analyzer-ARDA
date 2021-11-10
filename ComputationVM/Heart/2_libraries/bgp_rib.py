@@ -58,7 +58,7 @@ class ASN(int):
     """
     def __new__(cls, asnumber):
         try:
-            if isinstance(asnumber, basestring):
+            if isinstance(asnumber, str):
                 if asnumber.find(".") > -1:
                     prenumber = int(asnumber[:asnumber.find(".")])
                     postnumber = int(asnumber[asnumber.find(".") + 1:])
@@ -98,7 +98,7 @@ class ASPath(tuple):
             try:
                 new_asn_list.append(int(ASN(asn)))
             except:
-                print('Problem with AS_PATH %s' %(asn_tuple)) 
+                print(('Problem with AS_PATH %s' %(asn_tuple))) 
                 raise
         return tuple.__new__(cls, new_asn_list)
 
@@ -233,7 +233,7 @@ class BGPRIB(dict):
         """
         merged_rib = None
         for counter, rib in enumerate(list_of_rib):
-            print "%d of %d" %(counter, len(list_of_rib))
+            print("%d of %d" %(counter, len(list_of_rib)))
             if counter == 0:
                 merged_rib = rib
             else:
@@ -341,7 +341,7 @@ class BGPRIB(dict):
 
 
             except:
-                print "Error at line " + str(linecpt) + str(line)
+                print("Error at line " + str(linecpt) + str(line))
                 raise
 
             yield (network, bgp_type, nexthop, metric, local_pref, weight, as_path, origin)
@@ -426,7 +426,7 @@ class BGPRIB(dict):
                 origin = line[len(line) - 1]
 
             except:
-                print "Error at line " + str(linecpt) + str(line)
+                print("Error at line " + str(linecpt) + str(line))
                 raise
 
             yield (network, bgp_type, nexthop, metric, local_pref, weight, as_path, origin)
@@ -505,7 +505,7 @@ class BGPRIB(dict):
                         
 
                 if linecpt % 50000 == 0:
-                    print linecpt
+                    print(linecpt)
                 linecpt = linecpt + 1
                 line = line.rstrip()
                 offset_dl = 0
@@ -577,7 +577,7 @@ class BGPRIB(dict):
                     elif bgp_type == ' ':
                         properties['ibgp'] = False
                     else:
-                        print "#WARNING LINE %d, BGP type unknown %s" %(linecpt, bgp_type)
+                        print("#WARNING LINE %d, BGP type unknown %s" %(linecpt, bgp_type))
                 if inc_locpref:
                     if local_pref == '':
                         # TODO, SET TO 100 IF NOT THERE????
@@ -625,7 +625,7 @@ class BGPRIB(dict):
                 rib_in[network].add(prefix_info)
 
         except:
-            print "Error at line " + str(linecpt)
+            print("Error at line " + str(linecpt))
             raise
 
         finally:
@@ -645,7 +645,7 @@ class BGPRIB(dict):
         resulting_dict = {}
 
         if not first_hierarchy:
-            for prefix, prefix_routes in self.items():
+            for prefix, prefix_routes in list(self.items()):
                 if prefix not in resulting_dict:
                     resulting_dict[prefix] = {}
                 for prefix_info in prefix_routes:
@@ -655,7 +655,7 @@ class BGPRIB(dict):
                     resulting_dict[prefix][second_key].add(prefix_info)
 
         else:
-            for prefix, prefix_routes in self.items():
+            for prefix, prefix_routes in list(self.items()):
                 for prefix_info in prefix_routes:
                     primary_key = prefix_info[key]
                     if primary_key not in resulting_dict:
@@ -710,7 +710,7 @@ class BGPRIB(dict):
         #try:
         for linecpt, line in enumerate(filehandler):
             if linecpt % 100000 == 0:
-                print linecpt
+                print(linecpt)
 
             # TODO Make this code more robust to failures
             # TODO remove the need of having the key in the prefie
@@ -721,7 +721,7 @@ class BGPRIB(dict):
                         #for position in char_position])
                         # for position in char_position if not position == key_char])
             except:
-                print line, lineinfo
+                print(line, lineinfo)
                 raise NameError("Problem parsing file. Are you sure that the \
                         characteristic list fits the file?")
             # TODO prefix should be changed here for key_valye. Actually try to
@@ -751,7 +751,7 @@ class BGPRIB(dict):
         # Create the insert string
         common_string = "INSERT INTO %s " % (table_name)
 
-        for prefix, prefix_data in self.items():
+        for prefix, prefix_data in list(self.items()):
             for prefix_info in prefix_data:
                 command = []
                 command.append(common_string)
@@ -789,7 +789,7 @@ class BGPRIB(dict):
         try:
             filehandler = open(filename, 'w')
         except IOError:
-            print 'File cannot be open'
+            print('File cannot be open')
             raise
 
         if characteristic_list is None:
@@ -800,7 +800,7 @@ class BGPRIB(dict):
             #     in the database.
             # Second loop creates the file.
             characteristic_list = set()
-            for prefix_data in self.values():
+            for prefix_data in list(self.values()):
                 for prefix_info in prefix_data:
                     characteristic_list.update(prefix_info._fields)
 
@@ -808,7 +808,7 @@ class BGPRIB(dict):
 
 #        filehandler.write(separator.join(characteristic_list))
 
-        for prefix, prefix_data in self.items():
+        for prefix, prefix_data in list(self.items()):
             for prefix_info in prefix_data:
                 character_set = set(prefix_info._fields)
                 line = []
@@ -837,7 +837,7 @@ class BGPRIB(dict):
         import networkx as nx
         new_graph = nx.Graph()
 
-        for prefix, prefix_data in self.items():
+        for prefix, prefix_data in list(self.items()):
             for prefix_info in prefix_data:
                 if as_path_attr_name in prefix_info._fields:
                     as_path = prefix_info[as_path_attr_name]
@@ -852,13 +852,13 @@ class BGPRIB(dict):
                             as_path_temp = ASPath(as_path.split(' '))
                             as_path = as_path_temp
                     except:
-                        print('Invalid AS_Path: %s for prefix %s' %(as_path, prefix))
+                        print(('Invalid AS_Path: %s for prefix %s' %(as_path, prefix)))
                         as_path = ()
                 # Create an edge for the graph between each one of the adjacent
                 # pairs found in the as_path
                 for as_pair in \
                         ((as_path[i], as_path[i + 1]) for i in \
-                        xrange(0, len(as_path) - 1)):
+                        range(0, len(as_path) - 1)):
                     new_graph.add_edge(as_pair[0], as_pair[1])
 
         return new_graph

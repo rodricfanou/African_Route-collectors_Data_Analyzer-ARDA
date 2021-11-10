@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import os, re, sys, copy, csv, os.path
+sys.path.append('../Heart/2_libraries/')
 import MySQLdb
 
 #Needed for fill_Open_IP, fill_location_TC, find_location_MM
@@ -10,33 +11,34 @@ from random import choice
 from time import sleep
 from collections import Counter
 import select, socket
-import urllib2, urllib
+import urllib.request, urllib.error, urllib.parse, urllib.request, urllib.parse, urllib.error
 #import GeoIP
-import bgp_rib, ipaddr, logging
-import gzip
+
+import gzip, ipaddr, logging
 from datetime import date
 from datetime import datetime
-import DB_configuration
 import time
-
+import bgp_rib
+import DB_configuration
 db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd, db="MergedData")
 cur = db.cursor()
-
+#import bgp_rib
+#import DB_configuration
 #Under this format 2011, 2012, 2013...
 year = str(date.today().year)
 #Under this format 01, 02, 03 ....
 month = str(datetime.now().strftime("%m"))
 current_day = datetime.now().strftime("%d")
-print current_day
+print(current_day)
 #current_day = '07'
 #insert_only .vs check_insert
 task = 'insert_only'
 #Paths to some folders
-path = '/home/roderick/PCH_download'
-debug_folder = '/home/roderick/PCH_download/debug'
+path = '/var/www/html/arda/ComputationVM/Step3_DownloadPCHandRVdata'
+debug_folder = '/var/www/html/arda/ComputationVM/Step3_DownloadPCHandRVdata/debug'
 
-command = 'mkdir debug'
-os.system(command)
+#command = 'mkdir debug'
+#os.system(command)
 outfile = open(debug_folder+'/Debug__'+year+'_'+month+'.txt', 'a')
 outfile.write('The script has started at '+str(time.strftime("%d/%m/%Y %H:%M:%S"))+'.\n')
 
@@ -44,13 +46,13 @@ def parsing_data(year, month, task):
     dirs = os.listdir(str(year)+'/'+str(month))
     os.chdir(path+'/'+str(year)+'/'+str(month))
 
-    print dirs
+    #print(dirs)
     for rc in dirs:
         if rc != 'index.html':
-
-            sql_command = """select TypeRCid from AllRouteCollectors where RouteCollector = %s;"""
-            cur.execute(sql_command, str(rc))
-            RouteCollectorID = cur.fetchall()[0][0]
+            
+            #sql_command = """select TypeRCid from AllRouteCollectors where RouteCollector = %s;"""
+            #cur.execute(sql_command, str(rc))
+            #RouteCollectorID = cur.fetchall()[0][0]
 
             if task == 'check_insert':
                 query = ("SELECT RouteCollector, Network, Timestamp, ASpath FROM Data__"+str(year)+"_"+str(int(month))+" where RouteCollector = %s;")
@@ -59,16 +61,16 @@ def parsing_data(year, month, task):
                 Box_Data = cur.fetchall()
             
             os.chdir(path+'/'+str(year)+'/'+str(month)+'/'+str(rc))
-            command = 'rm -r .ipynb_checkpoints'
-            os.system(command)
+            #command = 'rm -r .ipynb_checkpoints'
+            #os.system(command)
             files = os.listdir(path+'/'+str(year)+'/'+str(month)+'/'+str(rc))
             
-            print 'We have in ' + rc + ':'
+            #print(('We have in ' + rc + ':'))
             
             for file_to_process in files:
 
-                print 'Parsing new files'
-                print "Processing file: ",file_to_process
+                #print('Parsing new files')
+                print("Processing file: " + file_to_process)
 
                 #Get the day
                 first = str(year)+'.'+str(month)+'.'
@@ -76,17 +78,17 @@ def parsing_data(year, month, task):
                 start = file_to_process.index(first) + len(first)
                 end = file_to_process.index(last)
                 day = file_to_process[start:end]
-                print str(day)
-                print str(current_day)
+                #print((str(day)))
+                #print((str(current_day)))
                 if (str(day) == str(current_day)): 
                     file_date = str(year)+'.'+str(month)+'.'+str(day)
                     file_date_time = file_date + ' 00:00:00'
-                    print file_date_time
+                    #print(file_date_time)
                     datetime_format = datetime.strptime(file_date_time, "%Y.%m.%d %H:%M:%S")
                     time_tuple = datetime.strptime(file_date_time, "%Y.%m.%d %H:%M:%S").timetuple()
                     timestamp_format= time.mktime(time_tuple)
 
-                    print timestamp_format
+                   # print(timestamp_format)
                     with gzip.open(file_to_process, 'r') as file_h:
                         bgp_entries = []
                         for entry_n, bgp_entry in enumerate(bgp_rib.BGPRIB.parse_cisco_show_ip_bgp_generator(file_h)):
@@ -99,6 +101,7 @@ def parsing_data(year, month, task):
                             ##weight = bgp_entry[5]
                             #ASPath
                             as_path = bgp_entry[6]
+                        
                             #ASPathLength
                             as_path_length = len(as_path)
                             #NextAS
@@ -124,9 +127,8 @@ def parsing_data(year, month, task):
                                 continue
                                 # save information. the order for each line is:
                                 #Url_Line ; Id; date; time; Year; Location; network; nh; nextas; metric; locpref; weight; ASpath  (should be as large as possible); origin; ASpathlength
-                                #bgp_entries.append([folder+str(year)+'/'+loc+'/'+file_to_process+"_"+str(entry_n), index, datetime_format, timestamp_format, str(year), loc, network, next_hop, nextas, metric, locprf, weight,  " ".join(as_path), origin, as_path_length])
-
-                            full_as_path = " ".join(as_path)
+                                #bgp_entries.append([folder+str(year)+'/'+loc+'/'+file_to_process+"_"+str(entry_n), index, datetime_format, timestamp_format, str(year), loc, network, next_hop, nextas," ".join(as_path), origin, as_path_length])
+                                full_as_path = " ".join(as_path)
                             if len(next_hop)==0:
                                 next_hop = 'NULL'
                             if len(nextas)==0:
@@ -142,7 +144,7 @@ def parsing_data(year, month, task):
                                     cur.execute(query, ['PCH', RouteCollectorID, datetime_format, timestamp_format, str(year), str(month), str(day), str(rc), originas, nextas, next_hop, network, full_as_path, as_path_length, origin, 'v4'])
                                     #print query
                                 except:
-                                    pass
+                                    print('A database error occured')
                             elif (task == 'check_insert'):
                                 try:
                                     chunk = (str(rc),str(network),str(timestamp_format),str(full_as_path))
@@ -151,7 +153,7 @@ def parsing_data(year, month, task):
                                         cur.execute(query, ['PCH', RouteCollectorID, datetime_format, timestamp_format, str(year), str(month), str(day), str(rc), originas, nextas, next_hop, network, full_as_path, as_path_length, origin, 'v4'])
                                         #print query
                                 except:
-                                    pass
+                                    print('There was an error')
 
                 #os.remove(path+'/'+str(year)+'/'+str(month)+'/'+str(rc)+'/'+file_to_process)
                 db.commit()

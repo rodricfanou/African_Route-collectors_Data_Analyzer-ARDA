@@ -3,14 +3,15 @@ import MySQLdb
 import datetime
 import sys
 import time
-import urllib2, urllib, glob, re
+import urllib.request, urllib.error, urllib.parse, urllib.request, urllib.parse, urllib.error, glob, re
 from _pybgpstream import BGPStream, BGPRecord, BGPElem
 import smtplib
 from smtplib import SMTPException
-from email.MIMEMultipart import MIMEMultipart
-from email.MIMEText import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 import yagmail
 import os
+sys.path.append('../Heart/2_libraries/')
 import DB_configuration
 
 def is_valid_v4(ip):
@@ -112,7 +113,7 @@ route_all_collectors = cur.fetchall()
 
 for aux in route_all_collectors:
     collector = aux[0]
-    print collector
+    print(collector)
     sql_command = """select TypeRCid from AllRouteCollectors where RouteCollector = %s;"""
     curMail.execute(sql_command, str(collector))
     RouteCollectorID = curMail.fetchall()[0][0]
@@ -138,7 +139,7 @@ for aux in route_all_collectors:
     while(stream.get_next_record(rec)):
         # Print the record information only if it is not a valid record
         if rec.status != "valid":
-            print rec.project, rec.collector, rec.type, rec.time, rec.status
+            print(rec.project, rec.collector, rec.type, rec.time, rec.status)
         else:
             elem = rec.get_next_elem()
             while(elem):
@@ -153,17 +154,17 @@ for aux in route_all_collectors:
 
                 NextAS =  elem.peer_asn
 
-                if 'next-hop' in elem.fields.keys():
+                if 'next-hop' in list(elem.fields.keys()):
                     NextHop = elem.fields['next-hop']
                 else:
                     NextHop = 'None'
 
-                if 'prefix' in elem.fields.keys():
+                if 'prefix' in list(elem.fields.keys()):
                     Network = elem.fields['prefix']
                 else:
                     Network = 'None'
 
-                if 'as-path' in elem.fields.keys():
+                if 'as-path' in list(elem.fields.keys()):
                     ASPath = elem.fields['as-path']
                     ASPathLength = str(len(elem.fields['as-path'].split(" ")))
                     OriginAS = (elem.fields['as-path'].split(" "))[int(ASPathLength)-1]
@@ -193,7 +194,7 @@ for aux in route_all_collectors:
                 elem = rec.get_next_elem()
     
     lines[collector] = idx
-    print idx
+    print(idx)
     idx = 0
     db.commit()
 
