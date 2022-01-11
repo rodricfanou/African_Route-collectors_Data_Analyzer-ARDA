@@ -118,7 +118,7 @@ Final_list_of_scripts = {}
 
 ## get all the sub-folders in the folders IXP_View, National_View,
 
-directory = ['/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/5_RegionalView/']
+directory = ['/home/arda/African_Route-collectors_Data_Analyzer-ARDAComputationVM/Heart/5_RegionalView/']
 
 for direc in directory:
     
@@ -300,7 +300,7 @@ if len(data)>0:
 
 
 import os.path
-os.chdir('/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/7_scheduler')
+os.chdir('/home/arda/African_Route-collectors_Data_Analyzer-ARDAComputationVM/Heart/7_scheduler')
 
 cwd = os.getcwd()
 print(cwd)
@@ -520,7 +520,7 @@ for row in processes[1:]:
 
 #print existing_python_scripts
 ### When did each script start being executed ?
-os.chdir('/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/7_scheduler')
+os.chdir('/home/arda/African_Route-collectors_Data_Analyzer-ARDAComputationVM/Heart/7_scheduler')
 command1 = """ps -eo pid,lstart,etime > list_cmd_dates.txt"""
 os.system(command1)
 
@@ -872,7 +872,7 @@ if len(list(Priority_queue_list_copy.keys())) > 0:
 
                     ##if yes remove the script from the list of Priority queues by updating in the table  the line corresponding to that script.
                 
-                    os.chdir('/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/7_scheduler')
+                    os.chdir('/home/arda/African_Route-collectors_Data_Analyzer-ARDAComputationVM/Heart/7_scheduler')
                     command1 = """ps -eo pid,lstart,etime > list_cmd_dates.txt"""
                     os.system(command1)
 
@@ -1191,7 +1191,7 @@ if len(Priority_queue_list) == 0:
                     print('We can make changes.')
                     
                     ##if yes remove the script from the list of Priority queues by updating in the table  the line corresponding to that script.
-                    os.chdir('/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/7_scheduler')
+                    os.chdir('/home/arda/African_Route-collectors_Data_Analyzer-ARDAComputationVM/Heart/7_scheduler')
                     command1 = """ps -eo pid,lstart,etime > list_cmd_dates.txt"""
                     os.system(command1)
                     

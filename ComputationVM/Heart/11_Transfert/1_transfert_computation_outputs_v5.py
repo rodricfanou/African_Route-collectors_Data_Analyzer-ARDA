@@ -100,8 +100,8 @@ finish.close()
 
 ############## Update IXP View data
 op = 'IXPView'
-execution_directory = '/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/3_IXPView'
-directory = '/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/Computation_outputs'
+execution_directory = '/home/arda/African_Route-collectors_Data_Analyzer-ARDAComputationVM/Heart/3_IXPView'
+directory = '/home/arda/African_Route-collectors_Data_Analyzer-ARDAComputationVM/Heart/Computation_outputs'
 ##path to the location of the outputs of the IXP view computations in the /var directory
 destination = '/var/www/html/.../outputs/'
 run_fonction(execution_directory, directory, destination, op)
@@ -109,8 +109,8 @@ run_fonction(execution_directory, directory, destination, op)
 
 ############## Update Regional View data
 op = 'RegView'
-execution_directory = '/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/5_RegionalView'
-directory = '/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/Computation_outputs_Regional_View'
+execution_directory = '/home/arda/African_Route-collectors_Data_Analyzer-ARDAComputationVM/Heart/5_RegionalView'
+directory = '/home/arda/African_Route-collectors_Data_Analyzer-ARDAComputationVM/Heart/Computation_outputs_Regional_View'
 ##path to the location of the outputs of the Regional view computations in the /var directory
 destination = '/var/www/html/.../outputs_Regional_View/'
 run_fonction(execution_directory, directory, destination, op)
@@ -118,8 +118,8 @@ run_fonction(execution_directory, directory, destination, op)
 
 ############## Update National View data
 op = 'NatView'
-execution_directory = '/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/4_NationalView'
-directory = '/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/Computation_outputs_National_View'
+execution_directory = '/home/arda/African_Route-collectors_Data_Analyzer-ARDAComputationVM/Heart/4_NationalView'
+directory = '/home/arda/African_Route-collectors_Data_Analyzer-ARDAComputationVM/Heart/Computation_outputs_National_View'
 ##path to the location of the outputs of the National view computations in the /var directory
 destination = '/var/www/html/.../outputs_National_View/'
 run_fonction(execution_directory, directory, destination, op)
