@@ -22,9 +22,9 @@ def Check_tables_for_insertions(database):
     Current_db = database
     
     ## connect to the DB
-    db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+    db = MySQLdb.connect(host = "localhost", user = "", passwd = "",  db = Current_db)
     cur = db.cursor()
-    print 'Connected'
+    print('Connected')
     
     #Create a datetime object with today's value
     today = datetime.datetime.today()
@@ -46,22 +46,22 @@ def Check_tables_for_insertions(database):
     
     Original_table  = 'Data__2003_1'
     
-    print table1, table2
+    print(table1, table2)
     
     ## Check if today table exists
     
     stmt = "SHOW TABLES LIKE '" + table1 + "'"
-    print stmt
+    print(stmt)
     cur.execute(stmt)
     result = cur.fetchone()
-    print result
+    print(result)
     if result:
         # there is a table for today
-        print 'the table ', table1, ' exists'
+        print('the table ', table1, ' exists')
 
     else:
         # there is no table for today; create it
-        print 'the table ', table1, ' does not exist'
+        print('the table ', table1, ' does not exist')
         
         stmt = """CREATE TABLE """ + table1 + """ LIKE """ + Original_table ;
         cur.execute(stmt)
@@ -69,17 +69,17 @@ def Check_tables_for_insertions(database):
 
 
     stmt = "SHOW TABLES LIKE '" + table2 + "'"
-    print stmt
+    print(stmt)
     cur.execute(stmt)
     result = cur.fetchone()
-    print result
+    print(result)
     if result:
         # there is a table for today
-        print 'the table ', table2, ' exists'
+        print('the table ', table2, ' exists')
 
     else:
         # there is no table for today; create it
-        print 'the table ', table2, ' does not exist'
+        print('the table ', table2, ' does not exist')
         stmt = """CREATE TABLE """ + table2 + """ LIKE """ + Original_table ;
         cur.execute(stmt)
 
@@ -107,9 +107,9 @@ IXP_collector = {}
 IXP_CC = {}
 Current_db = 'MergedData_backup'
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host = "localhost", user = "", passwd = "",  db = Current_db)
 cur = db.cursor()
-print 'Connected'
+print('Connected')
 
 
 ### Build a file that summarizes all the scripts to run and
@@ -131,18 +131,18 @@ for direc in directory:
     elif '5_RegionalView' in direc:
         key_word = '5_RegionalView'
 
-    print
-    print direc
+    print()
+    print(direc)
 
     os.walk(direc)
 
     sub_directories = [x[0] for x in os.walk(direc)]
     
-    print sub_directories
+    print(sub_directories)
     
     for sub_directory in sub_directories:
-        print
-        print sub_directory
+        print()
+        print(sub_directory)
         os.chdir(sub_directory)
         
         List_all_files = glob.glob("*.py")
@@ -152,7 +152,7 @@ for direc in directory:
             if key_word in file:
                 number_files_marked += 1
                 marked_file = file
-            print file
+            print(file)
         
         #print number_files_marked
         if number_files_marked == 0:
@@ -178,10 +178,10 @@ for direc in directory:
                     if 'v' + str(indice) + '.py' in file:
                         
                         if os.path.isfile(key_word + '_'+ file):
-                            print 'no need to create ' + key_word + '_'+ file + ' as it exists'
+                            print('no need to create ' + key_word + '_'+ file + ' as it exists')
                         else:
                             command1 = "cp " + file + '  '+  key_word + '_'+ file
-                            print command1
+                            print(command1)
                         
                         Final_list_of_scripts[key_word + '_'+ file] = {}
                         Final_list_of_scripts[key_word + '_'+ file]['location'] = sub_directory
@@ -191,11 +191,11 @@ for direc in directory:
                 for file in List_all_files:
             
                     if os.path.isfile(key_word + '_'+ file):
-                        print 'no need to create ' + key_word + '_'+ file + ' as it exists'
+                        print('no need to create ' + key_word + '_'+ file + ' as it exists')
                     else:
                         command1 = "cp " + file + '  ' + key_word + '_' + file
                         os.system(command1)
-                        print command1
+                        print(command1)
             
                     Final_list_of_scripts[key_word + '_'+ file] = {}
                     Final_list_of_scripts[key_word + '_'+ file]['location'] = sub_directory
@@ -214,23 +214,23 @@ for direc in directory:
             
                 else:
                     with open (elmt, 'r') as fh1:
-                        print elmt
+                        print(elmt)
                         for line in fh1:
-                            print line
+                            print(line)
                             tab = line.split(';')
                             if 'started' in line:
                                 ### Final_list_of_scripts[marked_file]['launch_date'] = tab[-1]
                                 ### add the date of the creation of the file.
                                 import os.path, time
                                 #print "last modified: %s" % time.ctime(os.path.getmtime(elmt))
-                                print "created: %s" % time.ctime(os.path.getctime(elmt))
+                                print("created: %s" % time.ctime(os.path.getctime(elmt)))
                                 date_creation = time.ctime(os.path.getctime(elmt))
                                 #print date_creation
                                 tab = date_creation.split(' ')
                                 
                                 if len(tab[-3] + '/' + Months[tab[1]] + '/' + tab[-1]) == 10:
                                     launch_date = tab[-3] + '/' + Months[tab[1]] + '/' + tab[-1]
-                                    print launch_date
+                                    print(launch_date)
                                     Final_list_of_scripts[marked_file]['launch_exec_date'] = str(launch_date).strip()
                                     
                                     cur.execute ("""UPDATE Infos_on_all_scripts_to_run SET Last_end_execution_date=%s WHERE Script_to_execute=%s""",('Unknown',marked_file))
@@ -242,7 +242,7 @@ for direc in directory:
                                 ### split the date.
                                 to_add = tab[-1]
                                 tab1 = to_add.split('_')
-                                print 'tab1 = ', tab1
+                                print('tab1 = ', tab1)
                                 to_add1 = str(tab1[0]).strip()
                                 tabb = to_add1.split('-')
                                 try:
@@ -255,18 +255,18 @@ for direc in directory:
                                     
                                     end_exec_date = tabb[-1] + '/' + tabb[-2] + '/' + tabb[-3]
                                     Final_list_of_scripts[marked_file]['end_exec_date'] = end_exec_date
-                                    print Final_list_of_scripts[marked_file]['end_exec_date']
+                                    print(Final_list_of_scripts[marked_file]['end_exec_date'])
                                 
                                 except:
-                                    print 'In the except'
+                                    print('In the except')
                                     date_creation = time.ctime(os.path.getctime(elmt))
-                                    print date_creation
+                                    print(date_creation)
                                     tab = date_creation.split(' ')
-                                    print 'tab before = ', tab
+                                    print('tab before = ', tab)
                                     if '' in tab:
-                                        for item in xrange(tab.count('')):
+                                        for item in range(tab.count('')):
                                             tab.remove('')
-                                    print 'tab after = ', tab
+                                    print('tab after = ', tab)
                                     
                                     if int(tab[-3]) < 10:
                                         value = '0'+tab[-3]
@@ -274,7 +274,7 @@ for direc in directory:
                                         value = tab[-3]
                                     
                                     end_exec_date = value + '/' + Months[tab[1]] + '/' + tab[-1]
-                                    print 'end_exec_date to update = ', end_exec_date
+                                    print('end_exec_date to update = ', end_exec_date)
                                     #time.sleep(50)
                                     Final_list_of_scripts[marked_file]['end_exec_date'] = str(end_exec_date).strip()
                                 
@@ -301,7 +301,7 @@ import os.path
 os.chdir('/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/6_scheduler')
 
 cwd = os.getcwd()
-print cwd
+print(cwd)
 
 
 if len(List_all_tables) == 0:
@@ -331,18 +331,18 @@ if len(List_all_tables) == 0:
         ) """
     
     cur.execute(query)
-    print
-    print
+    print()
+    print()
 
     for script in Final_list_of_scripts:
         directory_add = Final_list_of_scripts[script]['location']
         
-        if 'launch_exec_date' in Final_list_of_scripts[script].keys():
+        if 'launch_exec_date' in list(Final_list_of_scripts[script].keys()):
             launch_exec_date_add = Final_list_of_scripts[script]['launch_exec_date']
         else:
             launch_exec_date_add = 'Unknown'
         
-        if 'end_exec_date' in Final_list_of_scripts[script].keys():
+        if 'end_exec_date' in list(Final_list_of_scripts[script].keys()):
             end_exec_date_add = Final_list_of_scripts[script]['end_exec_date']
         else:
             end_exec_date_add = 'Unknown'
@@ -358,7 +358,7 @@ if len(List_all_tables) == 0:
         Priority_queue_add = 'No'
         
         
-        print '',  directory_add, script, launch_exec_date_add, end_exec_date_add, Best_execution_period_add, Worse_execution_period_add, Priority_queue_add
+        print('',  directory_add, script, launch_exec_date_add, end_exec_date_add, Best_execution_period_add, Worse_execution_period_add, Priority_queue_add)
         cur.execute ("""INSERT INTO Infos_on_all_scripts_to_run (Item, Directory, Script_to_execute ,Last_beg_execution_date, Last_end_execution_date, Best_execution_period, Worse_execution_period,  Current_Status_machine, best_memory_usage, worse_memory_usage, best_cpu_usage, worse_cpu_usage,    Priority_queue) VALUES (%s, %s,  %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) """, ('',  directory_add, script, launch_exec_date_add, end_exec_date_add, Best_execution_period_add, Worse_execution_period_add,  Current_Status_machine_add,   best_memory_usage_add, worse_memory_usage_add, best_cpu_usage_add,  worse_cpu_usage_add,   Priority_queue_add))
         
         db.commit()
@@ -367,18 +367,18 @@ if len(List_all_tables) == 0:
 else:
 
 
-    print 'length different from 0; let us insert new lines. '
+    print('length different from 0; let us insert new lines. ')
     
     inserted = 0
     for script in Final_list_of_scripts:
         directory_add = Final_list_of_scripts[script]['location']
         
-        if 'launch_exec_date' in Final_list_of_scripts[script].keys():
+        if 'launch_exec_date' in list(Final_list_of_scripts[script].keys()):
             launch_exec_date_add = Final_list_of_scripts[script]['launch_exec_date']
         else:
             launch_exec_date_add = 'Unknown'
         
-        if 'end_exec_date' in Final_list_of_scripts[script].keys():
+        if 'end_exec_date' in list(Final_list_of_scripts[script].keys()):
             end_exec_date_add = Final_list_of_scripts[script]['end_exec_date']
         else:
             end_exec_date_add = 'Unknown'
@@ -405,7 +405,7 @@ else:
         
         if len(output) == 0:
 
-            print '',  directory_add, script, launch_exec_date_add, end_exec_date_add, Best_execution_period_add, Worse_execution_period_add, Priority_queue_add
+            print('',  directory_add, script, launch_exec_date_add, end_exec_date_add, Best_execution_period_add, Worse_execution_period_add, Priority_queue_add)
             cur.execute ("""INSERT INTO Infos_on_all_scripts_to_run (Item, Directory, Script_to_execute ,Last_beg_execution_date, Last_end_execution_date, Best_execution_period, Worse_execution_period,  Current_Status_machine, best_memory_usage, worse_memory_usage, best_cpu_usage, worse_cpu_usage,    Priority_queue) VALUES (%s,  %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) """, ('',  directory_add, script, launch_exec_date_add, end_exec_date_add, Best_execution_period_add, Worse_execution_period_add,  Current_Status_machine_add,   best_memory_usage_add, worse_memory_usage_add, best_cpu_usage_add,  worse_cpu_usage_add,   Priority_queue_add))
         
             db.commit()
@@ -413,9 +413,9 @@ else:
             
         else:
 
-            print 'insert nothing'
+            print('insert nothing')
 
-    print 'Total number of New insertions = ', inserted
+    print('Total number of New insertions = ', inserted)
 
 
 
@@ -467,11 +467,11 @@ nfields = len(processes[0].split()) - 1
 for row in processes[1:]:
     #print row
     if 'python' in row:
-        for script_to_run in Dict_all_scripts_to_run.keys():
+        for script_to_run in list(Dict_all_scripts_to_run.keys()):
           if '3_IXPView_' in script_to_run:
-            print
+            print()
             line_tab =  row.split(None, nfields)
-            print line_tab
+            print(line_tab)
             
             if  script_to_run  in row:
                 if str(line_tab[-1]).strip() == 'python ' + str(script_to_run).strip():
@@ -501,7 +501,7 @@ for row in processes[1:]:
                 
                 #print 'real_name_script = ' , real_name_script
                 if str(line_tab[-1]).strip() == 'python ' + str(real_name_script).strip():
-                    print 'We are in this case with ',str(real_name_script).strip()
+                    print('We are in this case with ',str(real_name_script).strip())
                     existing_python_scripts[line_tab[1]] = {}
                     existing_python_scripts[line_tab[1]]['status'] = line_tab[7]
                     existing_python_scripts[line_tab[1]]['pid'] = line_tab[1]
@@ -531,17 +531,17 @@ with open ('list_cmd_dates.txt', 'r') as fh:
     for line in fh:
         
         if 'PID' not in line:
-            print line
+            print(line)
             line = line.strip()
             tab = line.split(' ')
             
-            if str(tab[0]).strip() in existing_python_scripts.keys():
+            if str(tab[0]).strip() in list(existing_python_scripts.keys()):
                 #print tab
                 month_current = Months[tab[2]]
-                print 'tab before = ', tab
+                print('tab before = ', tab)
                 
                 if '' in tab:
-                    for item in xrange(tab.count('')):
+                    for item in range(tab.count('')):
                         tab.remove('')
 
                 if int(tab[3]) < 10:
@@ -551,8 +551,8 @@ with open ('list_cmd_dates.txt', 'r') as fh:
     
                 date_found = value + '/'+ month_current+ '/' +  tab[5]
 
-                print 'date_found = ', date_found
-                print 'tab after = ', tab
+                print('date_found = ', date_found)
+                print('tab after = ', tab)
                 #time.sleep(50)
                 
                 tab1 = tab[-1].split('-')
@@ -562,16 +562,16 @@ with open ('list_cmd_dates.txt', 'r') as fh:
                 else:
                     current_period_of_execution = 0
 
-                print line, 'date_found = ', date_found, ' Number of executions days = ', current_period_of_execution
+                print(line, 'date_found = ', date_found, ' Number of executions days = ', current_period_of_execution)
 
                 existing_python_scripts[str(tab[0]).strip()]['date_launch'] = date_found
                 existing_python_scripts[str(tab[0]).strip()]['current_period_exec'] = current_period_of_execution
 
 
-print
-print existing_python_scripts
-print
-print "number_of_script_running = ", number_of_script_running
+print()
+print(existing_python_scripts)
+print()
+print("number_of_script_running = ", number_of_script_running)
 
 
 #### Update table with all infos collected so far:
@@ -582,9 +582,9 @@ print "number_of_script_running = ", number_of_script_running
 
 ## 3- Update period of run
 
-for script_to_run in Dict_all_scripts_to_run.keys():
+for script_to_run in list(Dict_all_scripts_to_run.keys()):
   if '3_IXPView_' in script_to_run:
-    for pid_script_currently_running in existing_python_scripts.keys():
+    for pid_script_currently_running in list(existing_python_scripts.keys()):
     
         if existing_python_scripts[pid_script_currently_running]['script_running'] == script_to_run:
             
@@ -638,24 +638,24 @@ for script_to_run in Dict_all_scripts_to_run.keys():
                 current_worse_cpu_usage_add = float(existing_python_scripts[pid_script_currently_running]['cpu'])
 
 
-            print 'After =', Last_beg_execution_date_add, Status_running_add, Current_Status_machine_add, current_best_memory_usage_add, current_worse_memory_usage_add,  current_best_cpu_usage_add, current_worse_cpu_usage_add, pid_add, script_to_run
+            print('After =', Last_beg_execution_date_add, Status_running_add, Current_Status_machine_add, current_best_memory_usage_add, current_worse_memory_usage_add,  current_best_cpu_usage_add, current_worse_cpu_usage_add, pid_add, script_to_run)
             cur.execute ("""UPDATE Infos_on_all_scripts_to_run SET Last_beg_execution_date=%s, Current_Status=%s, Current_Status_machine =%s,  best_memory_usage = %s, worse_memory_usage= %s, best_cpu_usage =%s, worse_cpu_usage = %s, pid =%s WHERE Script_to_execute=%s""", (Last_beg_execution_date_add, Status_running_add, Current_Status_machine_add, current_best_memory_usage_add, current_worse_memory_usage_add,  current_best_cpu_usage_add, current_worse_cpu_usage_add, pid_add, script_to_run))
 
             db.commit()
 
 
-length = len(existing_python_scripts.keys())
-print 'length = ', length
+length = len(list(existing_python_scripts.keys()))
+print('length = ', length)
 
 
 
 
 
-for script_to_run in Dict_all_scripts_to_run.keys():
+for script_to_run in list(Dict_all_scripts_to_run.keys()):
   if '3_IXPView_' in script_to_run:    
     indice_numb_case_non_equal = 0
     
-    for pid_script_currently_running in existing_python_scripts.keys():
+    for pid_script_currently_running in list(existing_python_scripts.keys()):
 
         if  script_to_run != existing_python_scripts[pid_script_currently_running]['script_running']:
             
@@ -675,18 +675,18 @@ for script_to_run in Dict_all_scripts_to_run.keys():
             
             if Dict_all_scripts_to_run[script_to_run][4]!= 'Unknown' and Dict_all_scripts_to_run[script_to_run][5] != 'Unknown':
 
-                print 'Current values = ', Dict_all_scripts_to_run[script_to_run][4], Dict_all_scripts_to_run[script_to_run][5]
+                print('Current values = ', Dict_all_scripts_to_run[script_to_run][4], Dict_all_scripts_to_run[script_to_run][5])
                 
                 date_beg = datetime.strptime(Dict_all_scripts_to_run[script_to_run][4], "%d/%m/%Y")
                 date_end = datetime.strptime(Dict_all_scripts_to_run[script_to_run][5], "%d/%m/%Y")
                 
-                print 'Date =', date_beg, date_end
+                print('Date =', date_beg, date_end)
 
                 if date_beg <= date_end :
                     
                     delta = date_end - date_beg
                     
-                    print 'let us extract the number of days and update periods.'
+                    print('let us extract the number of days and update periods.')
                     
                     periodd = delta.days
                     
@@ -705,7 +705,7 @@ for script_to_run in Dict_all_scripts_to_run.keys():
                     else:
                         Best_execution_period_add = periodd
 
-                    print Best_execution_period_add, Worse_execution_period_add, script_to_run
+                    print(Best_execution_period_add, Worse_execution_period_add, script_to_run)
                     
                     cur.execute ("""UPDATE Infos_on_all_scripts_to_run SET  Best_execution_period=%s, Worse_execution_period=%s  WHERE Script_to_execute=%s""", (Best_execution_period_add, Worse_execution_period_add, script_to_run))
 
@@ -733,7 +733,7 @@ for row in cur.fetchall():
     
     date_a_year_ago = tab_date[-1] + '/' + tab_date[-2] + '/' + tab_date[-3]
 
-    print 'Here are the date of today and 1 year ago ',  date.today(), twelve_months_ago, 'Better written for update = ', date_a_year_ago
+    print('Here are the date of today and 1 year ago ',  date.today(), twelve_months_ago, 'Better written for update = ', date_a_year_ago)
 
 
     cur.execute ("""UPDATE Infos_on_all_scripts_to_run SET Last_end_execution_date=%s WHERE Script_to_execute=%s and id=%s""",(date_a_year_ago, script, id))
@@ -745,11 +745,11 @@ for row in cur.fetchall():
 
 ### Check the priority queue
 #time.sleep(10)
-print 'Priority_queue_list = ', Priority_queue_list
+print('Priority_queue_list = ', Priority_queue_list)
 
 Priority_queue_list_copy = copy.deepcopy(Priority_queue_list)
 
-if len(Priority_queue_list_copy.keys()) > 0:
+if len(list(Priority_queue_list_copy.keys())) > 0:
     
     ## pay attention that the number of scripts running never exceeds 5; this number can be ajusted later
     if number_of_script_running <= number_of_script_not_to_exceed :
@@ -765,7 +765,7 @@ if len(Priority_queue_list_copy.keys()) > 0:
             current_date = datetime.now().strftime('%d-%m-%Y-%H-%M-%S')
             tab111 = current_date.split('-')
             date_today = tab111[0] + '/' + tab111[1] + '/' + tab111[2]
-            print 'current date = ', current_date
+            print('current date = ', current_date)
             
             from crontab import CronTab
             ## Alert: Put your Username below
@@ -774,9 +774,9 @@ if len(Priority_queue_list_copy.keys()) > 0:
             os.chdir(direc)
             cmd = 'cd ' + direc +  ' && ' + ' python ' + script
             cron_job = tab.new(cmd, comment='MyJob')
-            print 'cron_job = ', cron_job
+            print('cron_job = ', cron_job)
             value = int(tab111[4])+5
-            print value
+            print(value)
             
             if int(tab111[4])+5 < 59:
                 cron_job.minute.on(int(tab111[4])+5)
@@ -790,20 +790,20 @@ if len(Priority_queue_list_copy.keys()) > 0:
             cron_job.month.on(int(tab111[1]))
             
             #writes content to crontab
-            print 'cron_job = ', cron_job
+            print('cron_job = ', cron_job)
             if True == cron_job.is_valid():
-                print 'Script added in cron'
+                print('Script added in cron')
                 tab.write()
-                print tab.render()
-                print 'sleeping'
+                print(tab.render())
+                print('sleeping')
                 if int(tab111[4])+5 < 59:
                     time.sleep(350)
                 else:
                     time.sleep(600)
-                print 'end of sleep'
+                print('end of sleep')
             
             for item in tab.find_comment('MyJob'):
-                print 'item to remove = ', item
+                print('item to remove = ', item)
                 tab.remove(item)
             
             tab.remove_all(comment='MyJob')
@@ -820,11 +820,11 @@ if len(Priority_queue_list_copy.keys()) > 0:
             for row in processes[1:]:
                 if 'python' in row:
 
-                    for script_to_run in Dict_all_scripts_to_run.keys():
+                    for script_to_run in list(Dict_all_scripts_to_run.keys()):
                       if '3_IXPView_' in script_to_run:
-		        print
+		        print()
                         line_tab =  row.split(None, nfields)
-                        print line_tab
+                        print(line_tab)
             
                         if  script_to_run  in row:
                             if str(line_tab[-1]).strip() == 'python ' + str(script_to_run).strip():
@@ -850,7 +850,7 @@ if len(Priority_queue_list_copy.keys()) > 0:
                             #print 'real_name_script = ' , real_name_script
                                 
                             if str(line_tab[-1]).strip() == 'python ' + str(real_name_script).strip():
-                                print 'We are in this case with ',str(real_name_script).strip()
+                                print('We are in this case with ',str(real_name_script).strip())
                                 existing_python_scripts_now[line_tab[1]] = {}
                                 existing_python_scripts_now[line_tab[1]]['status'] = line_tab[7]
                                 existing_python_scripts_now[line_tab[1]]['pid'] = line_tab[1]
@@ -865,8 +865,8 @@ if len(Priority_queue_list_copy.keys()) > 0:
                 
                 if script == existing_python_scripts_now[linee]['script_running']:
 
-                    print 'The script is running'
-                    print 'We can make changes.'
+                    print('The script is running')
+                    print('We can make changes.')
 
                     ##if yes remove the script from the list of Priority queues by updating in the table  the line corresponding to that script.
                 
@@ -883,11 +883,11 @@ if len(Priority_queue_list_copy.keys()) > 0:
                                 line = line.strip()
                                 tab = line.split(' ')
                                 
-                                if str(tab[0]).strip() in existing_python_scripts_now.keys():
-                                    print 'I found the script in', tab
+                                if str(tab[0]).strip() in list(existing_python_scripts_now.keys()):
+                                    print('I found the script in', tab)
                                     month_current = Months[tab[2]]
                                     if '' in tab:
-                                        for item in xrange(tab.count('')):
+                                        for item in range(tab.count('')):
                                             tab.remove('')
                                 
                                     if int(tab[3]) < 10:
@@ -897,7 +897,7 @@ if len(Priority_queue_list_copy.keys()) > 0:
                                     
                                     date_found = value + '/'+ month_current+ '/' +  tab[5]
                                     
-                                    print 'date_found = ', date_found
+                                    print('date_found = ', date_found)
                                     #print tab
                                     #time.sleep(50)
                                     
@@ -910,21 +910,21 @@ if len(Priority_queue_list_copy.keys()) > 0:
                                     else:
                                         current_period_of_execution = 0
                                 
-                                    print line, 'date_found = ', date_found, ' Number of executions days = ', current_period_of_execution
+                                    print(line, 'date_found = ', date_found, ' Number of executions days = ', current_period_of_execution)
                                     
                                     existing_python_scripts_now[tab[0]]['date_launch'] = date_found
                                     existing_python_scripts_now[tab[0]]['current_period_exec'] = current_period_of_execution
                     
                     
-                    print 'existing_python_scripts_now =', existing_python_scripts_now
+                    print('existing_python_scripts_now =', existing_python_scripts_now)
 
-                    print 'before = ', Last_beg_execution_date_add
+                    print('before = ', Last_beg_execution_date_add)
 
-                    if 'date_launch' in existing_python_scripts_now[linee].keys():
-                        print 'date_launch is in existing_python_scripts_now'
+                    if 'date_launch' in list(existing_python_scripts_now[linee].keys()):
+                        print('date_launch is in existing_python_scripts_now')
                         Last_beg_execution_date_add = existing_python_scripts_now[linee]['date_launch']
 
-                    print 'after = ', Last_beg_execution_date_add
+                    print('after = ', Last_beg_execution_date_add)
                     
 
                     if float(existing_python_scripts_now[linee]['mem']) < float(best_memory_usage_add) :
@@ -941,7 +941,7 @@ if len(Priority_queue_list_copy.keys()) > 0:
                     elif float(existing_python_scripts_now[linee]['cpu']) > float(worse_cpu_usage_add) :
                         worse_cpu_usage_add = float(existing_python_scripts_now[linee]['cpu'])
 
-                    print 'after = ', Last_beg_execution_date_add
+                    print('after = ', Last_beg_execution_date_add)
                     
                     pid_add = existing_python_scripts_now[linee]['pid']
 
@@ -949,12 +949,12 @@ if len(Priority_queue_list_copy.keys()) > 0:
 
                     Priority_queue_add = 'No'
 
-                    print 'after = ', Last_beg_execution_date_add
+                    print('after = ', Last_beg_execution_date_add)
                     
                     if Last_beg_execution_date_add == 'Unknown' and Status_running_add == 'Running':
                         Last_beg_execution_date_add = date_today
                     
-                    print direc, Last_beg_execution_date_add, best_memory_usage_add, worse_memory_usage_add,  Status_running_add, best_cpu_usage_add, worse_cpu_usage_add, pid_add, Current_Status_machine_add, Priority_queue_add
+                    print(direc, Last_beg_execution_date_add, best_memory_usage_add, worse_memory_usage_add,  Status_running_add, best_cpu_usage_add, worse_cpu_usage_add, pid_add, Current_Status_machine_add, Priority_queue_add)
 
                     ### Update table
 
@@ -977,7 +977,7 @@ if len(Priority_queue_list_copy.keys()) > 0:
 
     Priority_queue_list = copy.deepcopy(Priority_queue_list_copy)
 
-print 'The current number of total ', number_of_script_running
+print('The current number of total ', number_of_script_running)
 
 #sys.exit()
 
@@ -990,11 +990,11 @@ if len(Priority_queue_list) == 0:
 
     Categories = ['3_IXPView']
 
-    print 'Here is Category before schuffling : ', Categories
+    print('Here is Category before schuffling : ', Categories)
     
     random.shuffle(Categories)
     
-    print 'Here is Category after schuffling : ', Categories
+    print('Here is Category after schuffling : ', Categories)
     
     for Category in Categories:
         
@@ -1004,11 +1004,11 @@ if len(Priority_queue_list) == 0:
         output_query = cur.fetchall()
         
 
-	print output_query 
+	print(output_query) 
 	#sys.exit()
 
-        print
-        print Category
+        print()
+        print(Category)
         
         Old_execution_time = ''
         Script_to_be_executed = ''
@@ -1016,7 +1016,7 @@ if len(Priority_queue_list) == 0:
         
         from datetime import datetime
         for row in output_query:
-            print 'row = ', row
+            print('row = ', row)
             ## treat info and update whenever you need to
             direc = row[2]
             script = row[3]
@@ -1035,7 +1035,7 @@ if len(Priority_queue_list) == 0:
                 
             
                 if row_date != '' and len(row_date) == 10:
-                    print row_date
+                    print(row_date)
                     considered_date = time.strptime(row_date, "%d/%m/%Y")
                     considered_directory =  direc
                     
@@ -1052,7 +1052,7 @@ if len(Priority_queue_list) == 0:
     
     
 
-        print 'We need to execute ', Script_to_be_executed, 'run ast time at ', Old_execution_time, direc_keep
+        print('We need to execute ', Script_to_be_executed, 'run ast time at ', Old_execution_time, direc_keep)
 
         ## It ensures that no more than 5 scripts are running in parallel with the background downloader.
         if number_of_script_running < number_of_script_not_to_exceed:
@@ -1060,7 +1060,7 @@ if len(Priority_queue_list) == 0:
             current_date = datetime.now().strftime('%d-%m-%Y-%H-%M-%S')
             tab111 = current_date.split('-')
             date_today = tab111[0] + '/' + tab111[1] + '/' + tab111[2]
-            print 'current date = ', current_date
+            print('current date = ', current_date)
             
             script = Script_to_be_executed
             
@@ -1071,9 +1071,9 @@ if len(Priority_queue_list) == 0:
             os.chdir(direc)
             cmd = 'cd ' + direc +  ' && ' + ' python ' + script
             cron_job = tab.new(cmd, comment='MyJob')
-            print 'cron_job = ', cron_job
+            print('cron_job = ', cron_job)
             value = int(tab111[4])+5
-            print value
+            print(value)
             
             if int(tab111[4])+5 < 59:
                 cron_job.minute.on(int(tab111[4])+5)
@@ -1087,21 +1087,21 @@ if len(Priority_queue_list) == 0:
             cron_job.month.on(int(tab111[1]))
             
             #writes content to crontab
-            print 'cron_job = ', cron_job
+            print('cron_job = ', cron_job)
             if True == cron_job.is_valid():
-                print 'Script added in cron'
+                print('Script added in cron')
                 tab.write()
-                print tab.render()
-                print 'sleeping'
+                print(tab.render())
+                print('sleeping')
                 if int(tab111[4])+5 < 59:
                     time.sleep(350)
                 else:
                     time.sleep(600)
-                print 'end of sleep'
+                print('end of sleep')
             
             
             for item in tab.find_comment('MyJob'):
-                print 'item to remove = ', item
+                print('item to remove = ', item)
                 tab.remove(item)
         
             tab.remove_all(comment='MyJob')
@@ -1119,11 +1119,11 @@ if len(Priority_queue_list) == 0:
             for row in processes[1:]:
                 if 'python' in row:
         
-                    for script_to_run in Dict_all_scripts_to_run.keys():
+                    for script_to_run in list(Dict_all_scripts_to_run.keys()):
                       if '3_IXPView_'in script_to_run:
-		        print
+		        print()
                         line_tab =  row.split(None, nfields)
-                        print line_tab
+                        print(line_tab)
                         
                         if  script_to_run  in row:
                             if str(line_tab[-1]).strip() == 'python ' + str(script_to_run).strip():
@@ -1147,7 +1147,7 @@ if len(Priority_queue_list) == 0:
                                 real_name_script = script_to_run.replace('5_RegionalView_',"")
                                 
                             if str(line_tab[-1]).strip() == 'python ' + str(real_name_script).strip():
-                                print 'We are in this case with ',str(real_name_script).strip()
+                                print('We are in this case with ',str(real_name_script).strip())
                                 existing_python_scripts_now[line_tab[1]] = {}
                                 existing_python_scripts_now[line_tab[1]]['status'] = line_tab[7]
                                 existing_python_scripts_now[line_tab[1]]['pid'] = line_tab[1]
@@ -1190,8 +1190,8 @@ if len(Priority_queue_list) == 0:
                 
                 if script == existing_python_scripts_now[linee]['script_running']:
                     
-                    print 'The script is running'
-                    print 'We can make changes.'
+                    print('The script is running')
+                    print('We can make changes.')
                     
                     ##if yes remove the script from the list of Priority queues by updating in the table  the line corresponding to that script.
                     os.chdir('/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/7_scheduler')
@@ -1208,12 +1208,12 @@ if len(Priority_queue_list) == 0:
                                 line = line.strip()
                                 tab = line.split(' ')
                                 
-                                if tab[0] in existing_python_scripts_now.keys():
-                                    print 'I found the script in', tab
+                                if tab[0] in list(existing_python_scripts_now.keys()):
+                                    print('I found the script in', tab)
                                     month_current = Months[tab[2]]
                                    
                                     if '' in tab:
-                                        for item in xrange(tab.count('')):
+                                        for item in range(tab.count('')):
                                             tab.remove('')
 
                                     if int(tab[3]) < 10:
@@ -1222,7 +1222,7 @@ if len(Priority_queue_list) == 0:
                                         value = tab[3]
                                     date_found = value + '/'+ month_current+ '/' +  tab[5]
                                     
-                                    print 'date_found = ', date_found
+                                    print('date_found = ', date_found)
                                     #print tab
                                     #time.sleep(50)
                                     tab1 = tab[-1].split('-')
@@ -1234,21 +1234,21 @@ if len(Priority_queue_list) == 0:
                                     else:
                                         current_period_of_execution = 0
                                     
-                                    print line, 'date_found = ', date_found, ' Number of executions days = ', current_period_of_execution
+                                    print(line, 'date_found = ', date_found, ' Number of executions days = ', current_period_of_execution)
                                     
                                     existing_python_scripts_now[tab[0]]['date_launch'] = date_found
                                     existing_python_scripts_now[tab[0]]['current_period_exec'] = current_period_of_execution
                 
                 
-                    print 'existing_python_scripts_now =', existing_python_scripts_now
+                    print('existing_python_scripts_now =', existing_python_scripts_now)
                     
-                    print 'before = ', Last_beg_execution_date_add
+                    print('before = ', Last_beg_execution_date_add)
                     
-                    if 'date_launch' in existing_python_scripts_now[linee].keys():
-                        print 'date_launch is in existing_python_scripts_now'
+                    if 'date_launch' in list(existing_python_scripts_now[linee].keys()):
+                        print('date_launch is in existing_python_scripts_now')
                         Last_beg_execution_date_add = existing_python_scripts_now[linee]['date_launch']
                     
-                    print 'after = ', Last_beg_execution_date_add
+                    print('after = ', Last_beg_execution_date_add)
                     
                     if float(existing_python_scripts_now[linee]['mem']) < float(best_memory_usage_add) :
                         best_memory_usage_add = existing_python_scripts_now[linee]['mem']
@@ -1264,7 +1264,7 @@ if len(Priority_queue_list) == 0:
                     elif float(existing_python_scripts_now[linee]['cpu']) > float(worse_cpu_usage_add):
                         worse_cpu_usage_add = float(existing_python_scripts_now[linee]['cpu'])
                     
-                    print 'after = ', Last_beg_execution_date_add
+                    print('after = ', Last_beg_execution_date_add)
                     
                     pid_add = existing_python_scripts_now[linee]['pid']
                     
@@ -1272,14 +1272,14 @@ if len(Priority_queue_list) == 0:
 
                     Priority_queue_add = 'No'
                     
-                    print 'after = ', Last_beg_execution_date_add
+                    print('after = ', Last_beg_execution_date_add)
                     
                     if Last_beg_execution_date_add == 'Unknown' and Status_running_add == 'Running':
                         Last_beg_execution_date_add = date_today
                     
                     Last_end_execution_date_add = 'Unknown'
                 
-                    print direc, Last_beg_execution_date_add, best_memory_usage_add, worse_memory_usage_add,  Status_running_add, best_cpu_usage_add, worse_cpu_usage_add, pid_add, Current_Status_machine_add, Priority_queue_add
+                    print(direc, Last_beg_execution_date_add, best_memory_usage_add, worse_memory_usage_add,  Status_running_add, best_cpu_usage_add, worse_cpu_usage_add, pid_add, Current_Status_machine_add, Priority_queue_add)
                         
                     ### Update table
                         
@@ -1289,4 +1289,4 @@ if len(Priority_queue_list) == 0:
                             
                     number_of_script_running += 1
 
-print 'number_of_script_running  = ', number_of_script_running
+print('number_of_script_running  = ', number_of_script_running)

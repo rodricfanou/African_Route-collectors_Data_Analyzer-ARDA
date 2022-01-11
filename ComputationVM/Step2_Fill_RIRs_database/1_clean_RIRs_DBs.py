@@ -19,7 +19,7 @@ def puissance ( x, n) :
         return res
 
 
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db ="RIRs")
+db = MySQLdb.connect(host = "localhost", user = "", passwd = "",  db ="RIRs")
 cur = db.cursor()
 print('Connected')
 

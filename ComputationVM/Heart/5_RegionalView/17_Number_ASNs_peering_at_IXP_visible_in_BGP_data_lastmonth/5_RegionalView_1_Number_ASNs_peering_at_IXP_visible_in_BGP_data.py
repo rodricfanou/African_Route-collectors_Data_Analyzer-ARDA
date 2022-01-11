@@ -1,4 +1,4 @@
-from __future__ import division
+
 # Percentage of Origin/Peering ASNs assigned to the region that are visible at all IXPs: What Afrinic has given to Africa ?
 # Of all these ASNs how many assigned by Afrinic is peering at at least one IXP.
 
@@ -30,7 +30,7 @@ from random import choice
 from time import sleep
 from collections import Counter
 import select, socket
-import urllib2, urllib
+import urllib.request, urllib.error, urllib.parse, urllib.request, urllib.parse, urllib.error
 import GeoIP
 import ipaddr, logging
 import gzip
@@ -68,15 +68,15 @@ location_logfile = create_Logfiles_folder()
 ### Define timelines and timescales
 ## multi-years splitted into years
 yearList = multiyear()
-print yearList
+print(yearList)
 
 ## last month (Now - 4weeks) splitted into weeks
 lastYearList = lastyear()
-print lastYearList
+print(lastYearList)
 
 ## last month (Now - 4weeks) splitted into weeks
 lastMonthList = lastmonth()
-print lastMonthList
+print(lastMonthList)
 
 
 
@@ -88,9 +88,9 @@ IXP_collector = {}
 IXP_CC = {}
 Current_db = 'MergedData'
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host = "localhost", user = "", passwd = "",  db = Current_db)
 cur = db.cursor()
-print 'Connected'
+print('Connected')
 
 
 
@@ -100,7 +100,7 @@ data = cur.fetchall()
 i = 0
 while (i<len(data)):
     row = data[i]
-    if row[0] not in IXP_collector.keys():
+    if row[0] not in list(IXP_collector.keys()):
         IXP_collector[row[0]] = []
         IXP_CC[row[0]] = row[2]
     IXP_collector[row[0]].append(row[1])
@@ -109,7 +109,7 @@ while (i<len(data)):
 
 
 
-root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
+root_folder = '/home/arda/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 
 output_folder = '../../Computation_outputs_Regional_View/17_Number_ASNs_peering_at_IXP_visible_in_BGP_data_lastmonth/'
 
@@ -137,7 +137,7 @@ if os.listdir(IXPView_output_folder) != []:
     
     Unik_list_peering_ASNs = []
     
-    for ixp in IXP_collector.keys():
+    for ixp in list(IXP_collector.keys()):
         
         filename_peering =  'LastMonth__list_visible_ASNs_peering_at_IXP_' + ixp + '.txt'
         
@@ -179,7 +179,7 @@ if os.listdir(IXPView_output_folder) != []:
 
 create_output = open(output_folder + 'LastMonth__infos_peering_ASNs.txt', 'a')
 
-print 'len(Unik_list_peering_ASNs) = ', len(Unik_list_peering_ASNs)
+print('len(Unik_list_peering_ASNs) = ', len(Unik_list_peering_ASNs))
 
 
 filename_output_ASNs = output_folder + 'List_ASNs_peering_at_an_African_IXP.txt'
@@ -199,7 +199,7 @@ db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user,
 cur = db.cursor()
 
 query = "select distinct ASN, CC from ASNs_"+region+" where (status = 'allocated' or status = 'assigned') ;"
-print 'query = ',  query
+print('query = ',  query)
 cur.execute (query)
 data = cur.fetchall()
 i = 0
@@ -238,7 +238,7 @@ with open (filename_output_ASNs_by_AFRINIC, 'a') as fg:
         
         fg.write('%s\n' %(elmt))
 
-print 'ASNs_AFRINIC = ', len(ASNs_AFRINIC)
+print('ASNs_AFRINIC = ', len(ASNs_AFRINIC))
 
 create_output.write('Number of ASNs assigned by Afrinic ; ' + str(len(ASNs_AFRINIC)) + ' \n')
 
@@ -264,10 +264,10 @@ with open (output_folder + 'List_ASNs_assigned_by_Afrinic_visibles_at_IXP.txt', 
 percentage = (100*len(Num_identical)) / len(ASNs_AFRINIC)
 
 
-print
-print 'Num_identical = ', len(Num_identical)
-print
-print 'Percentage peering ASNs = ', percentage
+print()
+print('Num_identical = ', len(Num_identical))
+print()
+print('Percentage peering ASNs = ', percentage)
 
 
 log_file_instance.write( str(now_datetime)+ ' End computation \n')

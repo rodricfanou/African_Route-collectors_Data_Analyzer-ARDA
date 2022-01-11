@@ -20,7 +20,7 @@ from datetime import datetime
 import time
 import bgp_rib
 import DB_configuration
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd, db="MergedData")
+db = MySQLdb.connect(host = "localhost", user = "", passwd = "", db="MergedData")
 cur = db.cursor()
 #import bgp_rib
 #import DB_configuration

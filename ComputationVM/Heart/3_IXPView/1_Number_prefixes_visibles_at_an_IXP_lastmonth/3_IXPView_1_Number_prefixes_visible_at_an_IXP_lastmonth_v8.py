@@ -43,7 +43,7 @@ from random import choice
 from time import sleep
 from collections import Counter
 import select, socket
-import urllib2, urllib
+import urllib.request, urllib.error, urllib.parse, urllib.request, urllib.parse, urllib.error
 import GeoIP
 import ipaddr, logging
 import gzip
@@ -76,15 +76,15 @@ location_logfile = create_Logfiles_folder()
 ### Define timelines and timescales
 ## multi-years splitted into years
 yearList = multiyear()
-print yearList
+print(yearList)
 
 ## last month (Now - 4weeks) splitted into weeks
 lastYearList = lastyear()
-print lastYearList
+print(lastYearList)
 
 ## last month (Now - 4weeks) splitted into weeks
 lastMonthList = lastmonth()
-print lastMonthList
+print(lastMonthList)
 
 
 ## Other initialisations
@@ -93,9 +93,9 @@ IXP_collector = {}
 IXP_CC = {}
 Current_db = 'MergedData'
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host = "localhost", user = "", passwd = "",  db = Current_db)
 cur = db.cursor()
-print 'Connected'
+print('Connected')
 
 query = "select IXP, RouteCollector, CC from AllRouteCollectors where Continent = '"+continent+"';"
 cur.execute(query)
@@ -103,17 +103,17 @@ data = cur.fetchall()
 i = 0
 while (i<len(data)):
     row = data[i]
-    if row[0] not in IXP_collector.keys():
+    if row[0] not in list(IXP_collector.keys()):
         IXP_collector[row[0]] = []
         IXP_CC[row[0]] = row[2]
     IXP_collector[row[0]].append(row[1])
     i+=1
 
-print IXP_collector
+print(IXP_collector)
 
 
 
-root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
+root_folder = '/home/arda/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 output_folder = '../../Computation_outputs/1_Number_prefixes_visibles_at_an_IXP_lastmonth/'
 
 command = 'rm -rf ' + output_folder
@@ -126,9 +126,9 @@ command = 'chmod 777 ' + output_folder
 os.system(command)
 
 
-print
+print()
 
-for ixp in IXP_collector.keys():
+for ixp in list(IXP_collector.keys()):
     
     create = open(output_folder+'LastMonth__list_visible_prefixes_at_IXP_'+ixp+'.txt', 'a')
     
@@ -155,7 +155,7 @@ log_file_instance = open(location_logfile+'/'+name_log_file, 'a')
 
 
 ### splitted into weeks over the last month
-print lastMonthList[0][0], lastMonthList[0][1]
+print(lastMonthList[0][0], lastMonthList[0][1])
 if List_all_tables >0:
     
     ### Using sliding period
@@ -167,13 +167,13 @@ if List_all_tables >0:
     #tab = ['2017-01-20']
     tab1 = tab[0].split('-')
     timestamp_now = (datetime(int(tab1[0]), int(tab1[1]), int(tab1[2])) - datetime(1970, 1, 1)).total_seconds()
-    print 'timestamp = ', timestamp_now
+    print('timestamp = ', timestamp_now)
     
     couples_year_month = [(tab1[0], tab1[1])]
     
     ## find the number of the first week of the month in the year
     week_number_last_day = find_week_num_in_year(int(tab1[0]), int(tab1[1]), int(tab1[2]))
-    print 'week_number_last_day = ', week_number_last_day
+    print('week_number_last_day = ', week_number_last_day)
     
     
     ### Look for date and timestamp one month before
@@ -184,7 +184,7 @@ if List_all_tables >0:
     tab2 = date_one_month_bef.split('-')
     
     week_number_first_day = find_week_num_in_year(int(tab2[0]), int(tab2[1]), int(tab2[2]))
-    print 'week_number_first_day = ', week_number_first_day
+    print('week_number_first_day = ', week_number_first_day)
     
     if (tab2[0], tab2[1]) not in couples_year_month:
         couples_year_month.append( (tab2[0], tab2[1]) )
@@ -226,7 +226,7 @@ if List_all_tables >0:
         keep_tsp = int(begweek) - 86400
         #1467417600 - 1467331200
         
-        print List_beg_end_each_week, 'hello second step'
+        print(List_beg_end_each_week, 'hello second step')
         num = week_number_first_day
         
         
@@ -244,7 +244,7 @@ if List_all_tables >0:
             num += 1
 
 
-    print List_beg_end_each_week
+    print(List_beg_end_each_week)
 
     
     ## Commented because we do not need it right now
@@ -253,24 +253,24 @@ if List_all_tables >0:
     week_prefix_bogon = {}
 
 
-    for ixp in IXP_collector.keys():
+    for ixp in list(IXP_collector.keys()):
         
       create_output = open(output_folder+'LastMonth__list_visible_prefixes_at_IXP_'+ixp+'.txt', 'a')
       
       #create_output.write('###Num Week; Timestamp beginning;  Timestamp end;  Datetime  beginning;  Datetime end; Visible prefixes at IXP; Bogon ? \n')
         
-      if ixp not in week_prefix.keys():
+      if ixp not in list(week_prefix.keys()):
         week_prefix[ixp] = {}
         
-      if ixp not in week_prefix_bogon.keys():
+      if ixp not in list(week_prefix_bogon.keys()):
         week_prefix_bogon[ixp] = {}
 
       for window in couples_year_month:
     
         query = "select distinct Network  from Data__" + str(int(window[0]))+"_"+str(int(window[1])) + " where Timestamp >= %s and Timestamp <= %s  and ("
         
-        print
-        print
+        print()
+        print()
         
         k = 0
         while k < len(IXP_collector[ixp]) -1:
@@ -279,8 +279,8 @@ if List_all_tables >0:
         
         query += " RouteCollector = %s) "
 
-        print 'start_query :', now_datetime, query
-        print datetime.now(), 'week fetching data from ', ixp
+        print('start_query :', now_datetime, query)
+        print(datetime.now(), 'week fetching data from ', ixp)
         
         week = 0
 
@@ -297,19 +297,19 @@ if List_all_tables >0:
             
             log_file_instance.write(str(now_datetime)+ ' Fetching data from IXP '+ ixp + '\n')
 
-            print 'Here is the query ', cur._executed
+            print('Here is the query ', cur._executed)
             data = cur.fetchall()
 
-            print 'end_query :', now_datetime #, data
+            print('end_query :', now_datetime) #, data
         
             #except:
             #print 'Alert table ', "Data__"+str(lastMonthList[0][0])+"_"+str(lastMonthList[0][1]),  ' does not exist yet'
             #data = []
             
-            if week not in week_prefix[ixp].keys():
+            if week not in list(week_prefix[ixp].keys()):
                 week_prefix[ixp][week] = []
             
-            if week not in week_prefix_bogon[ixp].keys():
+            if week not in list(week_prefix_bogon[ixp].keys()):
                 week_prefix_bogon[ixp][week] = []
 
             i = 0
@@ -352,12 +352,12 @@ if List_all_tables >0:
 
 
 
-    print
-    print
-    print
+    print()
+    print()
+    print()
     #print week_prefix
 
-    for ixp in week_prefix.keys():
+    for ixp in list(week_prefix.keys()):
         
         log_file_instance.write('\n' + str(now_datetime)+ ' Debut computation '+ ixp + '\n')
         
@@ -365,7 +365,7 @@ if List_all_tables >0:
         
         create_output1.write('###Num Week; Timestamp beginning;  Timestamp end;  Datetime  beginning;  Datetime end; number visible prefixes at IXP; number of visible bogon prefixes at IXP \n')
         
-        for week in week_prefix[ixp].keys():
+        for week in list(week_prefix[ixp].keys()):
             
             #create_output =  open(output_folder+'LastMonth__number_visible_prefixes_at_IXP_'+ixp+'.txt', 'a')
             

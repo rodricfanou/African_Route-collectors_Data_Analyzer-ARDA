@@ -25,7 +25,7 @@ from random import choice
 from time import sleep
 from collections import Counter
 import select, socket
-import urllib2, urllib
+import urllib.request, urllib.error, urllib.parse, urllib.request, urllib.parse, urllib.error
 import GeoIP
 import ipaddr, logging
 import gzip
@@ -63,15 +63,15 @@ location_logfile = create_Logfiles_folder()
 ### Define timelines and timescales
 ## multi-years splitted into years
 yearList = multiyear()
-print yearList
+print(yearList)
 
 ## last month (Now - 4weeks) splitted into weeks
 lastYearList = lastyear()
-print lastYearList
+print(lastYearList)
 
 ## last month (Now - 4weeks) splitted into weeks
 lastMonthList = lastmonth()
-print lastMonthList
+print(lastMonthList)
 
 
 ## Other initialisations
@@ -85,9 +85,9 @@ week_ASN_4bytes = {}
 
 Current_db = 'MergedData'
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host = "localhost", user = "", passwd = "",  db = Current_db)
 cur = db.cursor()
-print 'Connected'
+print('Connected')
 
 
 query = "select IXP, RouteCollector, CC from AllRouteCollectors where Continent = '"+continent+"';"
@@ -97,11 +97,11 @@ i = 0
 while (i<len(data)):
     row = data[i]
     
-    if row[0] not in IXP_collector.keys():
+    if row[0] not in list(IXP_collector.keys()):
         IXP_collector[row[0]] = []
         IXP_CC[row[0]] = row[2]
     
-    if row[2] not in week_ASN.keys():
+    if row[2] not in list(week_ASN.keys()):
         week_ASN[row[2]] = {}
         week_ASN_2bytes[row[2]] = {}
         week_ASN_4bytes[row[2]] = {}
@@ -111,17 +111,17 @@ while (i<len(data)):
 
 
 
-print 'IXP_collector = ', IXP_collector
+print('IXP_collector = ', IXP_collector)
 
-print
+print()
 
-print 'IXP_CC = ', IXP_CC
+print('IXP_CC = ', IXP_CC)
 
-print
+print()
 
-print 'week_ASN = ', week_ASN
+print('week_ASN = ', week_ASN)
 
-root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
+root_folder = '/home/arda/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 
 output_folder = '../../Computation_outputs_National_View/1_Number_ASNs_peering_in_more_than_1_IXP_per_country_multiyear/'
 
@@ -142,7 +142,7 @@ os.system(command)
 
 if os.listdir(IXPView_output_folder) != []:
     
-    for ixp in IXP_collector.keys():
+    for ixp in list(IXP_collector.keys()):
         
         CC_to_consider = IXP_CC[ixp]
         
@@ -191,7 +191,7 @@ for CC in week_ASN:
     
         fh.write('%s\n' %("""###Year; Visible ASNs peering at the IXP"""))
     
-    for couple_timestamp in week_ASN[CC].keys():
+    for couple_timestamp in list(week_ASN[CC].keys()):
         
         for elmt in week_ASN[CC][couple_timestamp]:
 
@@ -203,7 +203,7 @@ for CC in week_ASN:
 
 ### Compute the unique total number of Peering_ASNs that are 2bytes  per week over the last month
 
-for ixp in IXP_collector.keys():
+for ixp in list(IXP_collector.keys()):
     
     CC_to_consider = IXP_CC[ixp]
     
@@ -253,9 +253,9 @@ for ixp in IXP_collector.keys():
                         create_output_2bytesASN_list.write(to_add)
 
 
-print
+print()
 
-print 'week_ASN_2bytes = ',
+print('week_ASN_2bytes = ', end=' ')
 pprint(week_ASN_2bytes)
 
 
@@ -266,7 +266,7 @@ pprint(week_ASN_2bytes)
 
 ### Compute the unique total number of Peering_ASNs that are 2bytes  per week over the last month
 
-for ixp in IXP_collector.keys():
+for ixp in list(IXP_collector.keys()):
     
     CC_to_consider = IXP_CC[ixp]
     
@@ -317,31 +317,31 @@ for ixp in IXP_collector.keys():
                         create_output_4bytesASN_list.write(to_add)
 
 
-print
+print()
 
-print "week_ASN_4bytes = ",
+print("week_ASN_4bytes = ", end=' ')
 pprint(week_ASN_4bytes)
 
 
 for CC in week_ASN:
-    print
+    print()
     with open (output_folder + 'MultiYear__number_visible_peering_ASNs_in_more_than_1_IXP_of_' + CC + '.txt', 'a') as fg1:
 
         fg1.write('%s\n' %("""###Year; Number of Visible peering ASNs; Number of Visible peering 2bytes ASNs; Number of Visible peering 4bytes ASNs;"""))
         
-        for couple_timestamp in week_ASN[CC].keys():
-	    print
-            print CC, couple_timestamp 
-            if couple_timestamp in week_ASN_4bytes[CC].keys() and  couple_timestamp in week_ASN_2bytes[CC].keys():
-                print 'in 4 byt ; in 2bytes'
+        for couple_timestamp in list(week_ASN[CC].keys()):
+	    print()
+            print(CC, couple_timestamp) 
+            if couple_timestamp in list(week_ASN_4bytes[CC].keys()) and  couple_timestamp in list(week_ASN_2bytes[CC].keys()):
+                print('in 4 byt ; in 2bytes')
                 fg1.write('%s; %s; %s; %s\n' %( couple_timestamp, len(week_ASN[CC][couple_timestamp]), len(week_ASN_2bytes[CC][couple_timestamp]), len(week_ASN_4bytes[CC][couple_timestamp])))
 
-            elif couple_timestamp not in week_ASN_4bytes[CC].keys() and  couple_timestamp in week_ASN_2bytes[CC].keys():
-    		print 'in 4 byt ; not in 2bytes'
+            elif couple_timestamp not in list(week_ASN_4bytes[CC].keys()) and  couple_timestamp in list(week_ASN_2bytes[CC].keys()):
+    		print('in 4 byt ; not in 2bytes')
                 fg1.write('%s; %s; %s; %s\n' %( couple_timestamp, len(week_ASN[CC][couple_timestamp]), len(week_ASN_2bytes[CC][couple_timestamp]), '0'))
 
-            elif couple_timestamp in week_ASN_4bytes[CC].keys() and  couple_timestamp not in week_ASN_2bytes[CC].keys():
-    		print 'not in 4 byt ; in 2bytes'
+            elif couple_timestamp in list(week_ASN_4bytes[CC].keys()) and  couple_timestamp not in list(week_ASN_2bytes[CC].keys()):
+    		print('not in 4 byt ; in 2bytes')
                 fg1.write('%s; %s; %s; %s\n' %( couple_timestamp, len(week_ASN[CC][couple_timestamp]), '0' , len(week_ASN_4bytes[CC][couple_timestamp])))
 
 

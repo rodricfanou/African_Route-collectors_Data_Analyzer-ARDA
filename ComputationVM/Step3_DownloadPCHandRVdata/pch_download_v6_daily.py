@@ -21,7 +21,7 @@ print("Start")
 sys.path.append('../Heart/2_libraries/')
 import DB_configuration
 #Select only the African RouteCollector
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd, db="MergedData")
+db = MySQLdb.connect(host = "localhost", user = "", passwd = "", db="MergedData")
 cur = db.cursor()
 sql_command = """select RouteCollector from AllRouteCollectors where Continent = 'AF';"""
 cur.execute(sql_command)

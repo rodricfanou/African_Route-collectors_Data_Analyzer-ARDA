@@ -16,7 +16,7 @@ from random import choice
 from time import sleep
 from collections import Counter
 import select, socket
-import urllib2, urllib
+import urllib.request, urllib.error, urllib.parse, urllib.request, urllib.parse, urllib.error
 import GeoIP
 import ipaddr, logging
 import gzip
@@ -57,16 +57,16 @@ location_logfile = create_Logfiles_folder()
 ## multi-years splitted into years
 yearList = multiyear()
 yearList.sort()
-print yearList
+print(yearList)
 
 ## last month (Now - 4weeks) splitted into weeks
 lastYearList = lastyear()
-print lastYearList
+print(lastYearList)
 lastYearList.sort()
 
 ## last month (Now - 4weeks) splitted into weeks
 lastMonthList = lastmonth()
-print lastMonthList
+print(lastMonthList)
 lastMonthList.sort()
 
 
@@ -82,9 +82,9 @@ CC_IXP = {}
 
 
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host = "localhost", user = "", passwd = "",  db = Current_db)
 cur = db.cursor()
-print 'Connected'
+print('Connected')
 
 query = "select IXP, RouteCollector, CC from AllRouteCollectors where Continent = '"+continent+"';"
 cur.execute(query)
@@ -92,11 +92,11 @@ data = cur.fetchall()
 i = 0
 while (i<len(data)):
     row = data[i]
-    if row[0] not in IXP_collector.keys():
+    if row[0] not in list(IXP_collector.keys()):
         IXP_collector[row[0]] = []
         IXP_CC[row[2]] = row[0]
     
-    if row[2] not in CC_IXP.keys():
+    if row[2] not in list(CC_IXP.keys()):
         CC_IXP[row[2]] = []
     if row[0] not in CC_IXP[row[2]]:
         CC_IXP[row[2]].append(row[0])
@@ -105,8 +105,8 @@ while (i<len(data)):
     i+=1
 
 
-print IXP_collector
-root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
+print(IXP_collector)
+root_folder = '/home/arda/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 output_folder = '../../Computation_outputs/5_percentage_prefixes_by_country_assignment_lastyear_better/'
 
 command = 'rm -rf ' + output_folder
@@ -149,38 +149,38 @@ if List_all_tables >0:
     month_prefix_bogon = {}
     year_prefix_bogon = {}
     
-    for ixp in IXP_collector.keys():
+    for ixp in list(IXP_collector.keys()):
         
         log_file_instance = open(location_logfile+'/'+name_log_file, 'a')
         
-        if ixp not in year_prefix.keys():
+        if ixp not in list(year_prefix.keys()):
             year_prefix[ixp] = {}
                 
-        if ixp not in year_prefix_bogon.keys():
+        if ixp not in list(year_prefix_bogon.keys()):
             year_prefix_bogon[ixp] = {}
         
-        if ixp not in month_prefix.keys():
+        if ixp not in list(month_prefix.keys()):
             month_prefix[ixp] = {}
                 
-        if ixp not in month_prefix_bogon.keys():
+        if ixp not in list(month_prefix_bogon.keys()):
             month_prefix_bogon[ixp] = {}
         
         
         
         for year in yearList:
             
-            if year not in year_prefix[ixp].keys():
+            if year not in list(year_prefix[ixp].keys()):
                 year_prefix[ixp][year] = []
                     
-            if year not in year_prefix_bogon[ixp].keys():
+            if year not in list(year_prefix_bogon[ixp].keys()):
                 year_prefix_bogon[ixp][year] = []
 
 
-            for month in xrange(1,13):
+            for month in range(1,13):
                 if 'Data__' + str(year) + "_" + str(month) in List_all_tables:
-                    print
-                    print
-                    print IXP_collector[ixp]
+                    print()
+                    print()
+                    print(IXP_collector[ixp])
                     
                     #query = "select count(*) from Data__"+str(year)+"_"+str(month) + " ;"
                     #cur.execute(query)
@@ -195,19 +195,19 @@ if List_all_tables >0:
                     
                     query += " RouteCollector = %s"
                     
-                    print 'start_query :', datetime.now(), query
-                    print
-                    print datetime.now(), 'fetching data from ', ixp
+                    print('start_query :', datetime.now(), query)
+                    print()
+                    print(datetime.now(), 'fetching data from ', ixp)
                     
                     cur.execute(query, IXP_collector[ixp])
                     log_file_instance.write(str(now_datetime)+ ' Multi-year & last year Fetching data from IXP '+ ixp + '\n')
                     
-                    print 'Here is the query ', cur._executed
+                    print('Here is the query ', cur._executed)
                     data = cur.fetchall()
-                    print
-                    print 'end_query :', datetime.now() #, data
-                    print
-                    print
+                    print()
+                    print('end_query :', datetime.now()) #, data
+                    print()
+                    print()
                     i = 0
                     
                     if len(data)>0:
@@ -225,7 +225,7 @@ if List_all_tables >0:
                             ## Check if we are in the last year and proceed for lastyear
                             if (year, month) in lastYearList:
                                 
-                                if str(month)+'-'+str(year) not in month_prefix[ixp].keys():
+                                if str(month)+'-'+str(year) not in list(month_prefix[ixp].keys()):
                                     month_prefix[ixp][str(month)+'-'+str(year)] = []
 
                                 if prefix not in month_prefix[ixp][str(month)+'-'+str(year)]:
@@ -234,7 +234,7 @@ if List_all_tables >0:
                             i += 1
 
                     else:
-                        print 'No prefix found for ', ixp, ' in ' , 'Data__'+str(year)+'_'+str(month)
+                        print('No prefix found for ', ixp, ' in ' , 'Data__'+str(year)+'_'+str(month))
 
 
 
@@ -242,9 +242,9 @@ if List_all_tables >0:
 ### Collecting data from AFRINIC database
 Current_db = 'RIRs'
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host = "localhost", user = "", passwd = "",  db = Current_db)
 cur = db.cursor()
-print 'Connected'
+print('Connected')
 
 query = "select distinct NetIPaddress, NetBits, CC from IPv4_ressources_AFRINIC where status = 'allocated' or status = 'assigned' and CC != '';"
 cur.execute (query)
@@ -258,7 +258,7 @@ if len(data)>0:
         asn = row[0]+'/'+row[1]
         current_CC = row[2]
         if current_CC != '':
-            if current_CC not in CC_ASNs_AFRINIC.keys():
+            if current_CC not in list(CC_ASNs_AFRINIC.keys()):
                 CC_ASNs_AFRINIC[current_CC] = []
                 
             if asn not in CC_ASNs_AFRINIC[current_CC]:
@@ -266,27 +266,27 @@ if len(data)>0:
         i +=1
 
 ### Note this contains the prefixes, not the ASNs
-print CC_ASNs_AFRINIC.keys()
+print(list(CC_ASNs_AFRINIC.keys()))
 
 
 
 
 #### Separating Local from External prefixes
 
-for ixp in IXP_collector.keys():
-    if ixp in month_prefix.keys():
+for ixp in list(IXP_collector.keys()):
+    if ixp in list(month_prefix.keys()):
         filename = output_folder+'LastYear__local_vs_External_prefixes_visible_at_IXP_'+ixp+'.txt'
         
-        for id_month_and_year in month_prefix[ixp].keys():
+        for id_month_and_year in list(month_prefix[ixp].keys()):
             
-            print month_prefix[ixp].keys()
+            print(list(month_prefix[ixp].keys()))
             
             if len(month_prefix[ixp][id_month_and_year]) > 0:
                 #create_output_lastyear.write(elmt+ '; '+ str(len(month_prefix[ixp][elmt])) + '\n')
                 set_ASNs = copy.deepcopy(month_prefix[ixp][id_month_and_year])
                 ## Classify and put numbers.
                 
-                for CC in CC_IXP.keys():
+                for CC in list(CC_IXP.keys()):
                     for ixp1 in CC_IXP[CC]:
                         
                         if ixp == ixp1 :
@@ -308,7 +308,7 @@ for ixp in IXP_collector.keys():
                                                     
                                                     if cidrsOverlap(prefix_AF_adv, prefix_AF_assigned):
                                                     #if prefix_AF_adv.overlaps(prefix_AF_assigned):
-                                                        print prefix_AF_adv, ' overlaps ', prefix_AF_assigned
+                                                        print(prefix_AF_adv, ' overlaps ', prefix_AF_assigned)
                                                         intersection.append(prefix_assigned)
                                         except:
                                             pass
@@ -340,32 +340,32 @@ for ixp in IXP_collector.keys():
                                 #if len(intersection) >0:
                                 try:
                                     A = pycountry.countries.get(alpha2=current_CC)
-                                    print 'Acurrent_CC = ', current_CC
-                                    print 'Aixp = ', ixp
-                                    print 'Aid_month_and_year = ', id_month_and_year
-                                    print 'Aintersection = ', intersection
-                                    print 'Amonth_prefix[ixp] = ', month_prefix[ixp]
-                                    print 'Amonth_prefix[ixp][id_month_and_year] = ', month_prefix[ixp][id_month_and_year]
-                                    print 'Apercentage_local_AF = ', percentage_local_AF
-                                    print 'A100-percentage_local_AF = ', 100-percentage_local_AF
+                                    print('Acurrent_CC = ', current_CC)
+                                    print('Aixp = ', ixp)
+                                    print('Aid_month_and_year = ', id_month_and_year)
+                                    print('Aintersection = ', intersection)
+                                    print('Amonth_prefix[ixp] = ', month_prefix[ixp])
+                                    print('Amonth_prefix[ixp][id_month_and_year] = ', month_prefix[ixp][id_month_and_year])
+                                    print('Apercentage_local_AF = ', percentage_local_AF)
+                                    print('A100-percentage_local_AF = ', 100-percentage_local_AF)
                                     
                                     fd.write('%s;%s;%s;%s;%s;%s;%s\n'%(current_CC, ixp, id_month_and_year, len(intersection), len(month_prefix[ixp][id_month_and_year]),  percentage_local_AF, 100-percentage_local_AF ))
                                 
                                 except:
-                                    print 'current_CC = ', current_CC
-                                    print 'ixp = ', ixp
-                                    print 'id_month_and_year = ', id_month_and_year
-                                    print 'intersection = ', intersection
-                                    print 'month_prefix[ixp] = ', month_prefix[ixp]
-                                    print 'month_prefix[ixp][id_month_and_year] = ', month_prefix[ixp][id_month_and_year]
-                                    print 'percentage_local_AF = ', percentage_local_AF
-                                    print '100-percentage_local_AF = ', 100-percentage_local_AF
+                                    print('current_CC = ', current_CC)
+                                    print('ixp = ', ixp)
+                                    print('id_month_and_year = ', id_month_and_year)
+                                    print('intersection = ', intersection)
+                                    print('month_prefix[ixp] = ', month_prefix[ixp])
+                                    print('month_prefix[ixp][id_month_and_year] = ', month_prefix[ixp][id_month_and_year])
+                                    print('percentage_local_AF = ', percentage_local_AF)
+                                    print('100-percentage_local_AF = ', 100-percentage_local_AF)
                                     
                                     fd.write('%s;%s;%s;%s;%s;%s;%s\n'%(current_CC, ixp, id_month_and_year, len(intersection), len(month_prefix[ixp][id_month_and_year]),  percentage_local_AF, 100-percentage_local_AF ))
 
 
 
-    if ixp in year_prefix.keys():
+    if ixp in list(year_prefix.keys()):
         filename = output_folder+'MultiYear__local_vs_External_prefixes_visible_at_IXP_'+ixp+'.txt'
         for year in yearList:
             #create_output_MultiYear.write(str(year)+ '; '+ str(len(year_prefix[ixp][year]))  + '\n')
@@ -374,7 +374,7 @@ for ixp in IXP_collector.keys():
             #if len(year_prefix[ixp][year]) > 0:
                 set_ASNs = copy.deepcopy(year_prefix[ixp][year])
                 
-                for CC in CC_IXP.keys():
+                for CC in list(CC_IXP.keys()):
                     for ixp1 in CC_IXP[CC]:
                         
                         if ixp == ixp1 :
@@ -396,7 +396,7 @@ for ixp in IXP_collector.keys():
                                                 
                                                 if cidrsOverlap(prefix_AF_adv, prefix_AF_assigned):
                                                 #if prefix_AF_adv.overlaps(prefix_AF_assigned):
-                                                    print prefix_AF_adv, ' overlaps ', prefix_AF_assigned
+                                                    print(prefix_AF_adv, ' overlaps ', prefix_AF_assigned)
                                                     #if prefix_adv not in intersection:
                                                     intersection.append(prefix_assigned)
                                     except:

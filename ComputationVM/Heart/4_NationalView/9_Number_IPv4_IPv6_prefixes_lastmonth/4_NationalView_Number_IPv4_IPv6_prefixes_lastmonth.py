@@ -22,7 +22,7 @@ from random import choice
 from time import sleep
 from collections import Counter
 import select, socket
-import urllib2, urllib
+import urllib.request, urllib.error, urllib.parse, urllib.request, urllib.parse, urllib.error
 import GeoIP
 import ipaddr, logging
 import gzip
@@ -61,17 +61,17 @@ location_logfile = create_Logfiles_folder()
 ### Define timelines and timescales
 ## multi-years splitted into years
 yearList = multiyear()
-print yearList
+print(yearList)
 
 
 ## last month (Now - 4weeks) splitted into weeks
 lastYearList = lastyear()
-print lastYearList
+print(lastYearList)
 
 
 ## last month (Now - 4weeks) splitted into weeks
 lastMonthList = lastmonth()
-print lastMonthList
+print(lastMonthList)
 
 ## Other initialisations
 continent = DB_configuration.continent
@@ -83,9 +83,9 @@ week_ASN_announcing_v6 = {}
 
 Current_db = 'MergedData'
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host = "localhost", user = "", passwd = "",  db = Current_db)
 cur = db.cursor()
-print 'Connected'
+print('Connected')
 
 query = "select IXP, RouteCollector, CC from AllRouteCollectors where Continent = '"+continent+"';"
 cur.execute(query)
@@ -94,11 +94,11 @@ i = 0
 while (i<len(data)):
     row = data[i]
     
-    if row[0] not in IXP_collector.keys():
+    if row[0] not in list(IXP_collector.keys()):
         IXP_collector[row[0]] = []
         IXP_CC[row[0]] = row[2]
     
-    if row[2] not in week_ASN_announcing_v4.keys():
+    if row[2] not in list(week_ASN_announcing_v4.keys()):
         week_ASN_announcing_v4[row[2]] = {}
         week_ASN_announcing_v6[row[2]] = {}
     
@@ -107,15 +107,15 @@ while (i<len(data)):
 
 
 
-print 'IXP_collector = ', IXP_collector
+print('IXP_collector = ', IXP_collector)
 
-print
+print()
 
-print 'IXP_CC = ', IXP_CC
+print('IXP_CC = ', IXP_CC)
 
 
 
-root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
+root_folder = '/home/arda/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 
 output_folder = '../../Computation_outputs_National_View/9_Number_IPv4_IPv6_prefixes_lastmonth_each_country/'
 
@@ -140,7 +140,7 @@ if os.listdir(IXPView_output_folder) != []:
     
     #print 'folder exists'
     
-    for ixp in IXP_collector.keys():
+    for ixp in list(IXP_collector.keys()):
         
         CC_to_consider = IXP_CC[ixp]
         
@@ -168,15 +168,15 @@ if os.listdir(IXPView_output_folder) != []:
                         
                         del(tab[-1])
                         
-                        print
+                        print()
                         
-                        print tab
+                        print(tab)
                         
                         while tab[-1] == '' or tab[-1] == ';' :
                             
                             del(tab[-1])
                         
-                        print tab
+                        print(tab)
                         
                         couple_timestamp = '; '.join( tab )
                         
@@ -195,7 +195,7 @@ if os.listdir(IXPView_output_folder) != []:
 
 if os.listdir(IXPView_output_folder) != []:
     
-    for ixp in IXP_collector.keys():
+    for ixp in list(IXP_collector.keys()):
         
         CC_to_consider = IXP_CC[ixp]
         
@@ -219,15 +219,15 @@ if os.listdir(IXPView_output_folder) != []:
                         
                         del(tab[-1])
                         
-                        print
+                        print()
                         
-                        print tab
+                        print(tab)
                         
                         while tab[-1] == '' or tab[-1] == ';' :
                             
                             del(tab[-1])
                         
-                        print tab
+                        print(tab)
                         
                         couple_timestamp = '; '.join( tab )
                         
@@ -256,7 +256,7 @@ for CC in week_ASN_announcing_v6:
         
         fh.write('%s\n' %("""###Num Week; Timestamp beginning;  Timestamp end;  Datetime  beginning;  Datetime end; ASNs announcing v6 prefixes"""))
     
-    for couple_timestamp1 in week_ASN_announcing_v6[CC].keys():
+    for couple_timestamp1 in list(week_ASN_announcing_v6[CC].keys()):
         
         for elmt2 in week_ASN_announcing_v6[CC][couple_timestamp1]:
             
@@ -275,7 +275,7 @@ for CC in week_ASN_announcing_v4:
         
         fh.write('%s\n' %("""###Num Week; Timestamp beginning;  Timestamp end;  Datetime  beginning;  Datetime end; ASNs announcing v4 prefixes"""))
     
-    for couple_timestamp in week_ASN_announcing_v4[CC].keys():
+    for couple_timestamp in list(week_ASN_announcing_v4[CC].keys()):
         
         for elmt1 in week_ASN_announcing_v4[CC][couple_timestamp]:
             
@@ -290,11 +290,11 @@ for CC in week_ASN_announcing_v4:
     
         fh.write('%s\n' %("""###Num Week; Timestamp beginning;  Timestamp end;  Datetime  beginning;  Datetime end; Number ASNs announcing v4 prefixes; Number ASNs announcing v6 prefixes"""))
     
-    for couple_timestamp in week_ASN_announcing_v4[CC].keys():
+    for couple_timestamp in list(week_ASN_announcing_v4[CC].keys()):
         
         with open (output_folder +'LastMonth__Number_ASNs_announcing_v4_v6_at_IXPs_in_' + CC + '.txt', 'a') as fh:
 
-            if couple_timestamp not in week_ASN_announcing_v6[CC].keys():
+            if couple_timestamp not in list(week_ASN_announcing_v6[CC].keys()):
 
                 fh.write('%s; %s; %s\n' %(couple_timestamp, len(week_ASN_announcing_v4[CC][couple_timestamp]), ' 0' ))
                                         

@@ -15,7 +15,7 @@ from random import choice
 from time import sleep
 from collections import Counter
 import select, socket
-import urllib2, urllib
+import urllib.request, urllib.error, urllib.parse, urllib.request, urllib.parse, urllib.error
 import GeoIP
 import ipaddr, logging
 import gzip
@@ -47,16 +47,16 @@ location_logfile = create_Logfiles_folder()
 ## multi-years splitted into years
 yearList = multiyear()
 yearList.sort()
-print yearList
+print(yearList)
 
 ## last month (Now - 4weeks) splitted into weeks
 lastYearList = lastyear()
-print lastYearList
+print(lastYearList)
 lastYearList.sort()
 
 ## last month (Now - 4weeks) splitted into weeks
 lastMonthList = lastmonth()
-print lastMonthList
+print(lastMonthList)
 lastMonthList.sort()
 
 
@@ -71,9 +71,9 @@ CC_IXP = {}
 
 
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host = "localhost", user = "", passwd = "",  db = Current_db)
 cur = db.cursor()
-print 'Connected'
+print('Connected')
 
 query = "select IXP, RouteCollector, CC from AllRouteCollectors where Continent = '"+continent+"';"
 cur.execute(query)
@@ -81,11 +81,11 @@ data = cur.fetchall()
 i = 0
 while (i<len(data)):
     row = data[i]
-    if row[0] not in IXP_collector.keys():
+    if row[0] not in list(IXP_collector.keys()):
         IXP_collector[row[0]] = []
         IXP_CC[row[2]] = row[0]
     
-    if row[2] not in CC_IXP.keys():
+    if row[2] not in list(CC_IXP.keys()):
         CC_IXP[row[2]] = []
     if row[0] not in CC_IXP[row[2]]:
         CC_IXP[row[2]].append(row[0])
@@ -94,8 +94,8 @@ while (i<len(data)):
     i+=1
 
 
-print IXP_collector
-root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
+print(IXP_collector)
+root_folder = '/home/arda/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 output_folder = '../../Computation_outputs/9_Number_IPv6_vs_IPv4_prefixes_multiyear/'
 
 command = 'rm -rf ' + output_folder
@@ -135,35 +135,35 @@ if List_all_tables >0:
     month_prefix_bogon = {}
     year_prefix_bogon = {}
     
-    for ixp in IXP_collector.keys():
+    for ixp in list(IXP_collector.keys()):
         
         log_file_instance = open(location_logfile+'/'+name_log_file, 'a')
         
         
-        if ixp not in year_prefix.keys():
+        if ixp not in list(year_prefix.keys()):
             year_prefix[ixp] = {}
                 
-        if ixp not in year_prefix_bogon.keys():
+        if ixp not in list(year_prefix_bogon.keys()):
             year_prefix_bogon[ixp] = {}
         
-        if ixp not in month_prefix.keys():
+        if ixp not in list(month_prefix.keys()):
             month_prefix[ixp] = {}
                 
-        if ixp not in month_prefix_bogon.keys():
+        if ixp not in list(month_prefix_bogon.keys()):
             month_prefix_bogon[ixp] = {}
         
         
         
         for year in yearList:
             
-            if year not in year_prefix[ixp].keys():
+            if year not in list(year_prefix[ixp].keys()):
                 year_prefix[ixp][year] = {}
 
 
-            for month in xrange(1,13):
+            for month in range(1,13):
                 if 'Data__' + str(year) + "_" + str(month) in List_all_tables:
                     #print
-                    print
+                    print()
                     #print IXP_collector[ixp]
                     
                     #query = "select count(*) from Data__"+str(year)+"_"+str(month) + " ;"
@@ -179,18 +179,18 @@ if List_all_tables >0:
                     
                     query += """ RouteCollector = %s and (IP_version <> 'None')"""
                     
-                    print 'start_query :', datetime.now(), query
-                    print
-                    print datetime.now(), 'fetching data from ', ixp
+                    print('start_query :', datetime.now(), query)
+                    print()
+                    print(datetime.now(), 'fetching data from ', ixp)
                     
                     cur.execute(query, IXP_collector[ixp])
                     log_file_instance.write(str(now_datetime)+ ' Multi-year & last year Fetching data from IXP '+ ixp + '\n')
                     
-                    print 'Here is the query ', cur._executed
+                    print('Here is the query ', cur._executed)
                     data = cur.fetchall()
-                    print
-                    print 'end_query :', datetime.now() #, data
-                    print
+                    print()
+                    print('end_query :', datetime.now()) #, data
+                    print()
                     i = 0
                     
                     if len(data)>0:
@@ -223,7 +223,7 @@ if List_all_tables >0:
                             #print prefix, IPversion, OriginAS, ASpath
                             
                             ### ASNs Origin of prefixes  ranged per year
-                            if IPversion not in year_prefix[ixp][year].keys():
+                            if IPversion not in list(year_prefix[ixp][year].keys()):
                                 year_prefix[ixp][year][IPversion] = []
                                 
                                 
@@ -235,7 +235,7 @@ if List_all_tables >0:
                             ## ASNs Origin of prefixes: Check if we are in the last year and proceed for lastyear
                             if (year, month) in lastYearList:
                                 
-                                if str(month)+'-'+str(year) not in month_prefix[ixp].keys():
+                                if str(month)+'-'+str(year) not in list(month_prefix[ixp].keys()):
                                     month_prefix[ixp][str(month)+'-'+str(year)] = {}
                                 
                                 if IPversion not in month_prefix[ixp][str(month)+'-'+str(year)]:
@@ -250,7 +250,7 @@ if List_all_tables >0:
                             i += 1
 
                     else:
-                        print 'No prefix found for ', ixp, ' in ' , 'Data__'+str(year)+'_'+str(month)
+                        print('No prefix found for ', ixp, ' in ' , 'Data__'+str(year)+'_'+str(month))
 
 
 
@@ -268,19 +268,19 @@ if List_all_tables >0:
 
 
 
-for ixp in IXP_collector.keys():
+for ixp in list(IXP_collector.keys()):
     
-    if ixp in month_prefix.keys():
+    if ixp in list(month_prefix.keys()):
         
         entete = []
         
-        for id_month_and_year in month_prefix[ixp].keys():
+        for id_month_and_year in list(month_prefix[ixp].keys()):
             
             #print month_prefix[ixp].keys()
             
             if len(year_prefix[ixp][year]) > 0:
             
-                for IPversion in month_prefix[ixp][id_month_and_year].keys():
+                for IPversion in list(month_prefix[ixp][id_month_and_year].keys()):
                     
                     
                     if IPversion + 'added' not in entete:
@@ -310,15 +310,15 @@ for ixp in IXP_collector.keys():
 
 
 
-    if ixp in year_prefix.keys():
+    if ixp in list(year_prefix.keys()):
         
         for year in yearList:
             
-            if year in year_prefix[ixp].keys():
+            if year in list(year_prefix[ixp].keys()):
                 
                 if len(year_prefix[ixp][year]) > 0:
             
-                    for IPversion in year_prefix[ixp][year].keys():
+                    for IPversion in list(year_prefix[ixp][year].keys()):
                         
                         if IPversion + 'added' not in entete:
                         

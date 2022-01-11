@@ -16,7 +16,7 @@ from random import choice
 from time import sleep
 from collections import Counter
 import select, socket
-import urllib2, urllib
+import urllib.request, urllib.error, urllib.parse, urllib.request, urllib.parse, urllib.error
 import GeoIP
 import ipaddr, logging
 import gzip
@@ -47,16 +47,16 @@ location_logfile = create_Logfiles_folder()
 ## multi-years splitted into years
 yearList = multiyear()
 yearList.sort()
-print yearList
+print(yearList)
 
 ## last month (Now - 4weeks) splitted into weeks
 lastYearList = lastyear()
-print lastYearList
+print(lastYearList)
 lastYearList.sort()
 
 ## last month (Now - 4weeks) splitted into weeks
 lastMonthList = lastmonth()
-print lastMonthList
+print(lastMonthList)
 lastMonthList.sort()
 
 
@@ -73,9 +73,9 @@ region = DB_configuration.region
 
 
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host = "localhost", user = "", passwd = "",  db = Current_db)
 cur = db.cursor()
-print 'Connected'
+print('Connected')
 
 query = "select IXP, RouteCollector, CC from AllRouteCollectors where Continent = '"+continent+"';"
 cur.execute(query)
@@ -83,11 +83,11 @@ data = cur.fetchall()
 i = 0
 while (i<len(data)):
     row = data[i]
-    if row[0] not in IXP_collector.keys():
+    if row[0] not in list(IXP_collector.keys()):
         IXP_collector[row[0]] = []
         IXP_CC[row[0]] = row[2]
     
-    if row[2] not in CC_IXP.keys():
+    if row[2] not in list(CC_IXP.keys()):
         CC_IXP[row[2]] = []
     if row[0] not in CC_IXP[row[2]]:
         CC_IXP[row[2]].append(row[0])
@@ -97,8 +97,8 @@ while (i<len(data)):
 
 
 
-print IXP_collector
-root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
+print(IXP_collector)
+root_folder = '/home/arda/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 
 output_folder = '../../Computation_outputs_National_View/4_percentage_Origin_by_country_assignment_lastyear_multiyear/'
 
@@ -141,7 +141,7 @@ if List_all_tables > 0:
     month_ASN = {}
     ASN_month = {}
     
-    for ixp in IXP_collector.keys():
+    for ixp in list(IXP_collector.keys()):
         
         CC_key = IXP_CC[ixp]
         
@@ -155,21 +155,21 @@ if List_all_tables > 0:
         
         create_output_MultiYear.write('Year; ' + 'Origin ASN Visible' + '\n')
         
-        if CC_key  not in year_ASN.keys():
+        if CC_key  not in list(year_ASN.keys()):
             
             year_ASN[CC_key] = {}
         
-        if CC_key  not in month_ASN.keys():
+        if CC_key  not in list(month_ASN.keys()):
             
             month_ASN[CC_key] = {}
         
         for year in yearList:
             
-            if year not in year_ASN[CC_key].keys():
+            if year not in list(year_ASN[CC_key].keys()):
                 
                 year_ASN[CC_key][year] = []
 
-            for month in xrange(1,13):
+            for month in range(1,13):
                 if 'Data__' + str(year) + "_" + str(month) in List_all_tables:
                     
                     #print IXP_collector[ixp]
@@ -190,16 +190,16 @@ if List_all_tables > 0:
                     query += " RouteCollector = %s and (OriginAS != 'None' and OriginAS is not NULL and OriginAS != 'NULL')"
                     
                     
-                    print 'start_query :', now_datetime, query
-                    print datetime.now(), 'fetching data from ', ixp
+                    print('start_query :', now_datetime, query)
+                    print(datetime.now(), 'fetching data from ', ixp)
                     
                     cur.execute(query, IXP_collector[ixp])
                     log_file_instance.write(str(now_datetime)+ ' Multi-year & last year Fetching data from IXP '+ ixp + '\n')
                     
-                    print 'Here is the query ', cur._executed
+                    print('Here is the query ', cur._executed)
                     data = cur.fetchall()
 
-                    print 'end_query :', now_datetime #, data
+                    print('end_query :', now_datetime) #, data
                     
 
                     
@@ -217,7 +217,7 @@ if List_all_tables > 0:
                                 try:
                                     OriginASNs.append(int(row[0]))
                                 except:
-                                    print 'Case 1: Alert We pass for this path ', row[1]
+                                    print('Case 1: Alert We pass for this path ', row[1])
                         
                             else:
                                 
@@ -226,7 +226,7 @@ if List_all_tables > 0:
                                 try:
                                     OriginASNs.append(int(str(path[-2]).strip()))
                                 except:
-                                    print 'Case 2: Alert We pass for this path ', row[1]
+                                    print('Case 2: Alert We pass for this path ', row[1])
                                 
                                 
                             for OriginASNs_elmt in OriginASNs :
@@ -238,7 +238,7 @@ if List_all_tables > 0:
                                 ## Check if we are in the last year and proceed for lastyear
                                 if (year, month) in lastYearList:
                                     
-                                    if str(month)+'-'+str(year) not in month_ASN[CC_key].keys():
+                                    if str(month)+'-'+str(year) not in list(month_ASN[CC_key].keys()):
                                         month_ASN[CC_key][str(month)+'-'+str(year)] = []
                                 
                                     if OriginASNs_elmt not in month_ASN[CC_key][str(month)+'-'+str(year)]:
@@ -248,7 +248,7 @@ if List_all_tables > 0:
                             i += 1
 
                     else:
-                        print 'No ASN found for ', CC_key, ' in ' , 'Data__'+str(year)+'_'+str(month)
+                        print('No ASN found for ', CC_key, ' in ' , 'Data__'+str(year)+'_'+str(month))
                             
 
 
@@ -265,7 +265,7 @@ db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user,
 cur = db.cursor()
 
 query = "select distinct ASN, CC from ASNs_"+region+" where (status = 'allocated' or status = 'assigned') ;"
-print 'query = ',  query
+print('query = ',  query)
 cur.execute (query)
 data = cur.fetchall()
 i = 0
@@ -274,7 +274,7 @@ i = 0
 if len(data) > 0:
     while (i<len(data)):
         row = data[i]
-        print row
+        print(row)
         asn = row[0] #type string
         current_CC = row[1]
         
@@ -284,7 +284,7 @@ if len(data) > 0:
             asn = int(tab[0])*65536 + int(tab[1])
         
         asn = int(asn) #format int
-        if current_CC not in  CC_ASNs_AFRINIC.keys():
+        if current_CC not in  list(CC_ASNs_AFRINIC.keys()):
             CC_ASNs_AFRINIC[current_CC] = []
         
         if asn not in CC_ASNs_AFRINIC[current_CC]:
@@ -297,7 +297,7 @@ filename_output_ASNs_by_AFRINIC = output_folder + 'Number_ASNs_assigned_by_Afrin
 
 with open (filename_output_ASNs_by_AFRINIC, 'a') as fg:
 
-    for CC in CC_ASNs_AFRINIC.keys():
+    for CC in list(CC_ASNs_AFRINIC.keys()):
 
         fg.write('%s;%s\n' %(CC, len(CC_ASNs_AFRINIC[CC])))
 
@@ -305,7 +305,7 @@ with open (filename_output_ASNs_by_AFRINIC, 'a') as fg:
 
 with open(output_folder + 'List_ASNs_assigned_by_RIRs/List_ASNs_assigned_by_AFRINIC.txt', 'a') as fgh:
     
-    for CC in CC_ASNs_AFRINIC.keys():
+    for CC in list(CC_ASNs_AFRINIC.keys()):
         
         for elmt in CC_ASNs_AFRINIC[CC]:
             
@@ -313,7 +313,7 @@ with open(output_folder + 'List_ASNs_assigned_by_RIRs/List_ASNs_assigned_by_AFRI
 
 
 
-for ixp in IXP_collector.keys():
+for ixp in list(IXP_collector.keys()):
     
     CC_key = IXP_CC[ixp]
 
@@ -321,7 +321,7 @@ for ixp in IXP_collector.keys():
     
     if os.path.isfile(filename):
     
-        print 'file exists'
+        print('file exists')
     
     else:
     
@@ -334,7 +334,7 @@ for ixp in IXP_collector.keys():
 
     if os.path.isfile(filename):
     
-        print 'file exists'
+        print('file exists')
     
     else:
 
@@ -347,19 +347,19 @@ for ixp in IXP_collector.keys():
 
 
 ## Note that Local means local to the country of the IXP
-for ixp in IXP_collector.keys():
+for ixp in list(IXP_collector.keys()):
     
     CC_key = IXP_CC[ixp]
     
     current_CC = CC_key
     
-    if CC_key in month_ASN.keys():
+    if CC_key in list(month_ASN.keys()):
         
         filename = output_folder+'LastYear__local_vs_External_ASNs_to_the_country_hosting_IXP_visible_at_IXP_'+CC_key+'.txt'
         
         intersection1 = []
         
-        for elmt in month_ASN[CC_key].keys():
+        for elmt in list(month_ASN[CC_key].keys()):
     
                 set_ASNs = copy.deepcopy(month_ASN[CC_key][elmt])
                 
@@ -383,7 +383,7 @@ for ixp in IXP_collector.keys():
 
 
 
-    if CC_key in year_ASN.keys():
+    if CC_key in list(year_ASN.keys()):
         
         filename = output_folder+'MultiYear__local_vs_External_ASNs_to_the_country_hosting_IXP_visible_at_IXP_'+CC_key+'.txt'
         

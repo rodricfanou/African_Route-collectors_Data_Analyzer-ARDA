@@ -29,7 +29,7 @@ from random import choice
 from time import sleep
 from collections import Counter
 import select, socket
-import urllib2, urllib
+import urllib.request, urllib.error, urllib.parse, urllib.request, urllib.parse, urllib.error
 import GeoIP
 import ipaddr, logging
 import gzip
@@ -45,7 +45,7 @@ import DB_configuration
 import bgp_rib
 from define_timescales import *
 from functions import *
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 
 
 def cidrsOverlap(cidr0, cidr1):
@@ -58,10 +58,10 @@ def build_list_ASNs_allocated_by_RIRs_till (current_year, current_month, dict_AS
     date_combo = (d - epoch).total_seconds()
     Dict_sortie = {}
     
-    for timestamp_key in dict_ASNs_alloc.keys():
+    for timestamp_key in list(dict_ASNs_alloc.keys()):
         if timestamp_key < date_combo:
-            for CC in dict_ASNs_alloc[timestamp_key].keys():
-                if CC not in Dict_sortie.keys():
+            for CC in list(dict_ASNs_alloc[timestamp_key].keys()):
+                if CC not in list(Dict_sortie.keys()):
                     Dict_sortie[CC] = []
                 Dict_sortie[CC] += dict_ASNs_alloc[timestamp_key][CC]
 
@@ -70,7 +70,7 @@ def build_list_ASNs_allocated_by_RIRs_till (current_year, current_month, dict_AS
 
 
 
-root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
+root_folder = '/home/arda/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 output_folder = '../../Computation_outputs/16_comparison_behavior_lastmonth_better/'
 command = 'rm -rf ' + output_folder
 os.system(command)
@@ -103,7 +103,7 @@ target_url = 'http://thyme.rand.apnic.net/current/data-raw-table'
 
 Prefixes_on_the_internet['Japan_DIXIE'] = []
     
-data = urllib2.urlopen(target_url) # it's a file like object and works just like a file
+data = urllib.request.urlopen(target_url) # it's a file like object and works just like a file
     
 for line in data: # files are iterable
 
@@ -136,7 +136,7 @@ target_url = 'http://thyme.rand.apnic.net/london/data-raw-table'
 
 Prefixes_on_the_internet['London_LINX'] = []
 
-data = urllib2.urlopen(target_url) # it's a file like object and works just like a file
+data = urllib.request.urlopen(target_url) # it's a file like object and works just like a file
 
 for line in data: # files are iterable
     
@@ -168,7 +168,7 @@ target_url = 'http://thyme.rand.apnic.net/us/data-raw-table'
 
 Prefixes_on_the_internet['Washington_US'] = []
 
-data = urllib2.urlopen(target_url) # it's a file like object and works just like a file
+data = urllib.request.urlopen(target_url) # it's a file like object and works just like a file
 
 for line in data: # files are iterable
     
@@ -206,15 +206,15 @@ log_file_instance.write('startdate:' + now_datetime)
 ### Define timelines and timescales
 ## multi-years splitted into years
 yearList = multiyear()
-print yearList
+print(yearList)
 
 ## last month (Now - 4weeks) splitted into weeks
 lastYearList = lastyear()
-print lastYearList
+print(lastYearList)
 
 ## last month (Now - 4weeks) splitted into weeks
 lastMonthList = lastmonth()
-print lastMonthList
+print(lastMonthList)
 
 
 ## Other initialisations
@@ -223,7 +223,7 @@ IXP_collector = {}
 IXP_CC = {}
 Current_db = 'MergedData'
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host = "localhost", user = "", passwd = "",  db = Current_db)
 cur = db.cursor()
 #print 'Connected'
 
@@ -234,13 +234,13 @@ data = cur.fetchall()
 i = 0
 while (i<len(data)):
     row = data[i]
-    if row[0] not in IXP_collector.keys():
+    if row[0] not in list(IXP_collector.keys()):
         IXP_collector[row[0]] = []
         IXP_CC[row[0]] = row[2]
     IXP_collector[row[0]].append(row[1])
     i+=1
 
-print IXP_collector
+print(IXP_collector)
 
 
 
@@ -265,7 +265,7 @@ log_file_instance = open(location_logfile+'/'+name_log_file, 'a')
 
 Current_db = 'RIRs'
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host = "localhost", user = "", passwd = "",  db = Current_db)
 cur = db.cursor()
 
 
@@ -314,7 +314,7 @@ for RIRs_prefix_table in List_RIRs_prefixes:
 	    
 		
             
-            print 'row = ', row,  date_row[:4] + '_' + date_row[4:6] + '_' + date_row[6:8]
+            print('row = ', row,  date_row[:4] + '_' + date_row[4:6] + '_' + date_row[6:8])
             date_combo = date_row[:4] + '_' + date_row[4:6] + '_' + date_row[6:8]
             
             epoch = datetime(1970, 1, 1)
@@ -325,7 +325,7 @@ for RIRs_prefix_table in List_RIRs_prefixes:
             tab_RIR = RIRs_prefix_table.split('_')
             
             if current_CC != '':
-                if alloc_prefix not in RIRs_prefixes.keys():
+                if alloc_prefix not in list(RIRs_prefixes.keys()):
                     RIRs_prefixes[alloc_prefix] = {}
                     RIRs_prefixes[alloc_prefix]['Date_alloc'] = date_combo
                     RIRs_prefixes[alloc_prefix]['RIR'] = tab_RIR[-1]
@@ -373,7 +373,7 @@ if len(data)>0:
             month_row = '01'
             day_row = '01'
     
-        print 'row = ', row,  year_row + '_' + month_row + '_' + day_row
+        print('row = ', row,  year_row + '_' + month_row + '_' + day_row)
         
         
         epoch = datetime(1970, 1, 1)
@@ -385,7 +385,7 @@ if len(data)>0:
         
         if current_CC != '':
             
-            if alloc_prefix not in RIRs_prefixes.keys():
+            if alloc_prefix not in list(RIRs_prefixes.keys()):
                 RIRs_prefixes[alloc_prefix] = {}
                 RIRs_prefixes[alloc_prefix]['Date_alloc'] = date_combo
                 RIRs_prefixes[alloc_prefix]['RIR'] = tab_RIR[-1]
@@ -400,7 +400,7 @@ if len(data)>0:
 
 
 #pprint(RIRs_prefixes)
-Keep_all_prefixes = copy.deepcopy(RIRs_prefixes.keys())
+Keep_all_prefixes = copy.deepcopy(list(RIRs_prefixes.keys()))
 
 
 ### ALERT: CAN BE SUPPRESSED LATER
@@ -409,7 +409,7 @@ Keep_all_prefixes = copy.deepcopy(RIRs_prefixes.keys())
 ### Which ones of those prefixes appear during the period ?
 Current_db = 'MergedData'
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host = "localhost", user = "", passwd = "",  db = Current_db)
 cur = db.cursor()
 
 
@@ -431,13 +431,13 @@ if len(List_all_tables) > 0:
     #tab = ['2017-01-20']
     tab1 = tab[0].split('-')
     timestamp_now = (datetime(int(tab1[0]), int(tab1[1]), int(tab1[2])) - datetime(1970, 1, 1)).total_seconds()
-    print 'timestamp = ', timestamp_now
+    print('timestamp = ', timestamp_now)
     
     couples_year_month = [(tab1[0], tab1[1])]
     
     ## find the number of the first week of the month in the year
     week_number_last_day = find_week_num_in_year(int(tab1[0]), int(tab1[1]), int(tab1[2]))
-    print 'week_number_last_day = ', week_number_last_day
+    print('week_number_last_day = ', week_number_last_day)
     
     ### Look for date and timestamp one month before
     #timestamp_one_month_before = int(timestamp_now) - 2592000
@@ -450,7 +450,7 @@ if len(List_all_tables) > 0:
     tab2 = date_one_month_bef.split('-')
     
     week_number_first_day = find_week_num_in_year(int(tab2[0]), int(tab2[1]), int(tab2[2]))
-    print 'week_number_first_day = ', week_number_first_day
+    print('week_number_first_day = ', week_number_first_day)
     
     if (tab2[0], tab2[1]) not in couples_year_month:
         couples_year_month.append( (tab2[0], tab2[1]) )
@@ -491,7 +491,7 @@ if len(List_all_tables) > 0:
         keep_tsp = int(begweek) - 86400
         #1467417600 - 1467331200
         
-        print List_beg_end_each_week, 'hello second step'
+        print(List_beg_end_each_week, 'hello second step')
         num = week_number_first_day
         
         
@@ -508,9 +508,9 @@ if len(List_all_tables) > 0:
             ind +=1
             num += 1
 
-    print 'List_beg_end_each_week = ', List_beg_end_each_week
+    print('List_beg_end_each_week = ', List_beg_end_each_week)
 
-    print 'couples_year_month = ', couples_year_month
+    print('couples_year_month = ', couples_year_month)
 
     ## Commented because we do not need it right now
     #prefix_week = {}
@@ -518,11 +518,11 @@ if len(List_all_tables) > 0:
 
 
 
-    for ixp in IXP_collector.keys():
+    for ixp in list(IXP_collector.keys()):
         
       #create_output = open(output_folder+'LastMonth__list_visible_prefixes_at_IXP_'+ixp+'.txt', 'a')
         
-      if ixp not in week_prefix.keys():
+      if ixp not in list(week_prefix.keys()):
           
         week_prefix[ixp] = []
       
@@ -530,8 +530,8 @@ if len(List_all_tables) > 0:
     
         query = "select distinct Network from Data__" + str(int(window[0]))+"_"+str(int(window[1])) + " where Timestamp >= %s and Timestamp <= %s  and ("
         
-        print
-        print
+        print()
+        print()
         
         k = 0
         while k < len(IXP_collector[ixp]) -1:
@@ -540,9 +540,9 @@ if len(List_all_tables) > 0:
         
         query += " RouteCollector = %s) and TypeRC = 'PCH' "  ## ALERT: limit 2 TO SUPPRESS AFTER.
 
-        print 'start_query :', now_datetime, query
+        print('start_query :', now_datetime, query)
 
-        print datetime.now(), 'week fetching data from ', ixp
+        print(datetime.now(), 'week fetching data from ', ixp)
 
         for couple_timestamp in List_beg_end_each_week:
             
@@ -556,18 +556,18 @@ if len(List_all_tables) > 0:
             try:
                 cur.execute(query, list_variables)
                 
-                print 'Running query for ', ixp , ' and variables ', IXP_collector[ixp]
+                print('Running query for ', ixp , ' and variables ', IXP_collector[ixp])
                 
                 #log_file_instance.write(str(now_datetime)+ ' Fetching data from IXP '+ ixp + '\n')
 
-                print 'Here is the query ', cur._executed
+                print('Here is the query ', cur._executed)
                 data = cur.fetchall()
 
-                print 'end_query :', now_datetime #, data
+                print('end_query :', now_datetime) #, data
             
             except:
                 
-                print 'Alert table ', "Data__"+str(lastMonthList[0][0])+"_"+str(lastMonthList[0][1]),  ' does not exist yet'
+                print('Alert table ', "Data__"+str(lastMonthList[0][0])+"_"+str(lastMonthList[0][1]),  ' does not exist yet')
                 
                 data = []
             
@@ -613,7 +613,7 @@ if len(List_all_tables) > 0:
                                 
                             if check_bogon:
                                 
-                                print 'Pass because bogon'
+                                print('Pass because bogon')
                             
                             else:
                                 
@@ -634,9 +634,9 @@ if len(List_all_tables) > 0:
                                         
                                         if cidrsOverlap(prefix_IX, prefix_RIR) :
                                             
-                                            print
+                                            print()
                                             
-                                            print prefix_IX, ' overlaps ', prefix_RIR
+                                            print(prefix_IX, ' overlaps ', prefix_RIR)
                                             
                                             week_prefix[ixp].append(prefix)
                                             
@@ -644,7 +644,7 @@ if len(List_all_tables) > 0:
                                                 
                                                 fgg.write('%s\n' %(prefix))
                                             
-                                                print 'We added prefix ', prefix, ' to ', output_folder+'Output_Intersection_week_prefix___' + ixp + '.txt'
+                                                print('We added prefix ', prefix, ' to ', output_folder+'Output_Intersection_week_prefix___' + ixp + '.txt')
                                     
                                             j = len(Keep_all_prefixes)
             
@@ -654,14 +654,14 @@ if len(List_all_tables) > 0:
                   i += 1
 
 
-print
-for ixp in week_prefix.keys():
+print()
+for ixp in list(week_prefix.keys()):
     week_prefix[ixp] = []
-    print ' prefixes seen at the IXP ', ixp, ' = ', week_prefix[ixp]
-    print
-    print ixp, 'len(week_prefix[ixp]) = ', len(week_prefix[ixp])
-    print
-    print
+    print(' prefixes seen at the IXP ', ixp, ' = ', week_prefix[ixp])
+    print()
+    print(ixp, 'len(week_prefix[ixp]) = ', len(week_prefix[ixp]))
+    print()
+    print()
 
 
 
@@ -669,9 +669,9 @@ for ixp in week_prefix.keys():
 ######## Length shorter equal or longer; seen from each IXP
 Computation_announcements = {}
 
-for IXP_in_world in Prefixes_on_the_internet.keys():
+for IXP_in_world in list(Prefixes_on_the_internet.keys()):
 
-    if IXP_in_world not in Computation_announcements.keys():
+    if IXP_in_world not in list(Computation_announcements.keys()):
 
         Computation_announcements[IXP_in_world] = {}
     
@@ -689,29 +689,29 @@ for IXP_in_world in Prefixes_on_the_internet.keys():
 
     for Global_prefix in Prefixes_on_the_internet[IXP_in_world]:
         
-        for ixp in week_prefix.keys():
+        for ixp in list(week_prefix.keys()):
             
             #create_output = open(output_folder+'Comparison_members_behavior_'+ixp+'.txt', 'a')
             
-            if ixp not in Computation_announcements[IXP_in_world].keys():
+            if ixp not in list(Computation_announcements[IXP_in_world].keys()):
 
                 Computation_announcements[IXP_in_world][ixp] = {}
             
-            if 'IXPShorterThanUpstream' not in Computation_announcements[IXP_in_world][ixp].keys():
+            if 'IXPShorterThanUpstream' not in list(Computation_announcements[IXP_in_world][ixp].keys()):
             
                 Computation_announcements[IXP_in_world][ixp]['IXPShorterThanUpstream'] = []
             
             create_file1 = open(output_folder+'List_prefix_announcements_IXPShorterThanUpstream__for__'+ ixp+ '.txt', 'a')
             
 
-            if 'IXPLongerThanUpstream' not in Computation_announcements[IXP_in_world][ixp].keys():
+            if 'IXPLongerThanUpstream' not in list(Computation_announcements[IXP_in_world][ixp].keys()):
     
                 Computation_announcements[IXP_in_world][ixp]['IXPLongerThanUpstream'] = []
             
             create_file2 = open(output_folder+'List_prefix_announcements_IXPLongerThanUpstream__for__'+ ixp+ '.txt', 'a')
             
             
-            if 'IXPBalancedUpstream' not in Computation_announcements[IXP_in_world][ixp].keys():
+            if 'IXPBalancedUpstream' not in list(Computation_announcements[IXP_in_world][ixp].keys()):
             
                 Computation_announcements[IXP_in_world][ixp]['IXPBalancedUpstream'] = []
             
@@ -751,7 +751,7 @@ for IXP_in_world in Prefixes_on_the_internet.keys():
                         test = 'KO'
                     
                     
-                    print prefix_seen_IX, prefix_Internet
+                    print(prefix_seen_IX, prefix_Internet)
                     
                     if test == 'OK':
                         
@@ -763,7 +763,7 @@ for IXP_in_world in Prefixes_on_the_internet.keys():
                             
                             to_add = str(prefix_IXP) + '__' + str(Global_prefix)
                         
-                            print prefix_seen_IX, 'overlap with ', prefix_Internet
+                            print(prefix_seen_IX, 'overlap with ', prefix_Internet)
                             
                             
                             
@@ -771,7 +771,7 @@ for IXP_in_world in Prefixes_on_the_internet.keys():
                             
                             if int(tab_IXP[-1]) > int(tab_Internet[-1]):
                                 
-                                print int(tab_IXP[-1]) , ' < ', int(tab_Internet[-1]) , ' but num host IXP > num host Internet.'
+                                print(int(tab_IXP[-1]) , ' < ', int(tab_Internet[-1]) , ' but num host IXP > num host Internet.')
                                 
                                 if to_add not in Computation_announcements[IXP_in_world][ixp]['IXPShorterThanUpstream']:
                             
@@ -783,7 +783,7 @@ for IXP_in_world in Prefixes_on_the_internet.keys():
                         
                             elif int(tab_IXP[-1]) < int(tab_Internet[-1]):
                                 
-                                print int(tab_IXP[-1]) , ' > ', int(tab_Internet[-1]), ' but num host IXP < num host Internet'
+                                print(int(tab_IXP[-1]) , ' > ', int(tab_Internet[-1]), ' but num host IXP < num host Internet')
                             
                                 if to_add not in Computation_announcements[IXP_in_world][ixp]['IXPLongerThanUpstream']:
                                 
@@ -795,7 +795,7 @@ for IXP_in_world in Prefixes_on_the_internet.keys():
 
                             elif int(tab_IXP[-1]) == int(tab_Internet[-1]):
                                 
-                                print int(tab_IXP[-1]) ,  ' == ', int(tab_Internet[-1])
+                                print(int(tab_IXP[-1]) ,  ' == ', int(tab_Internet[-1]))
 
                                 if to_add not in Computation_announcements[IXP_in_world][ixp]['IXPBalancedUpstream']:
                                 
@@ -809,9 +809,9 @@ for IXP_in_world in Prefixes_on_the_internet.keys():
 
 
 
-for IXP_in_world in Computation_announcements.keys():
+for IXP_in_world in list(Computation_announcements.keys()):
     
-    for ixp in Computation_announcements[IXP_in_world].keys():
+    for ixp in list(Computation_announcements[IXP_in_world].keys()):
         
         create_output = open(output_folder+'Comparison_members_behavior_'+ixp+'.txt', 'a')
         

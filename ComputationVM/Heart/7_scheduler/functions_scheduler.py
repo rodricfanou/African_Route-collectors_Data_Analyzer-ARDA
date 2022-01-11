@@ -10,7 +10,7 @@ def count_number_days(date1, date2):
     date_beg = datetime.strptime(date1, "%d/%m/%Y")
     date_end = datetime.strptime(date2, "%d/%m/%Y")
     
-    print 'Date =', date_beg, date_end
+    print('Date =', date_beg, date_end)
     
     if date_beg <= date_end :
         
@@ -42,9 +42,9 @@ def Check_tables_for_insertions(database):
     Current_db = database
     
     ## connect to the DB
-    db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+    db = MySQLdb.connect(host = "localhost", user = "", passwd = "",  db = Current_db)
     cur = db.cursor()
-    print 'Connected'
+    print('Connected')
 
     #Create a datetime object with today's value
     today = datetime.datetime.today()
@@ -66,22 +66,22 @@ def Check_tables_for_insertions(database):
 
     Original_table  = 'Data__2003_1'
 
-    print table1, table2
+    print(table1, table2)
 
     ## Check if today table exists
 
     stmt = "SHOW TABLES LIKE '" + table1 + "'"
-    print stmt
+    print(stmt)
     cur.execute(stmt)
     result = cur.fetchone()
-    print result
+    print(result)
     if result:
         # there is a table for today
-        print 'the table ', table1, ' exists'
+        print('the table ', table1, ' exists')
     
     else:
         # there is no table for today; create it
-        print 'the table ', table1, ' does not exist'
+        print('the table ', table1, ' does not exist')
 
         stmt = """CREATE TABLE """ + table1 + """ LIKE """ + Original_table ;
         cur.execute(stmt)
@@ -89,17 +89,17 @@ def Check_tables_for_insertions(database):
 
 
     stmt = "SHOW TABLES LIKE '" + table2 + "'"
-    print stmt
+    print(stmt)
     cur.execute(stmt)
     result = cur.fetchone()
-    print result
+    print(result)
     if result:
         # there is a table for today
-        print 'the table ', table2, ' exists'
+        print('the table ', table2, ' exists')
 
     else:
         # there is no table for today; create it
-        print 'the table ', table2, ' does not exist'
+        print('the table ', table2, ' does not exist')
         
         stmt = """CREATE TABLE """ + table2 + """ LIKE """ + Original_table ;
         cur.execute(stmt)

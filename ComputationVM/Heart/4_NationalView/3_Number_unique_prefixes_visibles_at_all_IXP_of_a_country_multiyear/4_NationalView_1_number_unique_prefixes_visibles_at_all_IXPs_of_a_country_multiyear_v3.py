@@ -32,7 +32,7 @@ from random import choice
 from time import sleep
 from collections import Counter
 import select, socket
-import urllib2, urllib
+import urllib.request, urllib.error, urllib.parse, urllib.request, urllib.parse, urllib.error
 import GeoIP
 import ipaddr, logging
 import gzip
@@ -71,17 +71,17 @@ location_logfile = create_Logfiles_folder()
 ### Define timelines and timescales
 ## multi-years splitted into years
 yearList = multiyear()
-print yearList
+print(yearList)
 
 
 ## last month (Now - 4weeks) splitted into weeks
 lastYearList = lastyear()
-print lastYearList
+print(lastYearList)
 
 
 ## last month (Now - 4weeks) splitted into weeks
 lastMonthList = lastmonth()
-print lastMonthList
+print(lastMonthList)
 
 
 ## Other initialisations
@@ -94,9 +94,9 @@ month_prefix_bogon = {}
 
 Current_db = 'MergedData'
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host = "localhost", user = "", passwd = "",  db = Current_db)
 cur = db.cursor()
-print 'Connected'
+print('Connected')
 
 
 query = "select IXP, RouteCollector, CC from AllRouteCollectors where Continent = '"+continent+"';"
@@ -106,11 +106,11 @@ i = 0
 while (i<len(data)):
     row = data[i]
     
-    if row[0] not in IXP_collector.keys():
+    if row[0] not in list(IXP_collector.keys()):
         IXP_collector[row[0]] = []
         IXP_CC[row[0]] = row[2]
     
-    if row[2] not in month_prefix.keys():
+    if row[2] not in list(month_prefix.keys()):
         month_prefix[row[2]] = {}
         month_prefix_bogon[row[2]] = {}
 
@@ -120,13 +120,13 @@ while (i<len(data)):
 
 
 
-print 'IXP_collector = ', IXP_collector
-print
-print 'IXP_CC = ', IXP_CC
-print
-print 'month_ASN = ', month_prefix
+print('IXP_collector = ', IXP_collector)
+print()
+print('IXP_CC = ', IXP_CC)
+print()
+print('month_ASN = ', month_prefix)
 
-root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
+root_folder = '/home/arda/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 
 output_folder = '../../Computation_outputs_National_View/3_Number_unique_prefixes_visibles_at_all_IXP_of_a_country_multiyear/'
 
@@ -148,7 +148,7 @@ os.system(command)
 
 if os.listdir(IXPView_output_folder) != []:
     
-    for ixp in IXP_collector.keys():
+    for ixp in list(IXP_collector.keys()):
         
         CC_to_consider = IXP_CC[ixp]
         
@@ -162,7 +162,7 @@ if os.listdir(IXPView_output_folder) != []:
                     
                     line = line.strip()
                     
-                    print line
+                    print(line)
                         
                     tab = line.split('; ')
                             
@@ -193,7 +193,7 @@ if os.listdir(IXPView_output_folder) != []:
                             
                             prefix_to_add_bogon = tab[-2]
                             
-                            print 'Bogon prefix = ', prefix_to_add_bogon
+                            print('Bogon prefix = ', prefix_to_add_bogon)
                             
                             del(tab[-1])
                             
@@ -201,21 +201,21 @@ if os.listdir(IXPView_output_folder) != []:
                             
                             couple_timestamp_bogon = '; '.join(tab)
                             
-                            print 'couple_timestamp = ', couple_timestamp_bogon
+                            print('couple_timestamp = ', couple_timestamp_bogon)
                             
-                            if CC_to_consider not in month_prefix.keys():
+                            if CC_to_consider not in list(month_prefix.keys()):
                                 
                                 month_prefix[CC_to_consider] = {}
                             
-                            if CC_to_consider not in month_prefix_bogon.keys():
+                            if CC_to_consider not in list(month_prefix_bogon.keys()):
                                 
                                 month_prefix_bogon[CC_to_consider] = {}
                             
-                            if couple_timestamp_bogon not in month_prefix[CC_to_consider].keys():
+                            if couple_timestamp_bogon not in list(month_prefix[CC_to_consider].keys()):
                                 
                                 month_prefix[CC_to_consider][couple_timestamp_bogon] = []
                             
-                            if couple_timestamp_bogon not in month_prefix_bogon[CC_to_consider].keys():
+                            if couple_timestamp_bogon not in list(month_prefix_bogon[CC_to_consider].keys()):
                                 
                                 month_prefix_bogon[CC_to_consider][couple_timestamp_bogon] = []
                             
@@ -242,21 +242,21 @@ if os.listdir(IXPView_output_folder) != []:
                                 
                                 prefix_to_add = tab[-1]
                                 
-                                print 'prefix = ', prefix_to_add
+                                print('prefix = ', prefix_to_add)
                                 
                                 del(tab[-1])
                                 
                                 couple_timestamp = '; '.join( tab )
                                 
-                                print 'couple_timestamp = ', couple_timestamp
+                                print('couple_timestamp = ', couple_timestamp)
                                 
-                                print
+                                print()
                                 
-                                if CC_to_consider not in month_prefix.keys():
+                                if CC_to_consider not in list(month_prefix.keys()):
                                     
                                     month_prefix[CC_to_consider] = {}
                             
-                                if couple_timestamp not in month_prefix[CC_to_consider].keys():
+                                if couple_timestamp not in list(month_prefix[CC_to_consider].keys()):
                                     
                                     month_prefix[CC_to_consider][couple_timestamp] = []
                                 
@@ -278,13 +278,13 @@ for CC in month_prefix:
     
         fh21.close()
 
-    for couple_timestamp1 in month_prefix[CC].keys():
+    for couple_timestamp1 in list(month_prefix[CC].keys()):
         
         for elmt in month_prefix[CC][couple_timestamp1]:
             
             k = 0
             
-            if couple_timestamp1 in month_prefix_bogon[CC].keys():
+            if couple_timestamp1 in list(month_prefix_bogon[CC].keys()):
             
                 if elmt in month_prefix_bogon[CC][couple_timestamp1]:
             
@@ -317,9 +317,9 @@ for CC in month_prefix:
     
         fh4.close()
     
-    for couple_timestamp11 in month_prefix[CC].keys():
+    for couple_timestamp11 in list(month_prefix[CC].keys()):
         
-        if couple_timestamp11 in month_prefix_bogon[CC].keys():
+        if couple_timestamp11 in list(month_prefix_bogon[CC].keys()):
             
             with open (output_folder + 'MultiYear__number_visible_prefixes_at_IXP_' + CC + '.txt', 'a') as fh4:
                 

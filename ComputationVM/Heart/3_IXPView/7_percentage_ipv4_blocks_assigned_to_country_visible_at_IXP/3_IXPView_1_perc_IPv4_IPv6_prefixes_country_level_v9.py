@@ -15,7 +15,7 @@ from random import choice
 from time import sleep
 from collections import Counter
 import select, socket
-import urllib2, urllib
+import urllib.request, urllib.error, urllib.parse, urllib.request, urllib.parse, urllib.error
 import GeoIP
 import ipaddr, logging
 import gzip
@@ -52,7 +52,7 @@ continent = DB_configuration.continent
 region = DB_configuration.region
 
 
-root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
+root_folder = '/home/arda/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 output_folder = '../../Computation_outputs/7_percentage_IP_blocks_assigned_to_country_visible_at_IXP/'
 
 command = 'rm -rf ' + output_folder
@@ -78,9 +78,9 @@ while i < current_year:
 ## Liste route collectors
 Current_db = 'MergedData'
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host = "localhost", user = "", passwd = "",  db = Current_db)
 cur = db.cursor()
-print 'Connected'
+print('Connected')
 
 
 query = "select distinct IXP, RouteCollector from AllRouteCollectors where Continent = '"+continent+"';"
@@ -90,14 +90,14 @@ i = 0
 
 while (i<len(data)):
     row = data[i]
-    if row[0] not in IXP_collector.keys():
+    if row[0] not in list(IXP_collector.keys()):
         IXP_collector[row[0]] = []
     
     IXP_collector[row[0]].append(row[1])
     i+=1
-print 'IXP_collector dictionary =',
+print('IXP_collector dictionary =', end=' ')
 pprint(IXP_collector)
-print
+print()
 
 
 
@@ -123,7 +123,7 @@ CC_prefixes_AFRINIC['v4'] = {}
 
 Current_db = 'RIRs'
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host = "localhost", user = "", passwd = "",  db = Current_db)
 cur = db.cursor()
 
 
@@ -139,7 +139,7 @@ if len(data)>0:
         asn = row[0]+'/'+row[1]
         current_CC = row[2]
         if current_CC != '':
-            if current_CC not in CC_prefixes_AFRINIC['v4'].keys():
+            if current_CC not in list(CC_prefixes_AFRINIC['v4'].keys()):
                 CC_prefixes_AFRINIC['v4'][current_CC] = []
             if asn not in CC_prefixes_AFRINIC['v4'][current_CC]:
                 CC_prefixes_AFRINIC['v4'][current_CC].append(asn)
@@ -160,7 +160,7 @@ if len(data)>0:
         asn = row[0]+'/'+row[1]
         current_CC = row[2]
         if current_CC != '':
-            if current_CC not in CC_prefixes_AFRINIC['v6'].keys():
+            if current_CC not in list(CC_prefixes_AFRINIC['v6'].keys()):
                 CC_prefixes_AFRINIC['v6'][current_CC] = []
             if asn not in CC_prefixes_AFRINIC['v6'][current_CC]:
                 CC_prefixes_AFRINIC['v6'][current_CC].append(asn)
@@ -185,7 +185,7 @@ if List_all_tables > 0:
     tab1 = tab[0].split('-')
     timestamp_now = (datetime(int(tab1[0]), int(tab1[1]), int(tab1[2])) - datetime(1970, 1, 1)).total_seconds()
     date_now  = datetime.fromtimestamp(int(timestamp_now)).strftime('%Y-%m-%d')
-    print 'timestamp now = ', timestamp_now
+    print('timestamp now = ', timestamp_now)
     
     couples_year_month = [(tab1[0], tab1[1])]
     
@@ -211,7 +211,7 @@ if List_all_tables > 0:
 
     List_beg_end_each_week = [ str(timestamp_one_month_before ) + '__' +   str(timestamp_now)  + '__'    + str(date_one_month_bef) + '  00:00:00__'  +  '__' +  str(date_now) + ' 00:00:00']
     
-    print 'List_beg_end_each_week = ', List_beg_end_each_week
+    print('List_beg_end_each_week = ', List_beg_end_each_week)
 
 
 
@@ -220,14 +220,14 @@ if List_all_tables > 0:
     ## Back to MergedData to fetch prefixes and make comparisons
     Current_db = 'MergedData'
     ## connect to the DB
-    db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+    db = MySQLdb.connect(host = "localhost", user = "", passwd = "",  db = Current_db)
     cur = db.cursor()
-    print 'Connected to the DB'
+    print('Connected to the DB')
 
     ## Fetch info pn prefixes available in all tables
     Counter = {}
 
-    print
+    print()
 
     for window in couples_year_month:
         
@@ -237,7 +237,7 @@ if List_all_tables > 0:
         
         if  "Data__"+str(int(window[0]))+"_"+str(int(window[1])) in List_all_tables:
             
-            print 'Table ',  "Data__"+str(int(window[0]))+"_"+str(int(window[1])), ' exists. ==> launch query'
+            print('Table ',  "Data__"+str(int(window[0]))+"_"+str(int(window[1])), ' exists. ==> launch query')
                     
             query = "select distinct Data__"+str(int(window[0]))+"_"+str(int(window[1]))+".Network, Data__"+str(int(window[0]))+"_"+str(int(window[1]))+".RouteCollector, Data__"+str(int(window[0]))+"_"+str(int(window[1]))+".IP_version, AllRouteCollectors.CC from Data__"+str(int(window[0]))+"_"+str(int(window[1]))+", AllRouteCollectors where AllRouteCollectors.RouteCollector = Data__"+str(int(window[0]))+"_"+str(int(window[1]))+ ".RouteCollector and Timestamp >= %s and Timestamp <= %s and Data__"+str(int(window[0]))+"_"+str(int(window[1]))+".IP_version <> 'None' ;"
                     
@@ -253,8 +253,8 @@ if List_all_tables > 0:
             data = cur.fetchall()
             
             now_datetime = str(datetime.now()).replace(' ', '_')
-            print now_datetime, 'Here is the query ', cur._executed
-            print
+            print(now_datetime, 'Here is the query ', cur._executed)
+            print()
 
             i = 0
             if len(data)>0:
@@ -267,32 +267,32 @@ if List_all_tables > 0:
                     CC = row[3]
                     route_collector_extracted = row[1]
                     
-                    for ixp in IXP_collector.keys(): #delete de 2 for the complete continent
+                    for ixp in list(IXP_collector.keys()): #delete de 2 for the complete continent
                         
-                        if ixp not in Counter.keys():
+                        if ixp not in list(Counter.keys()):
                             Counter[ixp] = {}
                     
                         for route_collector in IXP_collector[ixp]:  #delete de 2 for the complete continent
-                            print ixp, route_collector
+                            print(ixp, route_collector)
                 
                             if str(route_collector) == str(route_collector_extracted):
                                 
-                                if CC not in Counter[ixp].keys():
+                                if CC not in list(Counter[ixp].keys()):
                                     Counter[ixp][CC] = {}
                                 
-                                if IPversion not in Counter[ixp][CC].keys():
+                                if IPversion not in list(Counter[ixp][CC].keys()):
                                     Counter[ixp][CC][IPversion] = []
                                 
                                 if prefix not in Counter[ixp][CC][IPversion]:
                                     Counter[ixp][CC][IPversion].append(prefix)
                                         
                             else:
-                                print 'RouteCollector ', route_collector, 'does not appear in  table Data__'+str(int(window[0]))+"_"+str(int(window[1]))
+                                print('RouteCollector ', route_collector, 'does not appear in  table Data__'+str(int(window[0]))+"_"+str(int(window[1])))
 
                     i += 1
 
         else:
-            print "Table doesn't exist: Data__"+str(year)+"_"+str(month)
+            print("Table doesn't exist: Data__"+str(year)+"_"+str(month))
 
 
     command = "mkdir " + output_folder + "Percentage_IPv4_assigned_to_country_appearing_per_IXP/"
@@ -311,17 +311,17 @@ if List_all_tables > 0:
 
 
 
-    for IPversion in CC_prefixes_AFRINIC.keys():
+    for IPversion in list(CC_prefixes_AFRINIC.keys()):
         
         #if IPversion == 'v4':
-        for CC_AF in CC_prefixes_AFRINIC[IPversion].keys():
+        for CC_AF in list(CC_prefixes_AFRINIC[IPversion].keys()):
             
             for prefix_adv in list(set( CC_prefixes_AFRINIC[IPversion][CC_AF])):
                 
                 prefix_AF_adv_o = ipaddr.IPNetwork(str(prefix_adv))
                 prefix_AF_adv = IPNetwork(str(prefix_adv))
                         
-                for ixp in Counter.keys():
+                for ixp in list(Counter.keys()):
                     
                     
                     #print 'Checking IXP ', ixp
@@ -329,13 +329,13 @@ if List_all_tables > 0:
                         
                         #filename1  = output_folder + "Percentage_IP" + IPversion  + "_assigned_to_country_appearing_per_IXP/List_prefixes_assigned_advertised_" + ixp + '_'+ CC_AF + ".txt"
 
-                        if ixp not in Intersection[IPversion].keys():
+                        if ixp not in list(Intersection[IPversion].keys()):
                             Intersection[IPversion][ixp] = {}
                         
-                        if CC_AF not in Intersection[IPversion][ixp].keys():
+                        if CC_AF not in list(Intersection[IPversion][ixp].keys()):
                             Intersection[IPversion][ixp][CC_AF] = []
                         
-                        if IPversion in Counter[ixp][CC_AF].keys():
+                        if IPversion in list(Counter[ixp][CC_AF].keys()):
                 
                             for prefix_assigned in list(set(Counter[ixp][CC_AF][IPversion])):
                                 
@@ -344,7 +344,7 @@ if List_all_tables > 0:
                                 prefix_AF_assigned = IPNetwork(str(prefix_assigned))
                             
                                 if prefix_AF_adv_o.overlaps(prefix_AF_assigned_o) and prefix_assigned  != '0.0.0.0/0':
-                                    print prefix_AF_adv_o, ' overlaps ', prefix_AF_assigned_o
+                                    print(prefix_AF_adv_o, ' overlaps ', prefix_AF_assigned_o)
                                     
                                     if prefix_AF_adv not in Intersection[IPversion][ixp][CC_AF]:
                                         Intersection[IPversion][ixp][CC_AF].append(prefix_AF_adv)
@@ -362,17 +362,17 @@ if List_all_tables > 0:
 
     ### Check this part : why is it taking 38% of memory ?
 
-    for IPversion in Intersection.keys():
-        print
-        print 'IPversion : ', IPversion
+    for IPversion in list(Intersection.keys()):
+        print()
+        print('IPversion : ', IPversion)
         filename =  output_folder + "Percentage_IP" + IPversion  + "_assigned_to_country_appearing_per_IXP/Infos_IPblocks_per_country.txt"
         
         with open (filename, 'a') as fg:
             fg.write ('%s; %s; %s; %s; %s; %s\n' %('IPversion', 'ixp','CC_AF','percentage_IPv4_blocks_appearing_at_IXP', 'len(Intersection_IPv4_blocks_appearing)', 'len(IPv4blocks_assigned_to_country)'))
 
-        for ixp in Intersection[IPversion].keys():
+        for ixp in list(Intersection[IPversion].keys()):
             
-            for CC_AF in Intersection[IPversion][ixp].keys():
+            for CC_AF in list(Intersection[IPversion][ixp].keys()):
                 
                 filename1  = output_folder + "Percentage_IP" + IPversion  + "_assigned_to_country_appearing_per_IXP/List_prefixes_assigned_advertised_" + ixp + '_'+ CC_AF + ".txt"
                 

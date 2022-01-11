@@ -19,7 +19,7 @@ from random import choice
 from time import sleep
 from collections import Counter
 import select, socket
-import urllib2, urllib
+import urllib.request, urllib.error, urllib.parse, urllib.request, urllib.parse, urllib.error
 import GeoIP
 import ipaddr, logging
 import gzip
@@ -57,15 +57,15 @@ location_logfile = create_Logfiles_folder()
 ### Define timelines and timescales
 ## multi-years splitted into years
 yearList = multiyear()
-print yearList
+print(yearList)
 
 ## last month (Now - 4weeks) splitted into weeks
 lastYearList = lastyear()
-print lastYearList
+print(lastYearList)
 
 ## last month (Now - 4weeks) splitted into weeks
 lastMonthList = lastmonth()
-print lastMonthList
+print(lastMonthList)
 
 
 ## Other initialisations
@@ -74,9 +74,9 @@ IXP_collector = {}
 IXP_CC = {}
 Current_db = 'MergedData'
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host = "localhost", user = "", passwd = "",  db = Current_db)
 cur = db.cursor()
-print 'Connected'
+print('Connected')
 
 query = "select IXP, RouteCollector, CC from AllRouteCollectors where Continent = '"+continent+"';"
 cur.execute(query)
@@ -84,14 +84,14 @@ data = cur.fetchall()
 i = 0
 while (i<len(data)):
     row = data[i]
-    if row[0] not in IXP_collector.keys():
+    if row[0] not in list(IXP_collector.keys()):
         IXP_collector[row[0]] = []
         IXP_CC[row[0]] = row[2]
     IXP_collector[row[0]].append(row[1])
     i+=1
 
-print IXP_collector
-root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
+print(IXP_collector)
+root_folder = '/home/arda/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 output_folder = '../../Computation_outputs/9_Number_IPv6_vs_IPv4_prefixes_lastmonth/'
 
 command = 'rm -rf ' + output_folder
@@ -121,7 +121,7 @@ log_file_instance = open(location_logfile+'/'+name_log_file, 'a')
 
 
 ### splitted into weeks over the last month
-print lastMonthList[0][0], lastMonthList[0][1]
+print(lastMonthList[0][0], lastMonthList[0][1])
 if List_all_tables >0:
     
     ### Using sliding period
@@ -132,13 +132,13 @@ if List_all_tables >0:
     #tab = ['2017-01-20']
     tab1 = tab[0].split('-')
     timestamp_now = (datetime(int(tab1[0]), int(tab1[1]), int(tab1[2])) - datetime(1970, 1, 1)).total_seconds()
-    print 'timestamp = ', timestamp_now
+    print('timestamp = ', timestamp_now)
     
     couples_year_month = [(tab1[0], tab1[1])]
     
     ## find the number of the first week of the month in the year
     week_number_last_day = find_week_num_in_year(int(tab1[0]), int(tab1[1]), int(tab1[2]))
-    print 'week_number_last_day = ', week_number_last_day
+    print('week_number_last_day = ', week_number_last_day)
     
     
     
@@ -150,7 +150,7 @@ if List_all_tables >0:
     tab2 = date_one_month_bef.split('-')
     
     week_number_first_day = find_week_num_in_year(int(tab2[0]), int(tab2[1]), int(tab2[2]))
-    print 'week_number_first_day = ', week_number_first_day
+    print('week_number_first_day = ', week_number_first_day)
     
     if (tab2[0], tab2[1]) not in couples_year_month:
         couples_year_month.append( (tab2[0], tab2[1]) )
@@ -190,7 +190,7 @@ if List_all_tables >0:
         keep_tsp = int(begweek) - 86400
         #1467417600 - 1467331200
         
-        print List_beg_end_each_week, 'hello second step'
+        print(List_beg_end_each_week, 'hello second step')
         num = week_number_first_day
         
         
@@ -208,15 +208,15 @@ if List_all_tables >0:
             num += 1
 
 
-    print List_beg_end_each_week
+    print(List_beg_end_each_week)
     
     
 
     week_ASN = {}
 
-    for ixp in IXP_collector.keys():
+    for ixp in list(IXP_collector.keys()):
         
-      if ixp not in week_ASN.keys():
+      if ixp not in list(week_ASN.keys()):
         week_ASN[ixp] = {}
         
       for window in couples_year_month:
@@ -231,9 +231,9 @@ if List_all_tables >0:
         
         query += " RouteCollector = %s) and (IP_version <> 'None')"
 
-        print 'start_query :', now_datetime, query
-        print
-        print datetime.now(), 'week fetching data from ', ixp
+        print('start_query :', now_datetime, query)
+        print()
+        print(datetime.now(), 'week fetching data from ', ixp)
         
         week = 0
 
@@ -250,14 +250,14 @@ if List_all_tables >0:
                 
                 log_file_instance.write(str(now_datetime)+ ' Fetching data from IXP '+ ixp + '\n')
                 
-                print 'Here is the query ', cur._executed
+                print('Here is the query ', cur._executed)
                 data = cur.fetchall()
-                print 'end_query :', now_datetime #, data
+                print('end_query :', now_datetime) #, data
 
             except:
                 data = []
 
-            if week not in week_ASN[ixp].keys():
+            if week not in list(week_ASN[ixp].keys()):
                 week_ASN[ixp][week] = {}
                 week_ASN[ixp][week]['v4'] = []
                 week_ASN[ixp][week]['v6'] = []
@@ -265,7 +265,7 @@ if List_all_tables >0:
             i = 0
             if len(data)>0:
                 
-                print len(data)
+                print(len(data))
                 while (i<len(data)):
                     row = data[i]
                     prefix = row[0]
@@ -289,7 +289,7 @@ if List_all_tables >0:
             
                     #print prefix, IPversion, OriginAS, ASpath
                         
-                    if IPversion not in week_ASN[ixp][week].keys():
+                    if IPversion not in list(week_ASN[ixp][week].keys()):
                         
                         week_ASN[ixp][week][IPversion] = []
 
@@ -307,22 +307,22 @@ if List_all_tables >0:
 
       create_output1.close()
 
-    print
-    print
-    print
+    print()
+    print()
+    print()
 
 
 
 
-    for ixp in week_ASN.keys():
+    for ixp in list(week_ASN.keys()):
         
         log_file_instance.write('\n' + str(now_datetime)+ ' Debut computation '+ ixp + '\n')
         
-        for week in week_ASN[ixp].keys():
+        for week in list(week_ASN[ixp].keys()):
             
             tab = str(List_beg_end_each_week[week - 1]).split('__')
             
-            for IPversion in week_ASN[ixp][week].keys():
+            for IPversion in list(week_ASN[ixp][week].keys()):
 
                 create_output = open(output_folder + 'LastMonth_' + ixp + '_Number_ASNs_announcing_' + IPversion+'.txt', 'a')
             

@@ -27,7 +27,7 @@ from random import choice
 from time import sleep
 from collections import Counter
 import select, socket
-import urllib2, urllib
+import urllib.request, urllib.error, urllib.parse, urllib.request, urllib.parse, urllib.error
 import GeoIP
 import ipaddr, logging
 import gzip
@@ -55,15 +55,15 @@ location_logfile = create_Logfiles_folder()
 ### Define timelines and timescales
 ## multi-years splitted into years
 yearList = multiyear()
-print yearList
+print(yearList)
 
 ## last month (Now - 12Months) splitted into months
 lastYearList = lastyear()
-print lastYearList
+print(lastYearList)
 
 ## last month (Now - 4weeks) splitted into months
 lastMonthList = lastmonth()
-print lastMonthList
+print(lastMonthList)
 
 
 ## Other initialisations
@@ -75,9 +75,9 @@ IXP_CC = {}
 
 Current_db = 'MergedData'
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host = "localhost", user = "", passwd = "",  db = Current_db)
 cur = db.cursor()
-print 'Connected'
+print('Connected')
 
 query = "select IXP, RouteCollector, CC from AllRouteCollectors where Continent = '"+continent+"';"
 cur.execute(query)
@@ -85,7 +85,7 @@ data = cur.fetchall()
 i = 0
 while (i<len(data)):
     row = data[i]
-    if row[0] not in IXP_collector.keys():
+    if row[0] not in list(IXP_collector.keys()):
         IXP_collector[row[0]] = []
         IXP_CC[row[0]] = row[2]
     IXP_collector[row[0]].append(row[1])
@@ -93,13 +93,13 @@ while (i<len(data)):
 
 
 
-print IXP_collector
+print(IXP_collector)
 
-print
+print()
 
 #print IXP_CC
 
-root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
+root_folder = '/home/arda/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 
 output_folder = '../../Computation_outputs_Regional_View/7_number_ipv4_ipv6_blocks_assigned_to_country_visible_at_IXP/'
 
@@ -131,7 +131,7 @@ if os.listdir(IXPView_output_folder) != []:
 
     #print folder_v6
 
-    for ixp in IXP_CC.keys():
+    for ixp in list(IXP_CC.keys()):
         
         filename_v4 = folder_v4 + 'List_prefixes_assigned_advertised_' + ixp + '_' + IXP_CC[ixp] + '.txt'
         
@@ -182,15 +182,15 @@ for ip_prefix in List_prefixes_v4_all:
                 
             if ip_prefix_IX_o.overlaps(ip_prefix_IX_o1) and ip_prefix != '0.0.0.0/0':
                 
-                print ip_prefix_IX_o, ' overlaps ', ip_prefix_IX_o1
+                print(ip_prefix_IX_o, ' overlaps ', ip_prefix_IX_o1)
                 
                 if ip_prefix in List_prefixes_v4_all_cross_check:
                     
                     List_prefixes_v4_all_cross_check.remove(ip_prefix)
 
 
-print 'len( List_prefixes_v4_all_cross_check) =', len( List_prefixes_v4_all_cross_check)
-print
+print('len( List_prefixes_v4_all_cross_check) =', len( List_prefixes_v4_all_cross_check))
+print()
 
 
 List_prefixes_v6_all_cross_check = copy.deepcopy(List_prefixes_v6_all)
@@ -207,15 +207,15 @@ for ip_prefix in List_prefixes_v6_all:
             
             if ip_prefix_IX_o.overlaps(ip_prefix_IX_o1) and ip_prefix != '0.0.0.0/0':
                 
-                print ip_prefix_IX_o, ' overlaps ', ip_prefix_IX_o1
+                print(ip_prefix_IX_o, ' overlaps ', ip_prefix_IX_o1)
                 
                 if ip_prefix in List_prefixes_v6_all_cross_check:
                     
                     List_prefixes_v6_all_cross_check.remove(ip_prefix)
 
 
-print 'len(List_prefixes_v6_all_cross_check) =', len(List_prefixes_v6_all_cross_check)
-print
+print('len(List_prefixes_v6_all_cross_check) =', len(List_prefixes_v6_all_cross_check))
+print()
 
 
 ### list all prefixes in output.
@@ -246,7 +246,7 @@ CC_prefixes_AFRINIC['v6'] = {}
 
 Current_db = 'RIRs'
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host = "localhost", user = "", passwd = "",  db = Current_db)
 cur = db.cursor()
 
 Unik_List_prefixes_Afrinic_v4 =  []
@@ -263,7 +263,7 @@ if len(data)>0:
         current_CC = row[2]
         if current_CC != '':
             
-            if current_CC not in CC_prefixes_AFRINIC['v4'].keys():
+            if current_CC not in list(CC_prefixes_AFRINIC['v4'].keys()):
                 CC_prefixes_AFRINIC['v4'][current_CC] = []
             
             if asn not in CC_prefixes_AFRINIC['v4'][current_CC]:
@@ -290,7 +290,7 @@ if len(data)>0:
         
         if current_CC != '':
             
-            if current_CC not in CC_prefixes_AFRINIC['v6'].keys():
+            if current_CC not in list(CC_prefixes_AFRINIC['v6'].keys()):
                 CC_prefixes_AFRINIC['v6'][current_CC] = []
             
             if asn not in CC_prefixes_AFRINIC['v6'][current_CC]:
@@ -320,7 +320,7 @@ for ip_prefix in Unik_List_prefixes_Afrinic_v4:
             
             if ip_prefix_IX_o.overlaps(ip_prefix_IX_o1) and ip_prefix != '0.0.0.0/0':
                 
-                print ip_prefix_IX_o, ' overlaps ', ip_prefix_IX_o1
+                print(ip_prefix_IX_o, ' overlaps ', ip_prefix_IX_o1)
                 
                 if ip_prefix in List_AF_prefixes_v4_all_cross_check:
                     
@@ -354,7 +354,7 @@ for ip_prefix in Unik_List_prefixes_Afrinic_v6:
             
             if ip_prefix_IX_o.overlaps(ip_prefix_IX_o1) and ip_prefix != '0.0.0.0/0':
                 
-                print ip_prefix_IX_o, ' overlaps ', ip_prefix_IX_o1
+                print(ip_prefix_IX_o, ' overlaps ', ip_prefix_IX_o1)
                 
                 if ip_prefix in List_AF_prefixes_v6_all_cross_check:
                     
@@ -390,11 +390,11 @@ with open(output_folder + 'Results_percentages_v4_v6_prefixes.txt', 'a') as fdg:
     fdg.write('%s \n' %('##Label; Length List_prefixes_v4_all_cross_check, Length List_AF_prefixes_v4_all_cross_check, Percentage' ))
     
                                     
-    print str(len(List_AF_prefixes_v4_all_cross_check))
+    print(str(len(List_AF_prefixes_v4_all_cross_check)))
                                     
     fdg.write('%s; %s; %s; %s \n' %('Percentage of v4 prefixes attributed by AFRINIC seen at 1 or more IXP in Africa; ', str(len(List_prefixes_v4_all_cross_check)),  str(len(List_AF_prefixes_v4_all_cross_check)), str(perc_IP_blocks_v4) ))
 
-    print str(len(List_AF_prefixes_v6_all_cross_check))
+    print(str(len(List_AF_prefixes_v6_all_cross_check)))
                                     
     fdg.write('%s; %s; %s; %s \n' %('Percentage of v6 prefixes attributed by AFRINIC seen at 1 or more IXP in Africa; ', str(len(List_prefixes_v6_all_cross_check)), str(len(List_AF_prefixes_v6_all_cross_check)), str(perc_IP_blocks_v6)))
 

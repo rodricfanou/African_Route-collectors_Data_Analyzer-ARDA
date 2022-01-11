@@ -30,7 +30,7 @@ import datetime
 #| Data__2018_1         |
 #+----------------------+
 
-db1 = MySQLdb.connect(host="localhost",user="root",passwd="arda2021@UCT")
+db1 = MySQLdb.connect(host="localhost",user="",passwd="")
 cursor = db1.cursor()
 sql = 'CREATE DATABASE IF NOT EXISTS MergedData'
 cursor.execute(sql)
@@ -64,14 +64,14 @@ cursor.execute(sql2)
 ## Goal: Create tables Data__'''+year+'''_'''+month+''', which host the routing data split per month from 2003 to current date.
 now = datetime.datetime.now()
 
-year = int(now.year);
+year = int(now.year)
 
 print(year)
 
 for x in range(2001, year):
     for y in range(1,13):
         
-        db1 = MySQLdb.connect(host="localhost",user="root",passwd="arda2021@UCT")
+        db1 = MySQLdb.connect(host="localhost",user="",passwd="")
         cursor = db1.cursor()
         sql = 'use MergedData'
         cursor.execute(sql)

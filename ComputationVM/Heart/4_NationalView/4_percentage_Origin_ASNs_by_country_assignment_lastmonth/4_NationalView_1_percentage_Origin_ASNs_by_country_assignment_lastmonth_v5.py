@@ -21,7 +21,7 @@ from random import choice
 from time import sleep
 from collections import Counter
 import select, socket
-import urllib2, urllib
+import urllib.request, urllib.error, urllib.parse, urllib.request, urllib.parse, urllib.error
 import GeoIP
 import ipaddr, logging
 import gzip
@@ -55,11 +55,11 @@ location_logfile = create_Logfiles_folder()
 ### Define timelines and timescales
 ## multi-years splitted into years
 yearList = multiyear()
-print yearList
+print(yearList)
 
 ## last month (Now - 4weeks) splitted into weeks
 lastYearList = lastyear()
-print lastYearList
+print(lastYearList)
 
 
 ## Other initialisations
@@ -74,9 +74,9 @@ CC_IXP = {}
 
 ## connect to the DB
 Current_db = 'MergedData'
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host = "localhost", user = "", passwd = "",  db = Current_db)
 cur = db.cursor()
-print 'Connected'
+print('Connected')
 
 query = "select IXP, RouteCollector, CC from AllRouteCollectors where Continent = '"+continent+"';"
 cur.execute(query)
@@ -85,11 +85,11 @@ i = 0
 while (i<len(data)):
     row = data[i]
     
-    if row[0] not in IXP_collector.keys():
+    if row[0] not in list(IXP_collector.keys()):
         IXP_collector[row[0]] = []
         IXP_CC[row[0]] = row[2]
     
-    if row[2] not in CC_IXP.keys():
+    if row[2] not in list(CC_IXP.keys()):
         CC_IXP[row[2]] = []
 
     if row[0] not in CC_IXP[row[2]]:
@@ -98,9 +98,9 @@ while (i<len(data)):
     IXP_collector[row[0]].append(row[1])
     i+=1
 
-print IXP_collector
+print(IXP_collector)
 
-root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
+root_folder = '/home/arda/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 output_folder = '../../Computation_outputs_National_View/4_percentage_Origin_ASNs_by_country_assignment_lastmonth/'
 
 command = 'rm -rf ' + output_folder
@@ -130,7 +130,7 @@ db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user,
 cur = db.cursor()
 
 query = "select distinct ASN, CC from ASNs_"+region+" where (status = 'allocated' or status = 'assigned') ;"
-print 'query = ',  query
+print('query = ',  query)
 cur.execute (query)
 data = cur.fetchall()
 i = 0
@@ -139,7 +139,7 @@ i = 0
 if len(data)>0:
     while (i<len(data)):
         row = data[i]
-        print row
+        print(row)
         asn = row[0] #type string
         current_CC = row[1]
         
@@ -149,7 +149,7 @@ if len(data)>0:
             asn = int(tab[0])*65536 + int(tab[1])
         
         asn = int(asn) #format int
-        if current_CC not in  CC_ASNs_AFRINIC.keys():
+        if current_CC not in  list(CC_ASNs_AFRINIC.keys()):
             CC_ASNs_AFRINIC[current_CC] = []
         
         if asn not in CC_ASNs_AFRINIC[current_CC]:
@@ -160,7 +160,7 @@ pprint(CC_ASNs_AFRINIC)
 
 filename_output_ASNs_by_AFRINIC = output_folder + 'Number_ASNs_assigned_by_Afrinic.txt'
 with open (filename_output_ASNs_by_AFRINIC, 'a') as fg:
-    for CC in CC_ASNs_AFRINIC.keys():
+    for CC in list(CC_ASNs_AFRINIC.keys()):
         fg.write('%s;%s\n' %(CC, len(CC_ASNs_AFRINIC[CC])))
 
 Current_db = 'MergedData'
@@ -200,13 +200,13 @@ if len(List_all_tables) > 0:
     tab1 = tab[0].split('-')
     timestamp_now = (datetime(int(tab1[0]), int(tab1[1]), int(tab1[2])) - datetime(1970, 1, 1)).total_seconds()
     date_now  = datetime.fromtimestamp(int(timestamp_now)).strftime('%Y-%m-%d')
-    print 'timestamp = ', timestamp_now
+    print('timestamp = ', timestamp_now)
     
     couples_year_month = [(tab1[0], tab1[1])]
     
     ## find the number of the first week of the month in the year
     week_number_last_day = find_week_num_in_year(int(tab1[0]), int(tab1[1]), int(tab1[2]))
-    print 'week_number_last_day = ', week_number_last_day
+    print('week_number_last_day = ', week_number_last_day)
     
     
     
@@ -218,7 +218,7 @@ if len(List_all_tables) > 0:
     tab2 = date_one_month_bef.split('-')
     
     week_number_first_day = find_week_num_in_year(int(tab2[0]), int(tab2[1]), int(tab2[2]))
-    print 'week_number_first_day = ', week_number_first_day
+    print('week_number_first_day = ', week_number_first_day)
     
     if (tab2[0], tab2[1]) not in couples_year_month:
         couples_year_month.append( (tab2[0], tab2[1]) )
@@ -228,18 +228,18 @@ if len(List_all_tables) > 0:
 
     List_beg_end_each_week = [ str(timestamp_one_month_before ) + '__' +   str(timestamp_now)  + '__'    + str(date_one_month_bef) + '  00:00:00__'  +  '__' +  str(date_now) + ' 00:00:00']
 
-    print 'List_beg_end_each_week = ', List_beg_end_each_week
+    print('List_beg_end_each_week = ', List_beg_end_each_week)
 
-    print couples_year_month
+    print(couples_year_month)
 
 
-    for ixp in IXP_collector.keys():
-        print
-        print
+    for ixp in list(IXP_collector.keys()):
+        print()
+        print()
 
         CC_key = IXP_CC[ixp]
         
-        if CC_key not in week_ASN.keys():
+        if CC_key not in list(week_ASN.keys()):
             week_ASN[CC_key] = []
         
         for window in couples_year_month:
@@ -253,8 +253,8 @@ if len(List_all_tables) > 0:
 
             query += " RouteCollector = %s) and (OriginAS != 'None' and OriginAS is not NULL and OriginAS != 'NULL')"
         
-            print 'start_query :', now_datetime, query
-            print datetime.now(), 'week fetching data from ', ixp
+            print('start_query :', now_datetime, query)
+            print(datetime.now(), 'week fetching data from ', ixp)
 
 
             couple_timestamp = List_beg_end_each_week[0]
@@ -269,9 +269,9 @@ if len(List_all_tables) > 0:
             
             log_file_instance.write(str(now_datetime)+ ' Fetching data from IXP '+ ixp + '\n')
             
-            print 'Here is the query ', cur._executed
+            print('Here is the query ', cur._executed)
             data = cur.fetchall()
-            print 'end_query :', now_datetime #, data
+            print('end_query :', now_datetime) #, data
     
             #except:
             #    data = []
@@ -289,7 +289,7 @@ if len(List_all_tables) > 0:
                         try:
                             OriginASNs.append(int(row[0]))
                         except:
-                            print 'Case 1: Alert We pass for this path ', row[1]
+                            print('Case 1: Alert We pass for this path ', row[1])
             
                     else:
                     
@@ -298,7 +298,7 @@ if len(List_all_tables) > 0:
                             OriginASNs.append(int(str(path[-2]).strip()))
                             #print row[1], '; ',  row[0], '; ', int(path[-2])
                         except:
-                            print 'Case 2: Alert We pass for this path ', row[1]
+                            print('Case 2: Alert We pass for this path ', row[1])
                         
                     #print OriginASNs
                     
@@ -315,7 +315,7 @@ if len(List_all_tables) > 0:
 
 ## Saving week_ASNs in a file
 
-for CC in week_ASN.keys():
+for CC in list(week_ASN.keys()):
     
     with open(output_folder + 'List_ASNs_visibles_at_all_IXPs_of_a_country/List_of_ASNs_visibles_in_IXPs_of_' + CC + '.txt', 'a') as fg:
         
@@ -333,45 +333,45 @@ with open (output_folder + '/1_percentage_of_allocated_ASNs_seen_as_origin_ASNs_
 
 
 ### Compute the percentage of assigned ASes by Afrinic that are origin ASes.
-for cc in CC_IXP.keys():
-        print
-        print  'We are currently at ', cc
+for cc in list(CC_IXP.keys()):
+        print()
+        print('We are currently at ', cc)
         
-        if cc in week_ASN.keys() and cc in CC_ASNs_AFRINIC.keys():
+        if cc in list(week_ASN.keys()) and cc in list(CC_ASNs_AFRINIC.keys()):
         
-                print
-                print
+                print()
+                print()
                 
-                print 'Number of ASNs allocated to CC:', len(CC_ASNs_AFRINIC[cc])
+                print('Number of ASNs allocated to CC:', len(CC_ASNs_AFRINIC[cc]))
                 
-                print 'Number of Origin ASNs seen at the IXP:', len(list(set(week_ASN[cc])))
+                print('Number of Origin ASNs seen at the IXP:', len(list(set(week_ASN[cc]))))
                 
                 diff = list(set(week_ASN[cc]) - set(CC_ASNs_AFRINIC[cc]))
                 intersection = list(set(week_ASN[cc]) & set(CC_ASNs_AFRINIC[cc]))
                 rest = list(set(CC_ASNs_AFRINIC[cc]) - set(intersection))
                 
                 current_filename = output_folder + 'Origin_ASNs_assigned_to_country_seen_at_'+cc+'.txt'
-                print 'generating file ', current_filename
+                print('generating file ', current_filename)
                 if len(intersection) > 0:
-                    print 'Yes'
+                    print('Yes')
                     with open(current_filename, 'a') as fd:
                         for elmt in intersection :
                             fd.write('%s\n'%( elmt))
 
             
                 current_filename = output_folder + 'Origin_ASNs_assigned_to_country_Not_seen_at_'+cc+'.txt'
-                print 'generating file ', current_filename
+                print('generating file ', current_filename)
                 if len(rest) > 0:
-                    print 'Yes'
+                    print('Yes')
                     with open(current_filename, 'a') as fd:
                         for elmt in rest :
                             fd.write('%s\n'%(elmt))
     
                                                  
                 percentage_found = float(len(intersection))/float(len(CC_ASNs_AFRINIC[cc]))*100
-                print 'diff', len(diff)
-                print 'intersection', len(intersection)
-                print 'percentage in % for Origin ASes:',  len(list(set(week_ASN[cc]))), len(intersection), len(CC_ASNs_AFRINIC[cc]),  percentage_found
+                print('diff', len(diff))
+                print('intersection', len(intersection))
+                print('percentage in % for Origin ASes:',  len(list(set(week_ASN[cc]))), len(intersection), len(CC_ASNs_AFRINIC[cc]),  percentage_found)
 
 
                 with open (output_folder + '1_percentage_of_allocated_ASNs_seen_as_origin_ASNs_at_all_IXPs_of_each_country.txt', 'a') as fd:
@@ -402,7 +402,7 @@ if len(data)>0:
         row = data[i]
         asn = row[0] #type string
         CC = row[1]
-        if CC not in CC_ASNs_RIPE.keys() and CC != '':
+        if CC not in list(CC_ASNs_RIPE.keys()) and CC != '':
             CC_ASNs_RIPE[CC] = []
         if '.' in asn: #conversion to 2Byte format
             asn = int(asn[:asn.find('.')])*65536 + int(asn[asn.find('.')+1:])
@@ -410,8 +410,8 @@ if len(data)>0:
         if asn not in CC_ASNs_RIPE[CC]:
             CC_ASNs_RIPE[CC].append(asn)
         i +=1
-print 'CC at RIPE', CC_ASNs_RIPE.keys()
-print
+print('CC at RIPE', list(CC_ASNs_RIPE.keys()))
+print()
 
 
 query = "select distinct ASN, CC from ASNs_ARIN where status = 'allocated' or status = 'assigned';"
@@ -423,7 +423,7 @@ if len(data)>0:
         row = data[i]
         asn = row[0] #type string
         CC = row[1]
-        if CC not in CC_ASNs_ARIN.keys() and CC != '':
+        if CC not in list(CC_ASNs_ARIN.keys()) and CC != '':
             CC_ASNs_ARIN[CC] = []
         if '.' in asn: #conversion to 2Byte format
             asn = int(asn[:asn.find('.')])*65536 + int(asn[asn.find('.')+1:])
@@ -431,8 +431,8 @@ if len(data)>0:
         if asn not in CC_ASNs_ARIN[CC]:
             CC_ASNs_ARIN[CC].append(asn)
         i +=1
-print 'CC at ARIN', CC_ASNs_ARIN.keys()
-print
+print('CC at ARIN', list(CC_ASNs_ARIN.keys()))
+print()
 
 
 query = "select distinct ASN, CC from ASNs_APNIC where status = 'allocated' or status = 'assigned';"
@@ -444,7 +444,7 @@ if len(data)>0:
         row = data[i]
         asn = row[0] #type string
         CC = row[1]
-        if CC not in CC_ASNs_APNIC.keys() and CC != '':
+        if CC not in list(CC_ASNs_APNIC.keys()) and CC != '':
             CC_ASNs_APNIC[CC] = []
         if '.' in asn: #conversion to 2Byte format
             asn = int(asn[:asn.find('.')])*65536 + int(asn[asn.find('.')+1:])
@@ -452,8 +452,8 @@ if len(data)>0:
         if asn not in CC_ASNs_APNIC[CC]:
             CC_ASNs_APNIC[CC].append(asn)
         i +=1
-print  'CC at APNIC',CC_ASNs_APNIC.keys()
-print
+print('CC at APNIC',list(CC_ASNs_APNIC.keys()))
+print()
 
 
 query = "select distinct ASN, CC from ASNs_LACNIC where status = 'allocated' or status = 'assigned';"
@@ -465,7 +465,7 @@ if len(data)>0:
         row = data[i]
         asn = row[0] #type string
         CC = row[1]
-        if CC not in CC_ASNs_LACNIC.keys() and CC != '':
+        if CC not in list(CC_ASNs_LACNIC.keys()) and CC != '':
             CC_ASNs_LACNIC[CC] = []
         if '.' in asn: #conversion to 2Byte format
             asn = int(asn[:asn.find('.')])*65536 + int(asn[asn.find('.')+1:])
@@ -473,15 +473,15 @@ if len(data)>0:
         if asn not in CC_ASNs_LACNIC[CC]:
             CC_ASNs_LACNIC[CC].append(asn)
         i +=1
-print 'CC at LACNIC',  CC_ASNs_LACNIC.keys()
-print
+print('CC at LACNIC',  list(CC_ASNs_LACNIC.keys()))
+print()
 
 
 ### Dropping the list of ASNs assigned by each RIR in a file
 
 with open(output_folder + 'List_ASNs_assigned_by_RIRs/List_ASNs_assigned_by_AFRINIC.txt', 'a') as fgh:
 
-    for CC in CC_ASNs_AFRINIC.keys():
+    for CC in list(CC_ASNs_AFRINIC.keys()):
         
         for elmt in CC_ASNs_AFRINIC[CC]:
         
@@ -491,7 +491,7 @@ with open(output_folder + 'List_ASNs_assigned_by_RIRs/List_ASNs_assigned_by_AFRI
 
 with open(output_folder + 'List_ASNs_assigned_by_RIRs/List_ASNs_assigned_by_LACNIC.txt', 'a') as fgh:
     
-    for CC in CC_ASNs_LACNIC.keys():
+    for CC in list(CC_ASNs_LACNIC.keys()):
         
         for elmt in CC_ASNs_LACNIC[CC]:
             
@@ -501,7 +501,7 @@ with open(output_folder + 'List_ASNs_assigned_by_RIRs/List_ASNs_assigned_by_LACN
 
 with open(output_folder + 'List_ASNs_assigned_by_RIRs/List_ASNs_assigned_by_RIPE.txt', 'a') as fgh:
     
-    for CC in CC_ASNs_RIPE.keys():
+    for CC in list(CC_ASNs_RIPE.keys()):
         
         for elmt in CC_ASNs_RIPE[CC]:
             
@@ -511,7 +511,7 @@ with open(output_folder + 'List_ASNs_assigned_by_RIRs/List_ASNs_assigned_by_RIPE
 
 with open(output_folder + 'List_ASNs_assigned_by_RIRs/List_ASNs_assigned_by_ARIN.txt', 'a') as fgh:
     
-    for CC in CC_ASNs_ARIN.keys():
+    for CC in list(CC_ASNs_ARIN.keys()):
         
         for elmt in CC_ASNs_ARIN[CC]:
             
@@ -521,7 +521,7 @@ with open(output_folder + 'List_ASNs_assigned_by_RIRs/List_ASNs_assigned_by_ARIN
 
 with open(output_folder + 'List_ASNs_assigned_by_RIRs/List_ASNs_assigned_by_APNIC.txt', 'a') as fgh:
     
-    for CC in CC_ASNs_APNIC.keys():
+    for CC in list(CC_ASNs_APNIC.keys()):
         
         for elmt in CC_ASNs_APNIC[CC]:
             
@@ -544,7 +544,7 @@ IXP_OriginASes = {}
 
 IXP_OriginASes = copy.deepcopy(week_ASN)
 
-for CC_key in IXP_OriginASes.keys():
+for CC_key in list(IXP_OriginASes.keys()):
     
         ori_dict = {}
         ori_dict['RIPE'] = {}
@@ -569,7 +569,7 @@ for CC_key in IXP_OriginASes.keys():
             fg.write('%s;%s;%s\n'%('##Type of ASNs (Region)', 'len_ASNs_type', 'percentage_type'))
 
 
-        for CC in CC_IXP.keys():
+        for CC in list(CC_IXP.keys()):
             
                 if CC == CC_key :
 
@@ -596,7 +596,7 @@ for CC_key in IXP_OriginASes.keys():
                         except:
                             percentage_private = 0.0
 
-                        print 'private = ', len(ori_dict['PRIVATE']), percentage_private
+                        print('private = ', len(ori_dict['PRIVATE']), percentage_private)
                         if len(ori_dict['PRIVATE']) > 0:
                             current_filename = output_folder + 'files_origin/Private_ASNs_' + current_CC + '.txt'
                             for elmt in ori_dict['PRIVATE']:
@@ -644,7 +644,7 @@ for CC_key in IXP_OriginASes.keys():
                         except:
                             percentage_local_AF = 0.0
                         
-                        print 'percentage_local_AF =', percentage_local_AF
+                        print('percentage_local_AF =', percentage_local_AF)
                         ori_dict['local_AFRINIC'] = {current_CC: intersection}
                         
                         
@@ -665,7 +665,7 @@ for CC_key in IXP_OriginASes.keys():
                                     fd.write('%s;%s;%s;%s;%s;%s;%s;%s\n'%(current_CC, '', len(intersection), len(Listrest_ASes), percentage_local_AF, len(CC_ASNs_AFRINIC[current_CC]),  percentage_local_AF2, 'AFRINIC' ))
                     
                     
-                        print 'local_AFRINIC =', percentage_local_AF
+                        print('local_AFRINIC =', percentage_local_AF)
                         
                         with open (filename1, 'a') as fg:
                             fg.write('%s;%s;%s\n'%('Local AFRINIC ASNs', len(intersection), percentage_local_AF))
@@ -676,21 +676,21 @@ for CC_key in IXP_OriginASes.keys():
                         total = 0
                         total1 = 0
                         #for cc_external in CC_IXP.keys():
-                        for cc_external in CC_ASNs_AFRINIC.keys():
+                        for cc_external in list(CC_ASNs_AFRINIC.keys()):
                             
                             intersection2 = []
                             
-                            print
+                            print()
         
-                            print 'external cc in AFRINIC region to make intersection with origin ASNs:', cc_external
+                            print('external cc in AFRINIC region to make intersection with origin ASNs:', cc_external)
             
                             if current_CC != cc_external:
                                 
-                                if cc_external not in ori_dict['external_AFRINIC'].keys():
+                                if cc_external not in list(ori_dict['external_AFRINIC'].keys()):
                                     
-                                    if current_CC in IXP_OriginASes.keys() :
+                                    if current_CC in list(IXP_OriginASes.keys()) :
                                         
-                                        print 'length of ASNs in a cc_external', cc_external , ' = ', len(set(CC_ASNs_AFRINIC[cc_external]))
+                                        print('length of ASNs in a cc_external', cc_external , ' = ', len(set(CC_ASNs_AFRINIC[cc_external])))
                                         intersection2 =  list(set(IXP_OriginASes[current_CC]) & set(CC_ASNs_AFRINIC[cc_external]))
                             
                                         if len(intersection2) > 0:
@@ -704,9 +704,9 @@ for CC_key in IXP_OriginASes.keys():
                                         except:
                                             percentage_external_AF = 0.0
                 
-                                        print 'percentage_external_AF =', percentage_external_AF
+                                        print('percentage_external_AF =', percentage_external_AF)
                     
-                                        print 'length of intersection2:', len(intersection2)
+                                        print('length of intersection2:', len(intersection2))
                         
                                         try:
                                             percentage_external_AF2 = 100*( float(len(intersection2)) / float(len(CC_ASNs_AFRINIC[cc_external]))  )
@@ -730,9 +730,9 @@ for CC_key in IXP_OriginASes.keys():
                                         total1 += len(intersection2)
 
                             else:
-                                print '----'
-                                print 'cc coincides with another country of the AFRINIC region which is:', cc_external  , 'instead of ', current_CC
-                                print '----'
+                                print('----')
+                                print('cc coincides with another country of the AFRINIC region which is:', cc_external  , 'instead of ', current_CC)
+                                print('----')
                                                         
                         with open (filename1, 'a') as fg:
                             fg.write('%s;%s;%s\n'%('External AFRINIC ASNs', total1, total))
@@ -744,24 +744,24 @@ for CC_key in IXP_OriginASes.keys():
 
                         total = 0
                         total1 = 0
-                        print "AFRINIC REGION DONE. LET'S MOVE TO RIPE"
-                        for cc_region in CC_ASNs_RIPE.keys():
+                        print("AFRINIC REGION DONE. LET'S MOVE TO RIPE")
+                        for cc_region in list(CC_ASNs_RIPE.keys()):
                             
                             intersection3 = []
                             
                             now_datetime = str(datetime.now()).replace(' ', '_')
                             
-                            print 'CCs in regions other than RIPE ', now_datetime
+                            print('CCs in regions other than RIPE ', now_datetime)
                             
                             if current_CC != cc_region:
                                 
-                                print 'cc_region in RIPE region to make intersection with origin ASNs :', cc_region
+                                print('cc_region in RIPE region to make intersection with origin ASNs :', cc_region)
                                 
-                                if cc_region not in ori_dict['RIPE'].keys():
+                                if cc_region not in list(ori_dict['RIPE'].keys()):
                                     
-                                    if current_CC in IXP_OriginASes.keys():
-                                        print
-                                        print 'length of ASNs in a cc_region', len(set(CC_ASNs_RIPE[cc_region]))
+                                    if current_CC in list(IXP_OriginASes.keys()):
+                                        print()
+                                        print('length of ASNs in a cc_region', len(set(CC_ASNs_RIPE[cc_region])))
                                         intersection3 =  list(set(IXP_OriginASes[current_CC]) & set(CC_ASNs_RIPE[cc_region]))
                                                                                      
                                         if len(intersection3) > 0:
@@ -780,7 +780,7 @@ for CC_key in IXP_OriginASes.keys():
                                         except:
                                             percentage_RIPE2 = 0.0
                                                                                      
-                                        print 'length of intersection3:', len(intersection3)
+                                        print('length of intersection3:', len(intersection3))
                                         ori_dict['RIPE'][cc_region] = intersection3
                                         with open(filename, 'a') as fd:
                                             if len(intersection3)> 0:
@@ -796,9 +796,9 @@ for CC_key in IXP_OriginASes.keys():
                                         total1 += len(intersection3)
 
                             else:
-                                print '----'
-                                print 'cc coincides with another country than ', current_CC, ' which is:', cc_region
-                                print '----'
+                                print('----')
+                                print('cc coincides with another country than ', current_CC, ' which is:', cc_region)
+                                print('----')
                                 
                                                                                  
                         with open (filename1, 'a') as fg:
@@ -813,25 +813,25 @@ for CC_key in IXP_OriginASes.keys():
 
                         total = 0
                         total1 = 0
-                        print "AFRINIC & RIPE REGION DONE. LET'S MOVE TO ARIN"
+                        print("AFRINIC & RIPE REGION DONE. LET'S MOVE TO ARIN")
 
-                        for cc_region in CC_ASNs_ARIN.keys():
+                        for cc_region in list(CC_ASNs_ARIN.keys()):
                             
                             intersection5 = []
                             
                             now_datetime = str(datetime.now()).replace(' ', '_')
                                                         
-                            print 'CCs in regions other than ARIN ', now_datetime
+                            print('CCs in regions other than ARIN ', now_datetime)
                             
                             if current_CC != cc_region:
                                 
-                                print 'cc_region in ARIN region to make intersection with origin ASNs :', cc_region
+                                print('cc_region in ARIN region to make intersection with origin ASNs :', cc_region)
                                 
-                                if cc_region not in ori_dict['ARIN'].keys():
+                                if cc_region not in list(ori_dict['ARIN'].keys()):
                                     
-                                    if current_CC in IXP_OriginASes.keys() :
-                                        print
-                                        print 'length of ASNs in a cc_region', len(set(CC_ASNs_ARIN[cc_region]))
+                                    if current_CC in list(IXP_OriginASes.keys()) :
+                                        print()
+                                        print('length of ASNs in a cc_region', len(set(CC_ASNs_ARIN[cc_region])))
                                         intersection5 =  list(set(IXP_OriginASes[current_CC]) & set(CC_ASNs_ARIN[cc_region]))
                                     
                                         if len(intersection5) > 0:
@@ -850,7 +850,7 @@ for CC_key in IXP_OriginASes.keys():
                                         except:
                                             percentage_ARIN2 = 0.0
                                                 
-                                        print 'length of intersection5:', len(intersection5)
+                                        print('length of intersection5:', len(intersection5))
                                         ori_dict['ARIN'][cc_region] = intersection5
                                                 
                                         with open(filename, 'a') as fd:
@@ -867,9 +867,9 @@ for CC_key in IXP_OriginASes.keys():
 
 
                             else:
-                                print '----'
-                                print 'cc coincides with another in other region which is:', cc_region
-                                print '----'
+                                print('----')
+                                print('cc coincides with another in other region which is:', cc_region)
+                                print('----')
                     
                     
                         with open (filename1, 'a') as fg:
@@ -880,25 +880,25 @@ for CC_key in IXP_OriginASes.keys():
 
                         total = 0
                         total1 = 0
-                        print "AFRINIC, RIPE & ARIN REGION DONE. LET'S MOVE TO APNIC"
+                        print("AFRINIC, RIPE & ARIN REGION DONE. LET'S MOVE TO APNIC")
 
-                        for cc_region in CC_ASNs_APNIC.keys():
+                        for cc_region in list(CC_ASNs_APNIC.keys()):
                             
                             intersection4 = []
                             
                             now_datetime = str(datetime.now()).replace(' ', '_')
                                                         
-                            print 'CCs in regions other than APNIC ', now_datetime
+                            print('CCs in regions other than APNIC ', now_datetime)
                             
                             if current_CC != cc_region:
                                 
-                                print 'cc_region in APNIC region to make intersection with origin ASNs :', cc_region
+                                print('cc_region in APNIC region to make intersection with origin ASNs :', cc_region)
                                 
-                                if cc_region not in ori_dict['APNIC'].keys():
+                                if cc_region not in list(ori_dict['APNIC'].keys()):
                                     
-                                    if current_CC in IXP_OriginASes.keys():
-                                        print
-                                        print 'length of ASNs in a cc_region', len(set(CC_ASNs_APNIC[cc_region]))
+                                    if current_CC in list(IXP_OriginASes.keys()):
+                                        print()
+                                        print('length of ASNs in a cc_region', len(set(CC_ASNs_APNIC[cc_region])))
                                     
                                         intersection4 =  list(set(IXP_OriginASes[current_CC]) & set(CC_ASNs_APNIC[cc_region]))
                                         
@@ -919,7 +919,7 @@ for CC_key in IXP_OriginASes.keys():
                                             percentage_APNIC2 = 0.0
                                                 
                                                 
-                                        print 'length of intersection4:', len(intersection4)
+                                        print('length of intersection4:', len(intersection4))
                                         ori_dict['APNIC'][cc_region] = intersection4
                                                 
                                         with open(filename, 'a') as fd:
@@ -934,9 +934,9 @@ for CC_key in IXP_OriginASes.keys():
                                         total1 += len(intersection4)
                             
                             else:
-                                print '----'
-                                print 'cc coincides with another in other region which is:', cc_region
-                                print '----'
+                                print('----')
+                                print('cc coincides with another in other region which is:', cc_region)
+                                print('----')
             
                         with open (filename1, 'a') as fg:
                             fg.write('%s;%s;%s\n'%('APNIC ASNs', total1, total))
@@ -947,24 +947,24 @@ for CC_key in IXP_OriginASes.keys():
 
                         total = 0
                         total1 = 0
-                        print "AFRINIC, RIPE, ARIN & APNIC REGION DONE. LET'S MOVE TO LACNIC"
+                        print("AFRINIC, RIPE, ARIN & APNIC REGION DONE. LET'S MOVE TO LACNIC")
                         for cc_region in CC_ASNs_LACNIC:
                             
                             intersection6 = []
                                                         
                             now_datetime = str(datetime.now()).replace(' ', '_')
                                                         
-                            print 'CCs in regions other than LACNIC ', now_datetime
+                            print('CCs in regions other than LACNIC ', now_datetime)
                             
                             if current_CC != cc_region:
                                 
-                                print 'cc_region in LACNIC region to make intersection with origin ASNs :', cc_region
+                                print('cc_region in LACNIC region to make intersection with origin ASNs :', cc_region)
                                 
-                                if cc_region not in ori_dict['LACNIC'].keys():
+                                if cc_region not in list(ori_dict['LACNIC'].keys()):
                                     
-                                    if current_CC in IXP_OriginASes.keys():
-                                        print
-                                        print 'length of ASNs in a cc_region', len(set(CC_ASNs_LACNIC[cc_region]))
+                                    if current_CC in list(IXP_OriginASes.keys()):
+                                        print()
+                                        print('length of ASNs in a cc_region', len(set(CC_ASNs_LACNIC[cc_region])))
                                         intersection6 =  list(set(IXP_OriginASes[current_CC]) & set(CC_ASNs_LACNIC[cc_region]))
                                         
                                         if len(intersection6) > 0:
@@ -983,7 +983,7 @@ for CC_key in IXP_OriginASes.keys():
                                         except:
                                             percentage_LACNIC2 = 0.0
                                                 
-                                        print 'length of intersection6:', len(intersection6)
+                                        print('length of intersection6:', len(intersection6))
                                         ori_dict['LACNIC'][cc_region] = intersection6
                                         with open(filename, 'a') as fd:
                                             if len(intersection6)>0:
@@ -997,9 +997,9 @@ for CC_key in IXP_OriginASes.keys():
                                         total1 += len(intersection6)
                             
                             else:
-                                print '----'
-                                print 'cc coincides with another in other region which is:', cc_region
-                                print '----'
+                                print('----')
+                                print('cc coincides with another in other region which is:', cc_region)
+                                print('----')
                         
                         with open (filename1, 'a') as fg:
                             fg.write('%s;%s;%s\n'%('LACNIC ASNs', total1, total))

@@ -20,7 +20,7 @@ from random import choice
 from time import sleep
 from collections import Counter
 import select, socket
-import urllib2, urllib
+import urllib.request, urllib.error, urllib.parse, urllib.request, urllib.parse, urllib.error
 import GeoIP
 import ipaddr, logging
 import gzip
@@ -54,9 +54,9 @@ location_logfile = create_Logfiles_folder()
 
 Current_db = 'MergedData'
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host = "localhost", user = "", passwd = "",  db = Current_db)
 cur = db.cursor()
-print 'Connected'
+print('Connected')
 
 query = "select IXP, RouteCollector, CC from AllRouteCollectors where Continent = '"+continent+"';"
 cur.execute(query)
@@ -64,7 +64,7 @@ data = cur.fetchall()
 i = 0
 while (i<len(data)):
     row = data[i]
-    if row[0] not in IXP_collector.keys():
+    if row[0] not in list(IXP_collector.keys()):
         IXP_collector[row[0]] = []
         IXP_CC[row[0]] = row[2]
     IXP_collector[row[0]].append(row[1])
@@ -72,7 +72,7 @@ while (i<len(data)):
 
 
 
-root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
+root_folder = '/home/arda/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 
 output_folder = '../../Computation_outputs_Regional_View/9_number_asn_ipv6_vs_ipv4_lastyear/'
 
@@ -103,11 +103,11 @@ if os.listdir(IXPView_output_folder) != []:
     
     Unik_list_ASNs_v6 = {}
     
-    for ixp in IXP_collector.keys():
+    for ixp in list(IXP_collector.keys()):
         
         filename_v4 = 'LastYear_' + ixp +'_List_ASNs_announcing_v4.txt'
         
-        print 'Treating v4 file ', filename_v4
+        print('Treating v4 file ', filename_v4)
         
         if os.path.exists(IXPView_output_folder+filename_v4) :
             
@@ -125,7 +125,7 @@ if os.listdir(IXPView_output_folder) != []:
                         
                         key = '; '.join(tab)
                         
-                        if key not in Unik_list_ASNs_v4.keys():
+                        if key not in list(Unik_list_ASNs_v4.keys()):
                             
                             Unik_list_ASNs_v4[key]= []
                     
@@ -139,7 +139,7 @@ if os.listdir(IXPView_output_folder) != []:
 
         filename_v6 = 'LastYear_' + ixp +'_List_ASNs_announcing_v6.txt'
         
-        print 'Treating v6 file ', filename_v6
+        print('Treating v6 file ', filename_v6)
         
         if os.path.exists(IXPView_output_folder+filename_v6) :
             
@@ -157,7 +157,7 @@ if os.listdir(IXPView_output_folder) != []:
                         
                         key = '; '.join(tab)
                         
-                        if key not in Unik_list_ASNs_v6.keys():
+                        if key not in list(Unik_list_ASNs_v6.keys()):
                             
                             Unik_list_ASNs_v6[key]= []
                         
@@ -174,7 +174,7 @@ with open (output_folder+'LastYear__list_Origin_ASNs_advertising_v4_prefixes_at_
     
     fg.write('%s' %('###Month-Year; Visible ASNs advertising v4 prefixes\n'))
     
-    for week in Unik_list_ASNs_v4.keys():
+    for week in list(Unik_list_ASNs_v4.keys()):
         
         for ASN in Unik_list_ASNs_v4[week]:
             
@@ -186,7 +186,7 @@ with open (output_folder+'LastYear__list_Origin_ASNs_advertising_v6_prefixes_at_
     
     fg.write('%s' %('###Month-Year; Visible ASNs advertising v6 prefixes\n'))
     
-    for week in Unik_list_ASNs_v6.keys():
+    for week in list(Unik_list_ASNs_v6.keys()):
         
         for ASN in Unik_list_ASNs_v6[week]:
             
@@ -198,9 +198,9 @@ with open (output_folder+'LastYear__number_Origin_ASNs_advertising_v4_v6_prefixe
     
     fg.write('%s' %('###Month-Year; Number ASNs advertising v4 prefixes;  Number ASNs advertising v6 prefixes\n'))
     
-    for week in Unik_list_ASNs_v4.keys():
+    for week in list(Unik_list_ASNs_v4.keys()):
         
-        if week in Unik_list_ASNs_v6.keys():
+        if week in list(Unik_list_ASNs_v6.keys()):
             
             fg.write('%s; %s; %s  \n' %(week, len(Unik_list_ASNs_v4[week]), len(Unik_list_ASNs_v6[week]) ))
         

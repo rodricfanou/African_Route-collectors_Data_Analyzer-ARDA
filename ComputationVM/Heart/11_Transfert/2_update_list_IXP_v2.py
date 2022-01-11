@@ -12,7 +12,7 @@ import DB_configuration
 from incf.countryutils import transformations
 
 Current_db = 'MergedData'
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host = "localhost", user = "", passwd = "",  db = Current_db)
 cur = db.cursor()
 continent = 'AF'
 
@@ -32,6 +32,6 @@ for line in data:
     if line[0] not in Python_list_IXPs:
 	country_name  = transformations.cc_to_cn(str(line[2]).strip())
 
-	print(line[2], country_name)
+	print((line[2], country_name))
         IXP_list_file.write(line[0]+';'+line[2]+ ';' + country_name + '\n')
         Python_list_IXPs.append(line[0])

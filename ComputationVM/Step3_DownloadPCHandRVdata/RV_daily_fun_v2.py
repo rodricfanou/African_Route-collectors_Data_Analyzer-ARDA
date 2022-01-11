@@ -100,7 +100,7 @@ idx = 0
 actualYear = datetime.datetime.fromtimestamp(int(beg_timestamp)).strftime('%Y')
 actualMonth = int(datetime.datetime.fromtimestamp(int(beg_timestamp)).strftime('%m'))
 
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd, db="MergedData") # name of the data base
+db = MySQLdb.connect(host = "localhost", user = "", passwd = "", db="MergedData") # name of the data base
 
 cur = db.cursor()
 curMail = db.cursor()

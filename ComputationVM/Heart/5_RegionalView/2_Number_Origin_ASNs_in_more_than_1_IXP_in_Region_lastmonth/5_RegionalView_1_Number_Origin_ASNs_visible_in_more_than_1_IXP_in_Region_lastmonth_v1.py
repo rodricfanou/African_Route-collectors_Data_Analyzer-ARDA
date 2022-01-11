@@ -27,7 +27,7 @@ from random import choice
 from time import sleep
 from collections import Counter
 import select, socket
-import urllib2, urllib
+import urllib.request, urllib.error, urllib.parse, urllib.request, urllib.parse, urllib.error
 import GeoIP
 import ipaddr, logging
 import gzip
@@ -65,15 +65,15 @@ location_logfile = create_Logfiles_folder()
 ### Define timelines and timescales
 ## multi-years splitted into years
 yearList = multiyear()
-print yearList
+print(yearList)
 
 ## last month (Now - 4weeks) splitted into weeks
 lastYearList = lastyear()
-print lastYearList
+print(lastYearList)
 
 ## last month (Now - 4weeks) splitted into weeks
 lastMonthList = lastmonth()
-print lastMonthList
+print(lastMonthList)
 
 
 ## Other initialisations
@@ -84,9 +84,9 @@ IXP_CC = {}
 
 Current_db = 'MergedData'
 ## connect to the DB
-db = MySQLdb.connect(host = DB_configuration.host, user = DB_configuration.user, passwd = DB_configuration.passwd,  db = Current_db)
+db = MySQLdb.connect(host = "localhost", user = "", passwd = "",  db = Current_db)
 cur = db.cursor()
-print 'Connected'
+print('Connected')
 
 query = "select IXP, RouteCollector, CC from AllRouteCollectors where Continent = '"+continent+"';"
 cur.execute(query)
@@ -94,7 +94,7 @@ data = cur.fetchall()
 i = 0
 while (i<len(data)):
     row = data[i]
-    if row[0] not in IXP_collector.keys():
+    if row[0] not in list(IXP_collector.keys()):
         IXP_collector[row[0]] = []
         IXP_CC[row[0]] = row[2]
     IXP_collector[row[0]].append(row[1])
@@ -102,9 +102,9 @@ while (i<len(data)):
 
 
 
-print IXP_collector
+print(IXP_collector)
 
-root_folder = '/home/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
+root_folder = '/home/arda/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Heart/'
 
 output_folder = '../../Computation_outputs_Regional_View/2_Number_Origin_ASNs_visibles_in_more_than_1_IXP_in_Region_lastmonth/'
 
@@ -143,7 +143,7 @@ if os.listdir(IXPView_output_folder) != []:
     Pie_chart__last_month["80% or more"] = []
     
     
-    for ixp in IXP_collector.keys():
+    for ixp in list(IXP_collector.keys()):
         
         filename = IXPView_output_folder+ """LastMonth__list_visible_ASNs_at_IXP_""" + ixp + '.txt'
         List_ASNs = []
@@ -208,17 +208,17 @@ if os.listdir(IXPView_output_folder) != []:
     for elmt in Total_number_Origin_ASNs:
         
         kkkk = 0
-        if elmt not in Appear.keys():
+        if elmt not in list(Appear.keys()):
             Appear[elmt] = []
 
-        for ixp in IXP_collector.keys():
+        for ixp in list(IXP_collector.keys()):
             
             if elmt in week_ASN[ixp]:
                 kkkk += 1
                 Appear[elmt].append(ixp)
 
         value  = 100 * (float(len( Appear[elmt])))
-        value = value / len(IXP_collector.keys())
+        value = value / len(list(IXP_collector.keys()))
 
         #print elmt, kkkk,  Appear[elmt], len(Appear[elmt]), value
         
@@ -244,7 +244,7 @@ if os.listdir(IXPView_output_folder) != []:
         fgg.write('%s; %s\n\n' %(couple_timestamp, len(Total_number_Origin_ASNs) ))
         
         fgg.write('%s\n' %('###Regional View -- Total number of IXPs'))
-        fgg.write('%s\n\n' %( len(IXP_collector.keys())  ))
+        fgg.write('%s\n\n' %( len(list(IXP_collector.keys()))  ))
         
         fgg.write('%s\n' %('###Regional View -- Pie chart date'  ))
         fgg.write('%s; %s\n' %('0%-20%', len( Pie_chart__last_month["0% to less than 20%"] )  ))
@@ -295,7 +295,7 @@ if os.listdir(IXPView_output_folder) != []:
     
     create_output_2bytesASN_num.write('###Num Week; Timestamp beginning;  Timestamp end;  Datetime beginning;  Datetime end; Number Visible 2bytes Origin ASNs \n')
 
-    for ixp in IXP_collector.keys():
+    for ixp in list(IXP_collector.keys()):
         
         filename = IXPView_output_folder+ """LastMonth__2bytes_list_visible_ASNs_at_IXP_""" + ixp + '.txt'
             
@@ -312,7 +312,7 @@ if os.listdir(IXPView_output_folder) != []:
                         del(tab[-1])
                         key_timestamp = '; '.join(tab)
                     
-                        if key_timestamp not in week_ASN_2bytes.keys():
+                        if key_timestamp not in list(week_ASN_2bytes.keys()):
                             week_ASN_2bytes[key_timestamp] = []
 
                         if ASN_2bytes not in week_ASN_2bytes[key_timestamp]:
@@ -346,7 +346,7 @@ if os.listdir(IXPView_output_folder) != []:
 
 
 
-    for ixp in IXP_collector.keys():
+    for ixp in list(IXP_collector.keys()):
         
         filename = IXPView_output_folder+ """LastMonth__4bytes_list_visible_ASNs_at_IXP_""" + ixp + '.txt'
         
@@ -363,7 +363,7 @@ if os.listdir(IXPView_output_folder) != []:
                         del(tab[-1])
                         key_timestamp = '; '.join(tab)
                         
-                        if key_timestamp not in week_ASN_4bytes.keys():
+                        if key_timestamp not in list(week_ASN_4bytes.keys()):
                             week_ASN_4bytes[key_timestamp] = []
                         
                         if ASN_4bytes not in week_ASN_4bytes[key_timestamp]:
@@ -383,7 +383,7 @@ if os.listdir(IXPView_output_folder) != []:
 
 with open (output_folder + 'LastMonth__2and4bytes_number_visible_Origin_ASNs_in_more_than_1_IXP.txt', 'a') as fg:
     fg.write('%s\n' %("""###Num Week; Number of Visible Origin 2bytes ASNs; Number of Visible Origin 4bytes ASNs;"""))
-    for key_timestamp in week_ASN_2bytes.keys():
+    for key_timestamp in list(week_ASN_2bytes.keys()):
         fg.write('%s; %s; %s\n' %(key_timestamp, len(week_ASN_2bytes[key_timestamp]), len(week_ASN_4bytes[key_timestamp])))
 
 
