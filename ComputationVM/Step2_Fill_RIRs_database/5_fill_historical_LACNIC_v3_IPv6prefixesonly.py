@@ -7,13 +7,18 @@
 ## 2 - or run the scripts updating the RIR data one after the other: in which case you can keep the scripts as they are.
 
 
-import MySQLdb, collections, sys, glob, math, ast, os, time, random
-from math import log
+import MySQLdb
+import glob
+import os
+import random
+import sys
+import time
 
 sys.path.append('../Heart/2_libraries/')
 import DB_configuration
 
-#os.system("python 1_clean_RIRs_DBs.py")
+
+# os.system("python 1_clean_RIRs_DBs.py")
 
 
 ## Compute the x at the power of n.
@@ -30,8 +35,6 @@ def puissance(x, n):
 def get_immediate_subdirectories(dir):
     return [name for name in os.listdir(dir)
             if os.path.isdir(os.path.join(dir, name))]
-
-
 
 
 ## Sleep a random time before starting any operation
@@ -59,7 +62,7 @@ if glob.glob(folder_download + "*/*.gz"):
 if glob.glob(folder_download + "*/*.bz2"):
     command = """bzip2 -dk """ + folder_download + "*/*.bz2"
     os.system(command)
-     ## remove
+    ## remove
     command = """ rm -f """ + folder_download + "*/*.bz2"
     os.system(command)
 
@@ -132,7 +135,8 @@ for folder in folders:
     ### Build a check list
     Check_list = []
     ## Consulting the main DB
-    db = MySQLdb.connect(host=DB_configuration.host, user=DB_configuration.user, passwd=DB_configuration.passwd, db="RIRs")
+    db = MySQLdb.connect(host=DB_configuration.host, user=DB_configuration.user, passwd=DB_configuration.passwd,
+                         db="RIRs")
     cur = db.cursor()
     if cur:
         print('Connected to the database')
@@ -148,7 +152,7 @@ for folder in folders:
     for filei in list_of_files:
         if os.path.exists(filei) and os.path.isfile(filei):
             print((' \n IPv6 prefixes: We are in folder', folder, 'file', filei, 'which is the num',
-                  list_of_files.index(filei)))
+                   list_of_files.index(filei)))
 
             k_insertion = 0
             with open(filei, 'r') as fk:

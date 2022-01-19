@@ -1,11 +1,10 @@
-import smtplib
-from email.mime.text import MIMEText
-import sys
 import re
+import smtplib
+import sys
+from email.mime.text import MIMEText
 
 
 def send_mail():
-
     usage = '''usage: <%s> <Destination email> <name> <subject> <message> <ticket>''' % (sys.argv[0])
 
     # Check input argument number
@@ -21,7 +20,7 @@ def send_mail():
     if not validateEmail(emailTo):
         print(0)
         exit(-1)
-    
+
     gmailUser = '****@gmail.com'
     gmailPassword = '****'
 
@@ -31,9 +30,9 @@ def send_mail():
     msg['To'] = emailTo
 
     mailServer = smtplib.SMTP('smtp.gmail.com', 587)
-    #mailServer.ehlo()
+    # mailServer.ehlo()
     mailServer.starttls()
-    #mailServer.ehlo()
+    # mailServer.ehlo()
     mailServer.login(gmailUser, gmailPassword)
     mailServer.sendmail(gmailUser, emailTo, msg.as_string())
     mailServer.quit()
@@ -46,6 +45,7 @@ def validateEmail(email):
         if re.match("^.+@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$", email) is not None:
             return 1
     return 0
+
 
 if __name__ == "__main__":
     send_mail()

@@ -10,8 +10,7 @@
 ## @reboot cd /path/to/African_Route-collectors_Data_Analyzer-ARDA/ComputationVM/Step2_Fill_RIRs_database && python 2_fill_historical_AFRINIC_v3_ASNsonly.py
 
 while 1:
-    import MySQLdb, collections, sys, glob, math, ast, os, time, random
-    from math import log
+    import MySQLdb, sys, glob, os, time, random
 
 
     ## Compute the x at the power of n.
@@ -156,7 +155,7 @@ while 1:
                 k_insertion = 0
                 with open(filei, 'r') as fk:
                     print(('ASNs parser: are in folder', folder, 'file', filei, 'which is the num',
-                          list_of_files.index(filei)))
+                           list_of_files.index(filei)))
                     for lines in fk:
                         line = lines.strip()
                         line = line.split('|')

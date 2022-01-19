@@ -6,8 +6,12 @@
 ## 2 - or run the scripts updating the RIR data one after the other: in which case you can keep the scripts as they are.
 
 
-import MySQLdb, collections, sys, glob, math, ast, os, time, random
-from math import log
+import MySQLdb
+import glob
+import os
+import random
+import sys
+import time
 
 sys.path.append('../Heart/2_libraries/')
 import DB_configuration
@@ -44,9 +48,9 @@ website = "ftp://ftp.arin.net/pub/stats/arin/"
 folder_download = "ftp.arin.net/pub/stats/"
 
 print('Download all the folders of allocation')
-#command = """ wget -N -H -r --level=2 -k -p """ + website
-#print(('\n\n command =', command))
-#os.system(command)
+# command = """ wget -N -H -r --level=2 -k -p """ + website
+# print(('\n\n command =', command))
+# os.system(command)
 
 ## decompress
 if glob.glob(folder_download + "*/*.gz"):

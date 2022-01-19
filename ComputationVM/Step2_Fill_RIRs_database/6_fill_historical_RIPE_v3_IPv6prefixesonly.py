@@ -6,8 +6,12 @@
 ## 1 - either frequently (at least once per trimester): In this case you can comment the lines 194 up to the last line (233) and use the cron of script 2_fill_historical_AFRINIC_v3_ASNsonly.py
 ## 2 - or run the scripts updating the RIR data one after the other: in which case you can keep the scripts as they are.
 
-import MySQLdb, collections, sys, glob, math, ast, os, time, random
-from math import log
+import MySQLdb
+import glob
+import os
+import random
+import sys
+import time
 
 
 ## Compute the x at the power of n.
@@ -48,9 +52,9 @@ folder_download = "ftp.ripe.net/ripe/stats/"
 
 print('Download all the folders of allocation')
 
-#command = """ wget -N -H -r --level=2 -k -p """ + website
-#print(('\n\n command =', command))
-#os.system(command)
+# command = """ wget -N -H -r --level=2 -k -p """ + website
+# print(('\n\n command =', command))
+# os.system(command)
 
 ## decompress
 if glob.glob(folder_download + "*/*.gz"):
@@ -156,7 +160,7 @@ for folder in folders:
             k_insertion = 0
             with open(filei, 'r') as fk:
                 print(('IPv6 prefixes: We are in folder', folder, 'file', filei, 'which is the num',
-                      list_of_files.index(filei)))
+                       list_of_files.index(filei)))
                 for lines in fk:
                     line = lines.strip()
                     line = line.split('|')

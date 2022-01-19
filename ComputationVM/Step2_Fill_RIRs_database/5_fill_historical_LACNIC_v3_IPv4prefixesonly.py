@@ -7,8 +7,13 @@
 ## 2 - or run the scripts updating the RIR data one after the other: in which case you can keep the scripts as they are.
 
 
-import MySQLdb, collections, sys, glob, math, ast, os, time, random
-from math import log
+import MySQLdb
+import glob
+import math
+import os
+import random
+import sys
+import time
 
 sys.path.append('../Heart/2_libraries/')
 import DB_configuration
@@ -46,9 +51,9 @@ folder_download = "ftp.lacnic.net/pub/stats/"
 
 print('Download all the folders of allocation')
 
-#command = """ wget -N -H -r --level=2 -k -p """ + website
-#print(('\n\n command =', command))
-#os.system(command)
+# command = """ wget -N -H -r --level=2 -k -p """ + website
+# print(('\n\n command =', command))
+# os.system(command)
 
 ## decompress
 if glob.glob(folder_download + "*/*.gz"):
@@ -166,7 +171,8 @@ for folder in folders:
                                     # IPv4 prefixes details insertion:
                                     sql_commandb = """ INSERT INTO IPv4_ressources_LACNIC ( NetIPaddress, Numb_IPadd, NetBits, CC, Status, date) VALUES (%s,%s,%s,%s,%s,%s);"""
                                     cur.execute(sql_commandb, (
-                                    line[3].strip(), line[4].strip(), NetBits, CCf, line[6].strip(), line[5].strip()))
+                                        line[3].strip(), line[4].strip(), NetBits, CCf, line[6].strip(),
+                                        line[5].strip()))
                                     print(('insertion of', line[3].strip(), 'with a /', NetBits, 'needed in IPv4'))
                                     db.commit()
                                     Check_list.append(value1)

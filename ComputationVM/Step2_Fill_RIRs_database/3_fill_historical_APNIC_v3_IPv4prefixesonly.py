@@ -6,9 +6,15 @@
 ## 2 - or run the scripts updating the RIR data one after the other: in which case you can keep the scripts as they are.
 
 
-import MySQLdb, collections, sys, glob, math, ast, os, time, random, glob
-from math import log
 import os.path
+
+import MySQLdb
+import glob
+import math
+import os
+import random
+import sys
+import time
 
 
 ## Compute the x at the power of n.
@@ -170,7 +176,8 @@ for folder in folders:
                                     # IPv4 prefixes details insertions
                                     sql_commandb = """ INSERT INTO IPv4_ressources_APNIC (NetIPaddress, Numb_IPadd, NetBits, CC, Status, date) VALUES (%s,%s,%s,%s,%s,%s);"""
                                     cur.execute(sql_commandb, (
-                                    line[3].strip(), line[4].strip(), NetBits, CCf, line[6].strip(), line[5].strip()))
+                                        line[3].strip(), line[4].strip(), NetBits, CCf, line[6].strip(),
+                                        line[5].strip()))
                                     print(('insertion of', line[3].strip(), 'with a /', NetBits, 'needed in IPv4'))
                                     db.commit()
                                     k_insertion += 1

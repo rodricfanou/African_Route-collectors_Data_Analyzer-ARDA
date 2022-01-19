@@ -5,8 +5,12 @@
 ## 1 - either frequently (at least once per trimester): In this case you can comment the lines 194 up to the last line (233) and use the cron of script 2_fill_historical_AFRINIC_v3_ASNsonly.py
 ## 2 - or run the scripts updating the RIR data one after the other: in which case you can keep the scripts as they are.
 
-import MySQLdb, collections, sys, glob, math, ast, os, time, random
-from math import log
+import MySQLdb
+import glob
+import os
+import random
+import sys
+import time
 
 
 ## Compute the x at the power of n.
@@ -146,7 +150,8 @@ for folder in folders:
         if os.path.exists(filei) and os.path.isfile(filei):
 
             k_insertion = 0
-            print((' \nASN parser: We are in folder', folder, 'file', filei, 'which is the num', list_of_files.index(filei)))
+            print((' \nASN parser: We are in folder', folder, 'file', filei, 'which is the num',
+                   list_of_files.index(filei)))
             with open(filei, 'r') as fk:
                 for lines in fk:
                     line = lines.strip()

@@ -1,17 +1,19 @@
 #!/usr/bin/python
-import sys, os, csv, glob
-import time
-import MySQLdb
 import datetime
+import os
+import sys
+import time
 from datetime import date
 
-#Correctly downloaded = [2003, 2005, 2006, 2007, 2008, 2009, 2013]
-#needed = 2010, 2011, 2012, 2014, 2015
+import MySQLdb
+
+# Correctly downloaded = [2003, 2005, 2006, 2007, 2008, 2009, 2013]
+# needed = 2010, 2011, 2012, 2014, 2015
 yearList = [str(date.today().year)]
-#monthList = ["01"]
+# monthList = ["01"]
 monthList = [str(datetime.datetime.now().strftime("%m"))]
 current_day = datetime.datetime.now().strftime("%d")
-#current_day = '14'
+# current_day = '14'
 Dictionary_locations = []
 Dictionary_files = {}
 Full_Dictionary = {}
@@ -19,18 +21,17 @@ path = "./PCH_download_v6"
 
 print("Start")
 sys.path.append('../Heart/2_libraries/')
-import DB_configuration
-#Select only the African RouteCollector
-db = MySQLdb.connect(host = "localhost", user = "", passwd = "", db="MergedData")
+
+# Select only the African RouteCollector
+db = MySQLdb.connect(host="localhost", user="", passwd="", db="MergedData")
 cur = db.cursor()
 sql_command = """select RouteCollector from AllRouteCollectors where Continent = 'AF';"""
 cur.execute(sql_command)
-List = cur.fetchall() 
+List = cur.fetchall()
 
-
-RouteCollector_african  = []
-for rc in List :
-	RouteCollector_african.append(str(rc[0]).strip())
+RouteCollector_african = []
+for rc in List:
+    RouteCollector_african.append(str(rc[0]).strip())
 
 print(RouteCollector_african)
 
@@ -40,15 +41,16 @@ for elem in yearList:
         os.chdir(path)
         command = "rm index.html"
         os.system(command)
-        command = "wget https://www.pch.net/resources/Routing_Data/IPv6_daily_snapshots/" +str(elem)+"/"+str(month)+"/" 
+        command = "wget https://www.pch.net/resources/Routing_Data/IPv6_daily_snapshots/" + str(elem) + "/" + str(
+            month) + "/"
         print("\n Executing command =", command)
-        os.system(command) 
+        os.system(command)
 
         find_file = "index.html"
         print("\n find_file =", find_file)
 
-        #<a href="/resources/data.php?dir=/2003//route-views.oregon-ix.net"><strong>route-views.oregon-ix.net</strong></a>
-        with open (find_file, "r") as index_file:
+        # <a href="/resources/data.php?dir=/2003//route-views.oregon-ix.net"><strong>route-views.oregon-ix.net</strong></a>
+        with open(find_file, "r") as index_file:
             print("I access to file")
             for line in index_file:
                 line = line.strip()
@@ -66,13 +68,12 @@ for elem in yearList:
                 except:
                     pass
 
-        command = "mkdir "+str(elem)
+        command = "mkdir " + str(elem)
         os.system(command)
-        command = "mkdir "+str(elem)+'/'+str(month)
-        os.system(command) 
+        command = "mkdir " + str(elem) + '/' + str(month)
+        os.system(command)
         print("Creating folder: ", str(month))
-        os.chdir(path+"/"+str(elem)+"/"+str(month))
-
+        os.chdir(path + "/" + str(elem) + "/" + str(month))
 
         ##Download the data files of the locations
         for folder_only in Dictionary_locations:
@@ -80,18 +81,19 @@ for elem in yearList:
             if folder_only in RouteCollector_african:
                 command = "rm index.html"
                 os.system(command)
-                command = "mkdir " +str(folder_only)
+                command = "mkdir " + str(folder_only)
                 os.system(command)
-                print('AQUI',folder_only)
-                command = "wget https://www.pch.net/resources/Routing_Data/IPv6_daily_snapshots/"+str(elem)+"/"+str(month)+"/"+str(folder_only)+"/"
+                print('AQUI', folder_only)
+                command = "wget https://www.pch.net/resources/Routing_Data/IPv6_daily_snapshots/" + str(
+                    elem) + "/" + str(month) + "/" + str(folder_only) + "/"
                 print("\n I launch the command: ", command)
-                os.system(command) 
-                print('AQUI NO',folder_only)
-                os.chdir(path+"/"+str(elem)+"/"+str(month))
+                os.system(command)
+                print('AQUI NO', folder_only)
+                os.chdir(path + "/" + str(elem) + "/" + str(month))
                 find_packets = "index.html"
                 Full_Dictionary[str(elem)][folder_only] = []
 
-                with open (find_packets, 'r') as index_packets:
+                with open(find_packets, 'r') as index_packets:
                     for line2 in index_packets:
                         line2 = line2.strip()
                         try:
@@ -99,15 +101,16 @@ for elem in yearList:
                             last2 = '"><i class="fa fa-archive fa-fw">'
                             start2 = line2.index(first2) + len(first2)
                             end2 = line2.index(last2)
-                            url_to_file = line2[start2:end2] 
+                            url_to_file = line2[start2:end2]
                             ## Extracting the name of the data file
                             file_only = url_to_file
-                            url_to_file = folder_only+"/"+file_only
-                            os.chdir(path+"/"+str(elem)+"/"+str(month)+"/"+str(folder_only))
-                            dia_de_descarga = '.'+current_day+'.gz'
+                            url_to_file = folder_only + "/" + file_only
+                            os.chdir(path + "/" + str(elem) + "/" + str(month) + "/" + str(folder_only))
+                            dia_de_descarga = '.' + current_day + '.gz'
                             if (dia_de_descarga in url_to_file):
-                                command = " wget https://www.pch.net/resources/Routing_Data/IPv6_daily_snapshots/" + str(elem) +"/"+str(month)+"/"+url_to_file
-                                os.system(command) 
+                                command = " wget https://www.pch.net/resources/Routing_Data/IPv6_daily_snapshots/" + str(
+                                    elem) + "/" + str(month) + "/" + url_to_file
+                                os.system(command)
                                 print('url command= ', command)
                                 print('url_to_file', url_to_file)
                                 print('file_only', file_only)
@@ -116,8 +119,7 @@ for elem in yearList:
                         except:
                             pass
 
-                        os.chdir(path+"/"+str(elem)+"/"+str(month))  
-os.chdir(path)                        
+                        os.chdir(path + "/" + str(elem) + "/" + str(month))
+os.chdir(path)
 command = 'python daily_v6_victor_roderick_parsing_vtest.py'
 os.system(command)
-              

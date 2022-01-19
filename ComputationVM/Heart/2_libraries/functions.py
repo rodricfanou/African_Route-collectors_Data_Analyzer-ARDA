@@ -1,5 +1,6 @@
 import os
 
+
 def create_Logfiles_folder():
     command = 'mkdir -p ../../0_Logfiles/'
     os.system(command)
@@ -9,14 +10,13 @@ def create_Logfiles_folder():
 def check_if_bogon(IP):
     from cymru.bogon.dns import DNSClient as bogon
     client = bogon()
-    
-    if str(client.lookup(IP,'IP')) == 'True':
-        #print 'IP ', IP, ' is a bogon.'
+
+    if str(client.lookup(IP, 'IP')) == 'True':
+        # print 'IP ', IP, ' is a bogon.'
         return 1
     else:
-        #print 'IP ', IP , ' is not a bogon.'
+        # print 'IP ', IP , ' is not a bogon.'
         return 0
-
 
 
 def is_valid_v4(ip):
@@ -59,7 +59,6 @@ def is_valid_v4(ip):
     return pattern.match(ip) is not None
 
 
-
 def is_valid_v6(ip):
     """Validates IPv6 addresses.
         """
@@ -90,6 +89,3 @@ def is_valid_v6(ip):
         $
         """, re.VERBOSE | re.IGNORECASE | re.DOTALL)
     return pattern.match(ip) is not None
-
-
-

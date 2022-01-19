@@ -7,8 +7,13 @@
 ## 2 - or run the scripts updating the RIR data one after the other: in which case you can keep the scripts as they are.
 
 
-import MySQLdb, collections, sys, glob, math, ast, os, time, random
-from math import log
+import MySQLdb
+import glob
+import math
+import os
+import random
+import sys
+import time
 
 sys.path.append('../Heart/2_libraries/')
 import DB_configuration
@@ -44,16 +49,16 @@ folder_download = "ftp.ripe.net/ripe/stats/"
 
 print('Download all the folders of allocation')
 
-#command = """ wget -N -H -r --level=2 -k -p """ + website
-#print(('\n\n command =', command))
-#os.system(command)
+# command = """ wget -N -H -r --level=2 -k -p """ + website
+# print(('\n\n command =', command))
+# os.system(command)
 
 ## decompress
-#if glob.glob(folder_download + "*/*.gz"):
+# if glob.glob(folder_download + "*/*.gz"):
 #    command = """gunzip -r """ + folder_download + "*/*.gz"
 #    os.system(command)
 
-#if glob.glob(folder_download + "*/*.bz2"):
+# if glob.glob(folder_download + "*/*.bz2"):
 #    command = """bzip2 -dk """ + folder_download + "*/*.bz2"
 #    os.system(command)
 #
@@ -144,7 +149,7 @@ for folder in folders:
             k_insertion = 0
             with open(filei, 'r') as fk:
                 print(('IPv4 prefixes: We are in folder', folder, 'file', filei, 'which is the num',
-                      list_of_files.index(filei)))
+                       list_of_files.index(filei)))
                 for lines in fk:
                     line = lines.strip()
                     line = line.split('|')
@@ -164,7 +169,8 @@ for folder in folders:
                                     # IPv4 prefixes details insertions
                                     sql_commandb = """ INSERT INTO IPv4_ressources_RIPE ( NetIPaddress, Numb_IPadd, NetBits, CC, Status, date) VALUES (%s,%s,%s,%s,%s,%s);"""
                                     cur.execute(sql_commandb, (
-                                    line[3].strip(), line[4].strip(), NetBits, CCf, line[6].strip(), line[5].strip()))
+                                        line[3].strip(), line[4].strip(), NetBits, CCf, line[6].strip(),
+                                        line[5].strip()))
                                     print(('insertion of', line[3].strip(), 'with a /', NetBits, 'needed in IPv4'))
                                     db.commit()
                                     Check_list.append(value1)

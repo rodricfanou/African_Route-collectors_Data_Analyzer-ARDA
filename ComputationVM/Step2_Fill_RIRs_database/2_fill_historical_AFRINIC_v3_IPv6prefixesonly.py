@@ -7,22 +7,26 @@
 ## 2 - or run the scripts updating the RIR data one after the other: in which case you can keep the scripts as they are.
 
 
-import MySQLdb, collections, sys, glob, math,  ast, os, time, random
-from math import log
+import MySQLdb
+import glob
+import os
+import random
+import sys
+import time
 
 sys.path.append('../Heart/2_libraries/')
-import DB_configuration
 
 ## Connect to MySQL DB RIRs
-db = MySQLdb.connect(host = "localhost", user = "", passwd = "",  db ="RIRs")
+db = MySQLdb.connect(host="localhost", user="", passwd="", db="RIRs")
 cur = db.cursor()
 print('Connected')
 
+
 ## Compute the x at the power of n.
-def puissance ( x, n) :
+def puissance(x, n):
     res = 1
     i = 1
-    while i<=n:
+    while i <= n:
         res = res * x
         i = i + 1
     return res
@@ -33,13 +37,13 @@ def get_immediate_subdirectories(dir):
     return [name for name in os.listdir(dir)
             if os.path.isdir(os.path.join(dir, name))]
 
+
 ## Launch a script located in the same folder which removes duplicates
-#os.system("python clean_RIRs_DBs.py")
+# os.system("python clean_RIRs_DBs.py")
 
 ### sleep a random time before starting any operation
-value = random.randint(0,10)
-time.sleep(value * random.randint(0,3))
-
+value = random.randint(0, 10)
+time.sleep(value * random.randint(0, 3))
 
 ## RIR data extraction has been performed several times in the literature: see for instance the C++ code
 ## https://code.google.com/p/ip-countryside/source/browse/trunk/getDBs.sh?r=4.
@@ -48,10 +52,10 @@ website = "ftp://ftp.afrinic.net/pub/stats/afrinic/"
 folder_download = "ftp.afrinic.net/pub/stats/afrinic/"
 
 print('Download all the folders of allocation')
-    
-#command = """ wget -N -H -r --level=2 -k -p """ + website
-#print(('\n\n command =', command))
-#os.system(command)
+
+# command = """ wget -N -H -r --level=2 -k -p """ + website
+# print(('\n\n command =', command))
+# os.system(command)
 
 
 ## decompress
@@ -59,15 +63,13 @@ if glob.glob(folder_download + "*/*.gz"):
     command = """gunzip -r """ + folder_download + "*/*.gz"
     os.system(command)
 
-
 if glob.glob(folder_download + "*/*.bz2"):
     command = """bzip2 -dk """ + folder_download + "*/*.bz2"
     os.system(command)
-    
+
     ## remove
     command = """ rm -f """ + folder_download + "*/*.bz2"
     os.system(command)
-
 
 ## Remove unuseful files.
 if glob.glob(folder_download + "*/*.md5"):
@@ -82,7 +84,6 @@ if glob.glob(folder_download + "*/*.gz.bck"):
     command = """ rm -f """ + folder_download + "*/*.gz.bck"
     os.system(command)
 
-
 if glob.glob(folder_download + "*/*.asc.gz"):
     command = """ rm -f """ + folder_download + "*/*.asc.gz"
     os.system(command)
@@ -91,14 +92,12 @@ if glob.glob(folder_download + "*/*.md5.gz"):
     command = """ rm -f """ + folder_download + "*/*.md5.gz"
     os.system(command)
 
-
 ## Which are the folders containing useful information after download:
 folders = []
 List_possible_folder_download = ['ftp.afrinic.net/pub/stats/afrinic/', 'ftp.afrinic.net/pub/stats/']
 for folder_download in List_possible_folder_download:
     folders += get_immediate_subdirectories(folder_download)
 folders += ['afrinic/']
-
 
 for folder in folders:
     print(folder)
@@ -117,26 +116,27 @@ for folder in folders:
     filename_md5_direct = folder_download + '/*.md5'
     filename_asc_direct = folder_download + '/*.asc'
     filename_txt1_direct = folder_download + '/*.txt'
-    filename_txt2_direct  = folder_download + '/*.TXT'
+    filename_txt2_direct = folder_download + '/*.TXT'
 
-    the_whole_list = glob.glob(filename) + glob.glob(filename_without_txt) + glob.glob(filename_without_txt1) + glob.glob(filename_without_txt_direct) + glob.glob(filename_without_txt1_direct)
-    #print  the_whole_list
-    
-    the_whole_list_of_md5 = glob.glob(filename_md5)+ glob.glob(filename_md5_direct)
-    #print  the_whole_list_of_md5
-    
+    the_whole_list = glob.glob(filename) + glob.glob(filename_without_txt) + glob.glob(
+        filename_without_txt1) + glob.glob(filename_without_txt_direct) + glob.glob(filename_without_txt1_direct)
+    # print  the_whole_list
+
+    the_whole_list_of_md5 = glob.glob(filename_md5) + glob.glob(filename_md5_direct)
+    # print  the_whole_list_of_md5
+
     the_whole_list_of_asc = glob.glob(filename_asc) + glob.glob(filename_asc_direct)
-    #print the_whole_list_of_asc
-    
-    the_whole_list_of_txt = glob.glob(filename_txt1) + glob.glob(filename_txt2) + filename_txt3 + glob.glob(filename_txt2_direct)  + glob.glob(filename_txt1_direct)
-    
+    # print the_whole_list_of_asc
+
+    the_whole_list_of_txt = glob.glob(filename_txt1) + glob.glob(filename_txt2) + filename_txt3 + glob.glob(
+        filename_txt2_direct) + glob.glob(filename_txt1_direct)
+
     ## Suppressing all .md5, .asc, or .txt
     for elmt in the_whole_list:
-        if elmt not in the_whole_list_of_md5 and elmt not in the_whole_list_of_asc and elmt not in the_whole_list_of_txt :
+        if elmt not in the_whole_list_of_md5 and elmt not in the_whole_list_of_asc and elmt not in the_whole_list_of_txt:
             list_of_files.append(elmt)
     print(('\n\n\n', 'Allocations ', folder, '\n'))
-    #print list_of_files
-    
+    # print list_of_files
 
     ## Build the check_list
     Check_list = []
@@ -149,17 +149,17 @@ for folder in folders:
         if value not in Check_list:
             Check_list.append(value)
 
-    print(('len(Check_list) = ',  len(Check_list), 'len(db_dump2) = ', len(db_dump2)))
-
+    print(('len(Check_list) = ', len(Check_list), 'len(db_dump2) = ', len(db_dump2)))
 
     ## Files treatment and data storage
-    for filei in list_of_files :
+    for filei in list_of_files:
         if os.path.exists(filei) and os.path.isfile(filei):
             k_insertion = 0
-            with open (filei, 'r') as fk:
-                print(('IPv6 prefixes: We are in folder', folder , 'file', filei, 'which is the num', list_of_files.index(filei)))
+            with open(filei, 'r') as fk:
+                print(('IPv6 prefixes: We are in folder', folder, 'file', filei, 'which is the num',
+                       list_of_files.index(filei)))
                 for lines in fk:
-                    line = lines.strip()                                   
+                    line = lines.strip()
                     ## Inserting v4 prefixes
                     if line != '' and 'ipv6' in line and '*' not in line:
                         line = line.split('|')
@@ -168,29 +168,28 @@ for folder in folders:
                         try:
                             ## Verifier si c'est un prefixe v4 ou v6:
                             if ':' in line[3].strip():
-                                #afrinic|TN|ipv6|2001:970::|32|20021024|allocated
+                                # afrinic|TN|ipv6|2001:970::|32|20021024|allocated
                                 NetBits = str(line[4].strip())
                                 CCf = line[1].strip()
                                 CCf = CCf.upper()
-                                value1 = str(line[3]) + '_' + str(NetBits) + '_' + str(CCf) + '_'+ str(line[6]) + '_' + str(line[5])
-                                 
+                                value1 = str(line[3]) + '_' + str(NetBits) + '_' + str(CCf) + '_' + str(
+                                    line[6]) + '_' + str(line[5])
+
                                 if value1 not in Check_list:
                                     # Insertion of all the details related to the allocated IPv6 prefix:
                                     sql_commandb = """ INSERT INTO IPv6_ressources_AFRINIC (NetIPaddress, NetBits, CC, Status, date) VALUES (%s,%s,%s,%s,%s);"""
-                                    cur.execute(sql_commandb, ( line[3].strip(), NetBits, CCf, line[6].strip(), line[5].strip()))
-                                    print(('insertion of', line[3].strip(),'with a /', NetBits , 'needed in IPv6'))
+                                    cur.execute(sql_commandb,
+                                                (line[3].strip(), NetBits, CCf, line[6].strip(), line[5].strip()))
+                                    print(('insertion of', line[3].strip(), 'with a /', NetBits, 'needed in IPv6'))
                                     db.commit()
                                     Check_list.append(value1)
                                     k_insertion += 1
                                 else:
-                                    print(('We do not insert ', line[3].strip(),'/', NetBits, ' anymore'))
-                                    print() 
-                     
+                                    print(('We do not insert ', line[3].strip(), '/', NetBits, ' anymore'))
+                                    print()
+
                         except MySQLdb.ProgrammingError as e:
-                            print('There was a MySQL warning.  This is the info we have about it: %s' %(e))
-            
+                            print('There was a MySQL warning.  This is the info we have about it: %s' % (e))
 
             with open('record_files_parsed_by_1_fill_historical_RIPE_v3_IPv6prefixesonly.txt', 'a') as fg:
-                fg.write('%s; %s\n ' %(filei, k_insertion))
-			
-
+                fg.write('%s; %s\n ' % (filei, k_insertion))

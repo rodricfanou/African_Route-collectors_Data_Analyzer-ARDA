@@ -6,8 +6,12 @@
 ## 2 - or run the scripts updating the RIR data one after the other: in which case you can keep the scripts as they are.
 
 
-import MySQLdb, collections, sys, glob, math, ast, os, time, random
-from math import log
+import MySQLdb
+import glob
+import os
+import random
+import sys
+import time
 
 
 ## Compute the x at the power of n.
@@ -138,7 +142,8 @@ for folder in folders:
 
     ### Build a check list
     ## Connect to MySQL DB RIRs
-    db = MySQLdb.connect(host=DB_configuration.host, user=DB_configuration.user, passwd=DB_configuration.passwd, db="RIRs")
+    db = MySQLdb.connect(host=DB_configuration.host, user=DB_configuration.user, passwd=DB_configuration.passwd,
+                         db="RIRs")
     cur = db.cursor()
     print('Connected')
     sql_command = """select * from ASNs_RIPE ;"""
@@ -158,7 +163,7 @@ for folder in folders:
             k_insertion = 0
             with open(filei, 'r') as fk:
                 print(('ASNs parser: are in folder', folder, 'file', filei, 'which is the num',
-                      list_of_files.index(filei)))
+                       list_of_files.index(filei)))
                 for lines in fk:
                     line = lines.strip()
                     line = line.split('|')
